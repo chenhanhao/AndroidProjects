@@ -1,0 +1,2 @@
+rootProject.name='MiniTool'
+include ':app'

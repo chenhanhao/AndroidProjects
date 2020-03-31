@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">MiniTool</string>
+
+    <string name="title_currency_conversion">汇率转换</string>
+    <string name="title_inquire_ip">IP查询</string>
+    <string name="title_phone_attribution">号码属地</string>
+    <string name="title_today_in_history">历史今天</string>
+
+    <string name="note_currency_conversion">你有外汇啊?</string>
+    <string name="note_inquire_ip">手机:我是谁?我在哪?</string>
+    <string name="note_phone_attribution">你这是什么号啊?</string>
+    <string name="note_today_in_history">康标题,别康我</string>
+
+
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
+
+    <string name="name_us">US</string>
+    <string name="name_eu">EU</string>
+    <string name="name_hk">HK</string>
+    <string name="name_jp">JP</string>
+    <string name="name_uk">UK</string>
+    <string name="name_au">AU</string>
+    <string name="name_ca">CA</string>
+    <string name="name_th">TH</string>
+    <string name="name_sg">SG</string>
+    <string name="name_ch">CH</string>
+    <string name="name_dk">DK</string>
+    <string name="name_ma">MA</string>
+    <string name="name_my">MY</string>
+    <string name="name_no">NO</string>
+    <string name="name_nz">NZ</string>
+    <string name="name_ph">PH</string>
+    <string name="name_ru">RU</string>
+    <string name="name_se">SE</string>
+    <string name="name_tw">TW</string>
+    <string name="name_br">BR</string>
+    <string name="name_kr">KR</string>
+    <string name="name_za">ZA</string>
+    <string name="name_cn">CN</string>
+
+    <string name="unit_us">美元</string>
+    <string name="unit_eu">欧元</string>
+    <string name="unit_hk">港币</string>
+    <string name="unit_jp">日元</string>
+    <string name="unit_uk">英镑</string>
+    <string name="unit_au">澳大利亚元</string>
+    <string name="unit_ca">加拿大元</string>
+    <string name="unit_th">泰国铢</string>
+    <string name="unit_sg">新加坡元</string>
+    <string name="unit_ch">瑞士法郎</string>
+    <string name="unit_dk">丹麦克朗</string>
+    <string name="unit_ma">澳门元</string>
+    <string name="unit_my">林吉特</string>
+    <string name="unit_no">挪威克朗</string>
+    <string name="unit_nz">新西兰元</string>
+    <string name="unit_ph">菲律宾比索</string>
+    <string name="unit_ru">卢布</string>
+    <string name="unit_se">瑞典克朗</string>
+    <string name="unit_tw">新台币</string>
+    <string name="unit_br">巴西雷亚尔</string>
+    <string name="unit_kr">韩元</string>
+    <string name="unit_za">南非兰特</string>
+    <string name="unit_cn">人民币</string>
+</resources>
