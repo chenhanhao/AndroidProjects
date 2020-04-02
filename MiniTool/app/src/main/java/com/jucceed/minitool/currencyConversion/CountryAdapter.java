@@ -45,12 +45,9 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
   //      holder.imageView.setBackgroundResource(country.getFlag());
         holder.textView.setText(country.getUnitId());
         if(listener != null){
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(listener != null){
-                        listener.onClick(holder.itemView,position);
-                    }
+            holder.itemView.setOnClickListener(v -> {
+                if(listener != null){
+                    listener.onClick(holder.itemView,position);
                 }
             });
         }
@@ -60,8 +57,6 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
     public int getItemCount() {
         return countryList.size();
     }
-
-
 
     class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;

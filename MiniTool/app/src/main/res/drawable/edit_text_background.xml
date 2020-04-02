@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+    <wifi>
         <shape
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
@@ -14,5 +14,5 @@
                 android:width="0.5px"
                 android:color="#505050"/>
         </shape>
-    </item>
+    </wifi>
 </layer-list>

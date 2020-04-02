@@ -156,9 +156,9 @@ public class InquireIpActivity extends AppCompatActivity {
                 for(Enumeration<InetAddress> enumIPAddr = intf.getInetAddresses(); enumIPAddr.hasMoreElements();) {
                     InetAddress inetAddress = enumIPAddr.nextElement();
                     if (inetAddress instanceof Inet4Address && !inetAddress.isLoopbackAddress()) {
-                        Log.d("hhh",inetAddress.getHostAddress());
+        //                Log.d("hhh",inetAddress.getHostAddress());
 
-                //        return inetAddress.getHostAddress();
+                        return inetAddress.getHostAddress();
                     }
                 }
             }

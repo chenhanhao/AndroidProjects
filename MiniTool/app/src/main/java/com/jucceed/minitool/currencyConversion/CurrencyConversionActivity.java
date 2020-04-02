@@ -91,8 +91,16 @@ public class CurrencyConversionActivity extends AppCompatActivity {
     @Override
     public void onPause(){
         super.onPause();
+
+    }
+
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
         Utility.writeHistoryToLocal(context,currentCountry1,currentCountry2);
     }
+
 
     View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
         @Override

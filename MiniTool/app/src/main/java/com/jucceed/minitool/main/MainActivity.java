@@ -19,6 +19,7 @@ import com.jucceed.minitool.currencyConversion.CurrencyConversionActivity;
 import com.jucceed.minitool.R;
 import com.jucceed.minitool.phoneArtribution.PhoneAttributionActivity;
 import com.jucceed.minitool.todayInHistory.TodayInHistoryActivity;
+import com.jucceed.minitool.wifipasswordview.WifiPwdViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
     private Context context;
+    static int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d("hhh","onCreate " + ++count);
 
         initData();
         initWidget();
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             else if(position == 1) intent = new Intent(context, InquireIpActivity.class);
             else if(position == 2) intent = new Intent(context, PhoneAttributionActivity.class);
             else if(position == 3) intent = new Intent(context, TodayInHistoryActivity.class);
+            else if(position == 4) intent = new Intent(context, WifiPwdViewActivity.class);
             startActivity(intent);
             Toast.makeText(MainActivity.this,"启动活动成功", Toast.LENGTH_LONG).show();
         });
@@ -59,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         itemList.add(new Item(R.string.title_inquire_ip,R.drawable.ic_internet,R.string.note_inquire_ip));
         itemList.add(new Item(R.string.title_phone_attribution,R.drawable.ic_phone,R.string.note_phone_attribution));
         itemList.add(new Item(R.string.title_today_in_history,R.drawable.ic_today_in_history,R.string.note_today_in_history));
+        itemList.add(new Item(R.string.title_wifi_pwd_view,R.drawable.ic_wifi,R.string.note_wifi_pwd_view));
     }
 
     private void initWidget(){

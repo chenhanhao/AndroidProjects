@@ -71,6 +71,21 @@ public class TodayInHistoryActivity extends AppCompatActivity {
         initWidget();
     }
 
+
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        refreshData();
+    }
+
+
+
+
+
+
+
     private void initData(){
         first = true;
         articleList = new ArrayList();
@@ -81,8 +96,11 @@ public class TodayInHistoryActivity extends AppCompatActivity {
         day = c.get(Calendar.DATE);
  //       Log.d("hhh","month " + month + " day " + day);
         address = getAddress();
-        refreshData();
+//        refreshData();
     }
+
+
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
