@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_background"
+    android:layout_marginBottom="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/cv_android_logo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/tv_android_version_name"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_toRightOf="@+id/cv_android_logo"
+        android:layout_alignTop="@+id/cv_android_logo"
+        android:text="TextView" />
+    <TextView
+        android:id="@+id/tv_api_level"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/cv_android_logo"
+        android:layout_alignBottom="@+id/cv_android_logo"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tv_app_num"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/cv_android_logo"
+        android:layout_alignBottom="@id/cv_android_logo"
+        android:layout_marginLeft="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@id/tv_android_version_name"
+        android:gravity="center"
+        android:text="TextView"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_app_percent"
+        android:layout_width="45dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_toRightOf="@+id/tv_app_num"
+        android:layout_marginLeft="45dp"
+        android:layout_alignTop="@id/cv_android_logo"
+        android:layout_alignBottom="@id/cv_android_logo"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="TextView" />
+</RelativeLayout>

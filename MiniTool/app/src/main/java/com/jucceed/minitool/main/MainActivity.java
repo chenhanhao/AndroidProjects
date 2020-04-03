@@ -1,5 +1,6 @@
 package com.jucceed.minitool.main;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -9,11 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.jucceed.minitool.appinfo.AppInfoActivity;
 import com.jucceed.minitool.inquireIp.InquireIpActivity;
 import com.jucceed.minitool.currencyConversion.CurrencyConversionActivity;
 import com.jucceed.minitool.R;
@@ -21,6 +27,7 @@ import com.jucceed.minitool.phoneArtribution.PhoneAttributionActivity;
 import com.jucceed.minitool.todayInHistory.TodayInHistoryActivity;
 import com.jucceed.minitool.wifipasswordview.WifiPwdViewActivity;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     static int count = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("hhh","onCreate " + ++count);
+ //       Log.d("hhh","onCreate " + ++count);
 
         initData();
         initWidget();
@@ -49,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             else if(position == 2) intent = new Intent(context, PhoneAttributionActivity.class);
             else if(position == 3) intent = new Intent(context, TodayInHistoryActivity.class);
             else if(position == 4) intent = new Intent(context, WifiPwdViewActivity.class);
+            else if(position == 5) intent = new Intent(context, AppInfoActivity.class);
             startActivity(intent);
             Toast.makeText(MainActivity.this,"启动活动成功", Toast.LENGTH_LONG).show();
         });
@@ -64,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         itemList.add(new Item(R.string.title_phone_attribution,R.drawable.ic_phone,R.string.note_phone_attribution));
         itemList.add(new Item(R.string.title_today_in_history,R.drawable.ic_today_in_history,R.string.note_today_in_history));
         itemList.add(new Item(R.string.title_wifi_pwd_view,R.drawable.ic_wifi,R.string.note_wifi_pwd_view));
+        itemList.add(new Item(R.string.title_app_info,R.drawable.ic_app_info,R.string.note_app_info));
     }
 
     private void initWidget(){

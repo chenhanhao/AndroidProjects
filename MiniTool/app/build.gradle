@@ -15,6 +15,7 @@ android {
                             'src/main/res/layout/phone_attribution',
                             'src/main/res/layout/today_in_history',
                             'src/main/res/layout/wifi_pwd_view',
+                            'src/main/res/layout/app_info',
                             'src/main/res'
                     ]
         }
