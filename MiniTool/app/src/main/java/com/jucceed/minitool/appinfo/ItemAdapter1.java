@@ -8,18 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.pavlospt.CircleView;
 import com.jucceed.minitool.R;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class ItemAdapter1 extends RecyclerView.Adapter<ItemAdapter1.ViewHolder> {
 
     List<Api> apiList;
 
-    public ItemAdapter(List<Api> apiList) {
+    public ItemAdapter1(List<Api> apiList) {
         this.apiList = apiList;
     }
 
