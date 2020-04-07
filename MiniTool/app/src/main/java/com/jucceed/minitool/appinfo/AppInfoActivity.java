@@ -8,7 +8,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -23,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,9 +33,10 @@ import android.widget.TextView;
 
 import com.jucceed.minitool.R;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AppInfoActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -43,12 +44,8 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     private Toolbar toolbar;
 
     private ImageView ivSort;
-    private List<Api> apiList;
-    private List<AppDetail> appDetailList;
-    private ItemAdapter1 adapter1;
-    private ItemAdapter2 adapter2;
-    private RecyclerView recycleView1;
-    private RecyclerView recycleView2;
+    private ItemAdapter adapter;
+    private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private PopupWindow popupWindow;
     private RadioButton rbSortByAppName;
@@ -56,11 +53,11 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     private RadioButton rbSortByMinAPI;
     private RadioButton rbSortByFirstInstallTime;
     private RadioButton rbSortByLastUpdateTime;
+    private View popupWindowView;
 
     public static String[] androidApiMap;
     private PackageManager pm;
     private List<PackageInfo> packageInfoList;
-
     public static int[] icons;
     private int[] apis;
     private int SORT_BY_APP_NAME = 1;
@@ -69,7 +66,10 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     private int SORT_BY_FIRST_INSTALL_TIME = 4;
     private int SORT_BY_LAST_UPDATE_TIME = 5;
 
+    private boolean initialized = false;
+
     private LinearLayout linearLayout;
+    private LinearLayout llOverviewContent;
     private LayoutInflater inflater;
 
     private View contentView1;
@@ -80,11 +80,9 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             if(msg.what == 1){
-                adapter1.notifyDataSetChanged();
+    //            adapter1.notifyDataSetChanged();
             }else if(msg.what == 2){
-                adapter2.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-                progressBar.setProgress(100);
+                adapter.notifyDataSetChanged();
             }
         }
     };
@@ -94,7 +92,6 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_info);
-
 
         context = AppInfoActivity.this;
         inflater = LayoutInflater.from(context);
@@ -107,8 +104,8 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         loadDetailHeader();
         loadDetailContent();
         getData();
-
     }
+
 
     private void initToolbar(){
         toolbar = findViewById(R.id.toolbar_app_info);
@@ -148,6 +145,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
 
     private void loadOverviewContent(){
         contentView1 = inflater.inflate(R.layout.content_overview,linearLayout,false);
+        llOverviewContent = contentView1.findViewById(R.id.ll_overview_content);
         linearLayout.addView(contentView1);
         progressBar.setProgress(progressBar.getProgress() + 2);
     }
@@ -165,39 +163,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getData(){
-        apiList = new ArrayList();
-        adapter1 = new ItemAdapter1(apiList);
-        recycleView1 = contentView1.findViewById(R.id.rv_api_percent);
-        recycleView1.setAdapter(adapter1);
-        recycleView1.setLayoutManager(new LinearLayoutManager(context));
-
-        appDetailList = new ArrayList();
-        adapter2 = new ItemAdapter2(appDetailList);
-        recycleView2 = contentView2.findViewById(R.id.rv_app_detail);
-        recycleView2.setAdapter(adapter2);
-        recycleView2.setLayoutManager(new LinearLayoutManager(context){
-            @Override
-            public boolean canScrollVertically(){
-                return false;
-            }
-        });
-        progressBar.setProgress(progressBar.getProgress() + 4);
-
-        new Thread(()->{
-            pm = getPackageManager();
-            packageInfoList = pm.getInstalledPackages(0);
-            apis = new int[30];
-            progressBar.setProgress(progressBar.getProgress() + 4);
-            getData1();
-            getData2();
-        }).start();
-
-    }
-
-
-    private void getData1(){
-
-
+        apis = new int[30];
         androidApiMap = new String[]
                 {"","1.0", "1.1","Cupcake","Donut","Eclair",
                         "Eclair","Eclair","Froyo","Gingerbread","Gingerbread",
@@ -212,91 +178,95 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                         R.drawable.android_jelly_bean,R.drawable.android_jelly_bean,R.drawable.android_jelly_bean,R.drawable.android_kitkat,R.drawable.android_kitkat,
                         R.drawable.android_lollipop,R.drawable.android_lollipop,R.drawable.android_marshmallow,R.drawable.android_nougat,R.drawable.android_nougat,
                         R.drawable.android_oreo,R.drawable.android_oreo,R.drawable.android_pie,R.drawable.android_q};
-        float count = packageInfoList.size();
+        pm = getPackageManager();
+        packageInfoList = pm.getInstalledPackages(0);
 
+        getData1();
+        adapter = new ItemAdapter(packageInfoList,pm);
+        recyclerView = contentView2.findViewById(R.id.rv_app_detail);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        progressBar.setProgress(100);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void getData1(){
+        float count = packageInfoList.size();
         for(PackageInfo packageInfo : packageInfoList)
             apis[packageInfo.applicationInfo.targetSdkVersion]++;
+
         progressBar.setProgress(progressBar.getProgress() + 4);
         for(int i = apis.length - 1; i >=0; i--) {
             if (apis[i] != 0) {
-                String s = (apis[i] / count * 100 + "");
+                String s = String.valueOf(apis[i] / count * 100);
                 s = s.substring(0, s.indexOf('.') + 2) + "%";
-                apiList.add(new Api(icons[i], androidApiMap[i], "API " + i, apis[i], s));
+
+                View view = inflater.inflate(R.layout.item_api_percent,llOverviewContent,false);
+                CircleImageView cvAndroidLogo = view.findViewById(R.id.cv_android_logo);
+                TextView tvAndroidVersionName = view.findViewById(R.id.tv_android_version_name);
+                TextView tvApiLevel = view.findViewById(R.id.tv_api_level);
+                TextView tvAppNum = view.findViewById(R.id.tv_app_num);
+                TextView tvAppPercent = view.findViewById(R.id.tv_app_percent);
+                cvAndroidLogo.setImageResource(icons[i]);
+                tvAndroidVersionName.setText(androidApiMap[i]);
+                tvApiLevel.setText("API " + i);
+                tvAppNum.setText(apis[i] + "");
+                tvAppPercent.setText(s);
+                llOverviewContent.addView(view);
             }
             progressBar.setProgress(progressBar.getProgress() + 1);
         }
-        Message message = new Message();
-        message.what = 1;
-        handle.sendMessage(message);
     }
 
-    private void getData2(){
-
-
-        for(PackageInfo packageInfo : packageInfoList){
-            AppDetail appDetail = new AppDetail();
-            int n = packageInfo.applicationInfo.targetSdkVersion;
-            apis[n]++;
-            appDetail.setAppIcon(packageInfo.applicationInfo.loadIcon(pm));
-            appDetail.setAppName((String) packageInfo.applicationInfo.loadLabel(pm));
-            appDetail.setPackageName(packageInfo.packageName);
-            appDetail.setAppVersionCode(packageInfo.versionName);
-            appDetail.setAppAndroidVersion(androidApiMap[n]);
-            appDetail.setAppApiLevel(n + "");
-            appDetailList.add(appDetail);
-        }
-        progressBar.setProgress(100);
-        Message message2 = new Message();
-        message2.what = 2;
-        handle.sendMessage(message2);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void sortList(int tag){
         progressBar.setVisibility(View.INVISIBLE);
-        new Thread(()->{
-            Collections.sort(packageInfoList, (o1, o2) -> {
-                if(tag == SORT_BY_APP_NAME){
-                    String s1 = (String) o1.applicationInfo.loadLabel(pm);
-                    String s2 = (String) o2.applicationInfo.loadLabel(pm);
-                    return s1.compareTo(s2);
-                }else if(tag == SORT_BY_TARGET_API){
-                    return o1.applicationInfo.targetSdkVersion - o1.applicationInfo.targetSdkVersion;
-                }else if(tag == SORT_BY_MIN_API){
-                    return o1.applicationInfo.minSdkVersion - o2.applicationInfo.minSdkVersion;
-                }else if(tag == SORT_BY_FIRST_INSTALL_TIME){
-                    return o1.firstInstallTime - o2.firstInstallTime >= 0 ? 1 : -1;
-                }else if(tag == SORT_BY_LAST_UPDATE_TIME){
-                    return o1.lastUpdateTime - o2.lastUpdateTime >= 0 ? 1 : -1;
-                }else {
-                    return 0;
-                }
-            });
-            Message msg = new Message();
-            msg.what = 2;
-            handle.sendMessage(msg);
-        }).start();
+        Collections.sort(packageInfoList, (o1, o2) -> {
+            if(tag == SORT_BY_APP_NAME){
+                String s1 = (String) o1.applicationInfo.loadLabel(pm);
+                String s2 = (String) o2.applicationInfo.loadLabel(pm);
+                return s1.compareTo(s2);
+            }else if(tag == SORT_BY_TARGET_API){
+                return o1.applicationInfo.targetSdkVersion - o2.applicationInfo.targetSdkVersion;
+            }else if(tag == SORT_BY_MIN_API){
+                return o1.applicationInfo.minSdkVersion - o2.applicationInfo.minSdkVersion;
+            }else if(tag == SORT_BY_FIRST_INSTALL_TIME){
+                return o1.firstInstallTime - o2.firstInstallTime >= 0 ? 1 : -1;
+            }else if(tag == SORT_BY_LAST_UPDATE_TIME){
+                return o1.lastUpdateTime - o2.lastUpdateTime >= 0 ? 1 : -1;
+            }else {
+                return 0;
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 
-
     private void showSortWindow(){
-        View view = getLayoutInflater().inflate(R.layout.sort_dialog_layout,null);
-        rbSortByAppName = view.findViewById(R.id.rb_sort_by_app_name);
-        rbSortByTargetAPI = view.findViewById(R.id.rb_sort_by_target_api);
-        rbSortByMinAPI = view.findViewById(R.id.rb_sort_by_min_api);
-        rbSortByFirstInstallTime = view.findViewById(R.id.rb_sort_by_first_install_time);
-        rbSortByLastUpdateTime = view.findViewById(R.id.rb_sort_by_last_update_time);
-        rbSortByAppName.setOnClickListener(this);
-        rbSortByTargetAPI.setOnClickListener(this);
-        rbSortByMinAPI.setOnClickListener(this);
-        rbSortByFirstInstallTime.setOnClickListener(this);
-        rbSortByLastUpdateTime.setOnClickListener(this);
+        if(!initialized){
+            popupWindowView = getLayoutInflater().inflate(R.layout.sort_dialog_layout,null);
+            rbSortByAppName = popupWindowView.findViewById(R.id.rb_sort_by_app_name);
+            rbSortByTargetAPI = popupWindowView.findViewById(R.id.rb_sort_by_target_api);
+            rbSortByMinAPI = popupWindowView.findViewById(R.id.rb_sort_by_min_api);
+            rbSortByFirstInstallTime = popupWindowView.findViewById(R.id.rb_sort_by_first_install_time);
+            rbSortByLastUpdateTime = popupWindowView.findViewById(R.id.rb_sort_by_last_update_time);
+            rbSortByAppName.setOnClickListener(this);
+            rbSortByTargetAPI.setOnClickListener(this);
+            rbSortByMinAPI.setOnClickListener(this);
+            rbSortByFirstInstallTime.setOnClickListener(this);
+            rbSortByLastUpdateTime.setOnClickListener(this);
+            initPopUpWindow(popupWindowView);
+            initialized = true;
+        }
+        popupWindow.showAtLocation(popupWindowView, Gravity.CENTER, 0,0);
+    }
+
+    private void initPopUpWindow(View view){
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0,0);
         /**
          * 弹出popupWindow时设置暗背景
          */
@@ -322,8 +292,28 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.rb_sort_by_app_name : {
-                sortList(SORT_BY_APP_NAME);
                 popupWindow.dismiss();
+                sortList(SORT_BY_APP_NAME);
+                break;
+            }
+            case R.id.rb_sort_by_target_api : {
+                popupWindow.dismiss();
+                sortList(SORT_BY_TARGET_API);
+                break;
+            }
+            case R.id.rb_sort_by_min_api : {
+                popupWindow.dismiss();
+                sortList(SORT_BY_MIN_API);
+                break;
+            }
+            case R.id.rb_sort_by_first_install_time : {
+                popupWindow.dismiss();
+                sortList(SORT_BY_FIRST_INSTALL_TIME);
+                break;
+            }
+            case R.id.rb_sort_by_last_update_time : {
+                popupWindow.dismiss();
+                sortList(SORT_BY_LAST_UPDATE_TIME);
                 break;
             }
         }

@@ -1,5 +1,8 @@
 package com.jucceed.minitool.appinfo;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +16,14 @@ import com.jucceed.minitool.R;
 
 import java.util.List;
 
-public class ItemAdapter2 extends RecyclerView.Adapter<ItemAdapter2.ViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
-    private List<AppDetail> appDetailList;
+    private List<PackageInfo> packageInfoList;
+    private PackageManager pm;
 
-    public ItemAdapter2(List<AppDetail> appDetailList) {
-        this.appDetailList = appDetailList;
+    public ItemAdapter(List<PackageInfo> packageInfoList, PackageManager pm) {
+        this.packageInfoList = packageInfoList;
+        this.pm = pm;
     }
 
     @NonNull
@@ -26,23 +31,26 @@ public class ItemAdapter2 extends RecyclerView.Adapter<ItemAdapter2.ViewHolder> 
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_app_detail_layout,parent,false);
+        Log.d("hhh","create");
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AppDetail appDetail = appDetailList.get(position);
-        holder.ivAppIcon.setBackground(appDetail.getAppIcon());
-        holder.tvAppName.setText(appDetail.getAppName());
-        holder.tvPackageName.setText(appDetail.getPackageName());
-        holder.tvAppVersionCode.setText(appDetail.getAppVersionCode());
-        holder.tvAppAndroidVersion.setText(appDetail.getAppAndroidVersion());
-        holder.tvAppApiLevel.setText(appDetail.getAppApiLevel());
+        PackageInfo packageInfo = packageInfoList.get(position);
+        int n = packageInfo.applicationInfo.targetSdkVersion;
+        holder.ivAppIcon.setBackground(packageInfo.applicationInfo.loadIcon(pm));
+        holder.tvAppName.setText(packageInfo.applicationInfo.loadLabel(pm));
+        holder.tvPackageName.setText(packageInfo.packageName);
+        holder.tvAppVersionCode.setText(packageInfo.versionName);
+        holder.tvAppAndroidVersion.setText(AppInfoActivity.androidApiMap[n]);
+        holder.tvAppApiLevel.setText(n + "");
+        Log.d("hhh","bind " + position);
     }
 
     @Override
     public int getItemCount() {
-        return appDetailList.size();
+        return packageInfoList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
