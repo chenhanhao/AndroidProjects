@@ -8,7 +8,7 @@
     android:layout_marginRight="20dp"
     android:layout_marginBottom="10dp"
     android:padding="10dp"
-    android:background="@drawable/round_background">
+    android:background="@drawable/round_background_grey">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

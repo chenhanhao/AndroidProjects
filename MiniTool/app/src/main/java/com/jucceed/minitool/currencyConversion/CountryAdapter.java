@@ -46,11 +46,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
   //      holder.imageView.setBackgroundResource(country.getFlag());
         holder.textView.setText(country.getUnitId());
         if(listener != null){
-            holder.itemView.setOnClickListener(v -> {
-                if(listener != null){
-                    listener.onClick(holder.itemView,position);
-                }
-            });
+            holder.itemView.setOnClickListener(v -> listener.onClick(holder.itemView,position));
         }
     }
 

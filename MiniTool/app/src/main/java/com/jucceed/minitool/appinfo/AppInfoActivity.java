@@ -5,16 +5,21 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageInstaller;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,6 +38,8 @@ import android.widget.TextView;
 
 import com.jucceed.minitool.R;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,11 +49,9 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
 
     private Context context;
     private Toolbar toolbar;
-
     private ImageView ivSort;
     private ItemAdapter adapter;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
     private PopupWindow popupWindow;
     private RadioButton rbSortByAppName;
     private RadioButton rbSortByTargetAPI;
@@ -54,10 +59,16 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     private RadioButton rbSortByFirstInstallTime;
     private RadioButton rbSortByLastUpdateTime;
     private View popupWindowView;
+    private View contentView1;
+    private View contentView2;
+    private LinearLayout linearLayout;
+    private LinearLayout llOverviewContent;
+    private LayoutInflater inflater;
 
-    public static String[] androidApiMap;
     private PackageManager pm;
     private List<PackageInfo> packageInfoList;
+
+    public static String[] androidApiMap;
     public static int[] icons;
     private int[] apis;
     private int SORT_BY_APP_NAME = 1;
@@ -65,27 +76,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     private int SORT_BY_MIN_API = 3;
     private int SORT_BY_FIRST_INSTALL_TIME = 4;
     private int SORT_BY_LAST_UPDATE_TIME = 5;
-
     private boolean initialized = false;
-
-    private LinearLayout linearLayout;
-    private LinearLayout llOverviewContent;
-    private LayoutInflater inflater;
-
-    private View contentView1;
-    private View contentView2;
-
-    private Handler handle = new Handler(){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            super.handleMessage(msg);
-            if(msg.what == 1){
-    //            adapter1.notifyDataSetChanged();
-            }else if(msg.what == 2){
-                adapter.notifyDataSetChanged();
-            }
-        }
-    };
 
 
     @Override
@@ -95,8 +86,6 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
 
         context = AppInfoActivity.this;
         inflater = LayoutInflater.from(context);
-        progressBar = findViewById(R.id.progress_bar_app_info);
-
         initToolbar();
         loadMainHeader();
         loadOverviewHeader();
@@ -105,7 +94,6 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         loadDetailContent();
         getData();
     }
-
 
     private void initToolbar(){
         toolbar = findViewById(R.id.toolbar_app_info);
@@ -118,7 +106,6 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         }
         ivSort = findViewById(R.id.iv_sort);
         ivSort.setOnClickListener(this);
-        progressBar.setProgress(progressBar.getProgress() + 2);
     }
 
     private void loadMainHeader(){
@@ -134,37 +121,37 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         tvDeviceName.setText(Build.DEVICE);
 
         linearLayout.addView(view);
-        progressBar.setProgress(progressBar.getProgress() + 2);
     }
 
     private void loadOverviewHeader(){
         View view = inflater.inflate(R.layout.header_overview,linearLayout,false);
         linearLayout.addView(view);
-        progressBar.setProgress(progressBar.getProgress() + 2);
     }
 
+    /* 加载统计信息
+
+     */
     private void loadOverviewContent(){
         contentView1 = inflater.inflate(R.layout.content_overview,linearLayout,false);
         llOverviewContent = contentView1.findViewById(R.id.ll_overview_content);
         linearLayout.addView(contentView1);
-        progressBar.setProgress(progressBar.getProgress() + 2);
     }
 
     private void loadDetailHeader(){
         View view = inflater.inflate(R.layout.header_detail,linearLayout,false);
         linearLayout.addView(view);
-        progressBar.setProgress(progressBar.getProgress() + 2);
     }
 
     private void loadDetailContent(){
         contentView2 = inflater.inflate(R.layout.content_detail,linearLayout,false);
         linearLayout.addView(contentView2);
-        progressBar.setProgress(progressBar.getProgress() + 2);
     }
+
 
     private void getData(){
         apis = new int[30];
-        androidApiMap = new String[]
+
+        androidApiMap = new String[]    // 初始化对于API对应关系
                 {"","1.0", "1.1","Cupcake","Donut","Eclair",
                         "Eclair","Eclair","Froyo","Gingerbread","Gingerbread",
                         "Honeycomb","Honeycomb","Honeycomb","Ice Cream Sandwich","Ice Cream Sandwich",
@@ -179,23 +166,31 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                         R.drawable.android_lollipop,R.drawable.android_lollipop,R.drawable.android_marshmallow,R.drawable.android_nougat,R.drawable.android_nougat,
                         R.drawable.android_oreo,R.drawable.android_oreo,R.drawable.android_pie,R.drawable.android_q};
         pm = getPackageManager();
-        packageInfoList = pm.getInstalledPackages(0);
 
+
+        // 传入的flag不同,得到的list不一样,例如传入PackageManager.GET_ACTIVITIES可得到activity相关信息,具体可查看源码
+        packageInfoList = pm.getInstalledPackages(PackageManager.GET_SIGNATURES|PackageManager.GET_PERMISSIONS);
         getData1();
         adapter = new ItemAdapter(packageInfoList,pm);
+        adapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(AppInfoActivity.this,AppDetailActivity.class);
+                intent.putExtra("packageInfo",packageInfoList.get(position));
+                intent.putExtra("pm",packageInfoList.get(position));
+                startActivity(intent);
+            }
+        });
         recyclerView = contentView2.findViewById(R.id.rv_app_detail);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        progressBar.setProgress(100);
-        progressBar.setVisibility(View.GONE);
     }
 
     private void getData1(){
         float count = packageInfoList.size();
-        for(PackageInfo packageInfo : packageInfoList)
+        for(PackageInfo packageInfo : packageInfoList) {
             apis[packageInfo.applicationInfo.targetSdkVersion]++;
-
-        progressBar.setProgress(progressBar.getProgress() + 4);
+        }
         for(int i = apis.length - 1; i >=0; i--) {
             if (apis[i] != 0) {
                 String s = String.valueOf(apis[i] / count * 100);
@@ -214,27 +209,34 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
                 tvAppPercent.setText(s);
                 llOverviewContent.addView(view);
             }
-            progressBar.setProgress(progressBar.getProgress() + 1);
         }
     }
 
 
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void sortList(int tag){
-        progressBar.setVisibility(View.INVISIBLE);
         Collections.sort(packageInfoList, (o1, o2) -> {
             if(tag == SORT_BY_APP_NAME){
                 String s1 = (String) o1.applicationInfo.loadLabel(pm);
                 String s2 = (String) o2.applicationInfo.loadLabel(pm);
-                return s1.compareTo(s2);
+                return s2.compareTo(s1);
             }else if(tag == SORT_BY_TARGET_API){
-                return o1.applicationInfo.targetSdkVersion - o2.applicationInfo.targetSdkVersion;
+                return o2.applicationInfo.targetSdkVersion - o1.applicationInfo.targetSdkVersion;
             }else if(tag == SORT_BY_MIN_API){
-                return o1.applicationInfo.minSdkVersion - o2.applicationInfo.minSdkVersion;
+                return o2.applicationInfo.minSdkVersion - o1.applicationInfo.minSdkVersion;
             }else if(tag == SORT_BY_FIRST_INSTALL_TIME){
-                return o1.firstInstallTime - o2.firstInstallTime >= 0 ? 1 : -1;
+                long diff = o2.firstInstallTime - o1.firstInstallTime;
+                if(diff > 0) return 1;
+                else if(diff == 0) return 0;
+                else return -1;
             }else if(tag == SORT_BY_LAST_UPDATE_TIME){
-                return o1.lastUpdateTime - o2.lastUpdateTime >= 0 ? 1 : -1;
+                long diff = o2.lastUpdateTime - o1.lastUpdateTime;
+                if(diff > 0) return 1;
+                else if(diff == 0) return 0;
+                else return -1;
             }else {
                 return 0;
             }
@@ -258,6 +260,10 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
             initPopUpWindow(popupWindowView);
             initialized = true;
         }
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.7f;//代表透明程度，范围为0 - 1.0f
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getWindow().setAttributes(lp);
         popupWindow.showAtLocation(popupWindowView, Gravity.CENTER, 0,0);
     }
 

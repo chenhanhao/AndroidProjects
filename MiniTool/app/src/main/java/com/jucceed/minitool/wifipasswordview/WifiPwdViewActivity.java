@@ -89,10 +89,15 @@ public class WifiPwdViewActivity extends AppCompatActivity {
                         int endIndex = s.lastIndexOf('&');
                         nameList.add(s.substring(beginIndex,endIndex));
    //                     Log.d("hhh",s.substring(beginIndex,endIndex));
-                    }else if(s.contains("<string name=\"PreSharedKey\">")){
+                    }else if(s.contains("\"PreSharedKey\"")){
                         int beginIndex = s.indexOf(';') + 1;
                         int endIndex = s.lastIndexOf('&');
-                        pwdList.add(s.substring(beginIndex,endIndex));
+                        if(beginIndex == -1 || endIndex == -1){
+                            pwdList.add("没密码啊");
+                        }else{
+                            pwdList.add(s.substring(beginIndex,endIndex));
+                        }
+
     //                    Log.d("hhh",s.substring(beginIndex,endIndex));
                     }
                 }

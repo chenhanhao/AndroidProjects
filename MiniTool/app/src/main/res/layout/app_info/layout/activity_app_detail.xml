@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".appinfo.AppDetailActivity">
@@ -9,14 +9,342 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="30dp"
         android:orientation="vertical">
-        <RelativeLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary">
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:textColor="#FFFFFF"
+                android:text="应用详情"/>
+        </androidx.appcompat.widget.Toolbar>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="8dp">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/round_background_light_blue"
+                    android:padding="10dp"
+                    android:text="基本信息"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_header"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="QXposed"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_app_name"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp"
+                    android:text="名称"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_package_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv1"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/iv_app_icon"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="com.fkzhang.qqxposed"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_package_name"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp"
+                    android:text="包名"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_version_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv2"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="2.3(28)"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_version_name"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp"
+                    android:text="版本名"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_first_install_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv3"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="2020-03-17 19:05:21"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_first_install_time"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp"
+                    android:text="首次安装时间"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_last_update_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv4"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="2020-03-17 19:05:21"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_last_update_time"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp"
+                    android:text="最后更新时间"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_target_api"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv5"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="Android 10 (29)"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_target_api"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp"
+                    android:text="目标API"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_min_api"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv6"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="Ice Cream Sandwich (15)"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_below="@+id/tv_min_api"
+                    android:layout_alignParentLeft="true"
+                    android:paddingLeft="10dp"
+                    android:text="最低支持API"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/iv_app_icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/tv_header"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="20dp"/>
+
+                <Button
+                    android:id="@+id/bt_save_icon"
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/iv_app_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_background_light_blue2"
+                    android:text="保存图标" />
+
+                <Button
+                    android:id="@+id/bt_open_market"
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/bt_save_icon"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_background_light_blue2"
+                    android:text="打开市场" />
+
+                <Button
+                    android:id="@+id/bt_share_apk"
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/bt_open_market"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_background_light_blue2"
+                    android:text="分享APK" />
+
+                <Button
+                    android:id="@+id/bt_open_detail"
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/bt_share_apk"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_background_light_blue2"
+                    android:text="打开详情" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="8dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_header2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/round_background_light_blue"
+                    android:padding="10dp"
+                    android:text="应用签名"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_header2"
+                    android:padding="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:text="MD5签名"/>
+                <TextView
+                    android:id="@+id/tv_md5_sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv8"
+                    android:paddingLeft="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/bt_copy_md5"
+                    android:layout_width="60dp"
+                    android:layout_height="29dp"
+                    android:layout_above="@+id/tv_md5_sign"
+                    android:layout_below="@id/tv_header2"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_background_light_blue2"
+                    android:text="复制" />
+
+            </RelativeLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="8dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_header3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/round_background_light_blue"
+                    android:padding="10dp"
+                    android:text="权限声明"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/tv_permission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_header3"
+                    android:paddingLeft="10dp"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

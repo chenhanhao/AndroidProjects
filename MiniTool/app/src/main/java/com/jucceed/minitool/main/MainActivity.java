@@ -51,18 +51,22 @@ public class MainActivity extends AppCompatActivity {
         initData();
         initWidget();
         itemAdapter.setOnItemClickListener((v, position) -> {
-            Intent intent = null;
-            if     (position == 0) intent = new Intent(context, CurrencyConversionActivity.class);
-            else if(position == 1) intent = new Intent(context, InquireIpActivity.class);
-            else if(position == 2) intent = new Intent(context, PhoneAttributionActivity.class);
-            else if(position == 3) intent = new Intent(context, TodayInHistoryActivity.class);
-            else if(position == 4) intent = new Intent(context, WifiPwdViewActivity.class);
-            else if(position == 5) intent = new Intent(context, AppInfoActivity.class);
+            Intent intent = getIntent(position);
             startActivity(intent);
-            Toast.makeText(MainActivity.this,"启动活动成功", Toast.LENGTH_LONG).show();
         });
     }
 
+
+    private Intent getIntent(int position){
+        Intent intent = null;
+        if     (position == 0) intent = new Intent(context, CurrencyConversionActivity.class);
+        else if(position == 1) intent = new Intent(context, InquireIpActivity.class);
+        else if(position == 2) intent = new Intent(context, PhoneAttributionActivity.class);
+        else if(position == 3) intent = new Intent(context, TodayInHistoryActivity.class);
+        else if(position == 4) intent = new Intent(context, WifiPwdViewActivity.class);
+        else if(position == 5) intent = new Intent(context, AppInfoActivity.class);
+        return intent;
+    }
 
     private void initData() {
         context = MainActivity.this;

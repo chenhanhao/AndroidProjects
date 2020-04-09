@@ -20,6 +20,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<PackageInfo> packageInfoList;
     private PackageManager pm;
+    private OnItemClickListener itemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
 
     public ItemAdapter(List<PackageInfo> packageInfoList, PackageManager pm) {
         this.packageInfoList = packageInfoList;
@@ -31,7 +36,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_app_detail_layout,parent,false);
-        Log.d("hhh","create");
         return new ViewHolder(view);
     }
 
@@ -45,7 +49,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.tvAppVersionCode.setText(packageInfo.versionName);
         holder.tvAppAndroidVersion.setText(AppInfoActivity.androidApiMap[n]);
         holder.tvAppApiLevel.setText(n + "");
-        Log.d("hhh","bind " + position);
+        if(itemClickListener != null){
+            holder.itemView.setOnClickListener(v-> itemClickListener.onClick(holder.itemView,position));
+        }
     }
 
     @Override
@@ -70,6 +76,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             tvAppAndroidVersion = itemView.findViewById(R.id.tv_app_android_version);
             tvAppApiLevel = itemView.findViewById(R.id.tv_app_api_level);
         }
+    }
+
+
+    public interface OnItemClickListener{
+        void onClick(View v,int position);
     }
 
 }

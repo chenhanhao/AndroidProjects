@@ -6,7 +6,7 @@
     android:layout_marginRight="20dp"
     android:layout_marginBottom="10dp"
     android:paddingRight="20dp"
-    android:background="@drawable/round_background">
+    android:background="@drawable/round_background_grey">
 
     <ImageView
         android:id="@+id/iv_app_icon"
