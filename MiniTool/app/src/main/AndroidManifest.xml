@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".appinfo.AppDetailActivity" />
-        <activity android:name=".appinfo.AppInfoActivity" />
+        <activity android:name=".textEncryption.TextEncryptionActivity"></activity>
+        <activity android:name=".appInfo.AppDetailActivity" />
+        <activity android:name=".appInfo.AppInfoActivity" />
         <activity android:name=".wifipasswordview.WifiPwdViewActivity" />
         <activity
             android:name=".todayInHistory.TodayInHistoryActivity"

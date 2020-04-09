@@ -3,12 +3,10 @@ package com.jucceed.minitool.main;
 public class Item {
     private int title;
     private int icon;
-    private int note;
 
-    public Item(int title, int icon, int note) {
+    public Item(int title, int icon) {
         this.title = title;
         this.icon = icon;
-        this.note = note;
     }
 
     public int getTitle() {
@@ -27,11 +25,4 @@ public class Item {
         this.icon = icon;
     }
 
-    public int getNote() {
-        return note;
-    }
-
-    public void setNote(int note) {
-        this.note = note;
-    }
 }

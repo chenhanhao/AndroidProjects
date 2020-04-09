@@ -1,6 +1,5 @@
 package com.jucceed.minitool.main;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -10,16 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.jucceed.minitool.appinfo.AppInfoActivity;
+import com.jucceed.minitool.appInfo.AppInfoActivity;
 import com.jucceed.minitool.inquireIp.InquireIpActivity;
 import com.jucceed.minitool.currencyConversion.CurrencyConversionActivity;
 import com.jucceed.minitool.R;
@@ -27,7 +21,6 @@ import com.jucceed.minitool.phoneArtribution.PhoneAttributionActivity;
 import com.jucceed.minitool.todayInHistory.TodayInHistoryActivity;
 import com.jucceed.minitool.wifipasswordview.WifiPwdViewActivity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
     private Context context;
-    static int count = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +63,13 @@ public class MainActivity extends AppCompatActivity {
         context = MainActivity.this;
 
         itemList = new ArrayList();
-        itemList.add(new Item(R.string.title_currency_conversion,R.drawable.currency,R.string.note_currency_conversion));
-        itemList.add(new Item(R.string.title_inquire_ip,R.drawable.ic_internet,R.string.note_inquire_ip));
-        itemList.add(new Item(R.string.title_phone_attribution,R.drawable.ic_phone,R.string.note_phone_attribution));
-        itemList.add(new Item(R.string.title_today_in_history,R.drawable.ic_today_in_history,R.string.note_today_in_history));
-        itemList.add(new Item(R.string.title_wifi_pwd_view,R.drawable.ic_wifi,R.string.note_wifi_pwd_view));
-        itemList.add(new Item(R.string.title_app_info,R.drawable.ic_app_info,R.string.note_app_info));
+        itemList.add(new Item(R.string.title_currency_conversion,R.drawable.currency));
+        itemList.add(new Item(R.string.title_inquire_ip,R.drawable.ic_internet));
+        itemList.add(new Item(R.string.title_phone_attribution,R.drawable.ic_phone));
+        itemList.add(new Item(R.string.title_today_in_history,R.drawable.ic_today_in_history));
+        itemList.add(new Item(R.string.title_wifi_pwd_view,R.drawable.ic_wifi));
+        itemList.add(new Item(R.string.title_app_info,R.drawable.ic_app_info));
+        itemList.add(new Item(R.string.title_text_encryption,R.drawable.ic_lock));
     }
 
     private void initWidget(){
@@ -93,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         recyclerView = findViewById(R.id.recycler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
         itemAdapter = new ItemAdapter(itemList);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(itemAdapter);
-        recyclerView.addItemDecoration(new ItemDecoration(30,20));
+        recyclerView.addItemDecoration(new ItemDecoration(30,30));
     }
 
 

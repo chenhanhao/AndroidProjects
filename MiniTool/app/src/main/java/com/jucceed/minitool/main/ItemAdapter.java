@@ -40,7 +40,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         Item item = list.get(position);
         holder.imageView.setImageResource(item.getIcon());
         holder.title.setText(item.getTitle());
-        holder.note.setText(item.getNote());
 
         if(listener != null){
             holder.itemView.setOnClickListener(v -> {
@@ -62,13 +61,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         ImageView imageView;
         TextView title;
-        TextView note;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.icon);
             title = itemView.findViewById(R.id.title);
-            note = itemView.findViewById(R.id.note);
         }
     }
 
