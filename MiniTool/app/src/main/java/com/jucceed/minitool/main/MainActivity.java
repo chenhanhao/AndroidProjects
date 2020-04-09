@@ -18,6 +18,7 @@ import com.jucceed.minitool.inquireIp.InquireIpActivity;
 import com.jucceed.minitool.currencyConversion.CurrencyConversionActivity;
 import com.jucceed.minitool.R;
 import com.jucceed.minitool.phoneArtribution.PhoneAttributionActivity;
+import com.jucceed.minitool.textEncryption.TextEncryptionActivity;
 import com.jucceed.minitool.todayInHistory.TodayInHistoryActivity;
 import com.jucceed.minitool.wifipasswordview.WifiPwdViewActivity;
 
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
- //       Log.d("hhh","onCreate " + ++count);
 
         initData();
         initWidget();
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         else if(position == 3) intent = new Intent(context, TodayInHistoryActivity.class);
         else if(position == 4) intent = new Intent(context, WifiPwdViewActivity.class);
         else if(position == 5) intent = new Intent(context, AppInfoActivity.class);
+        else if(position == 6) intent = new Intent(context, TextEncryptionActivity.class);
         return intent;
     }
 
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_slide);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
         recyclerView = findViewById(R.id.recycler_view);

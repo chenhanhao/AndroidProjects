@@ -87,14 +87,6 @@ public class CurrencyConversionActivity extends AppCompatActivity {
         tv_money_unit2.setText(currentCountry2.getUnitId());
     }
 
-
-    @Override
-    public void onPause(){
-        super.onPause();
-
-    }
-
-
     @Override
     public void onDestroy(){
         super.onDestroy();
