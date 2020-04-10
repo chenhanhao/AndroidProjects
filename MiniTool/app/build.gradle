@@ -23,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.jucceed.minitool"
+        applicationId "com.kakacat.minitool"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

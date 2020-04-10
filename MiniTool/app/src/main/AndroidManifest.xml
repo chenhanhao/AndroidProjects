@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jucceed.minitool">
+    package="com.kakacat.minitool">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,20 +12,20 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".textEncryption.TextEncryptionActivity" />
-        <activity android:name=".appInfo.AppDetailActivity" />
-        <activity android:name=".appInfo.AppInfoActivity" />
-        <activity android:name=".wifipasswordview.WifiPwdViewActivity" />
+        <activity android:name="com.kakacat.minitool.textEncryption.TextEncryptionActivity" />
+        <activity android:name="com.kakacat.minitool.appInfo.AppDetailActivity" />
+        <activity android:name="com.kakacat.minitool.appInfo.AppInfoActivity" />
+        <activity android:name="com.kakacat.minitool.wifipasswordview.WifiPwdViewActivity" />
         <activity
-            android:name=".todayInHistory.TodayInHistoryActivity"
+            android:name="com.kakacat.minitool.todayInHistory.TodayInHistoryActivity"
             android:label="@string/title_today_in_history"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".phoneArtribution.PhoneAttributionActivity" />
-        <activity android:name=".inquireIp.InquireIpActivity" />
+        <activity android:name="com.kakacat.minitool.phoneArtribution.PhoneAttributionActivity" />
+        <activity android:name="com.kakacat.minitool.inquireIp.InquireIpActivity" />
         <activity
-            android:name=".currencyConversion.CurrencyConversionActivity"
+            android:name="com.kakacat.minitool.currencyConversion.CurrencyConversionActivity"
             android:label="@string/title_currency_conversion" />
-        <activity android:name=".main.MainActivity">
+        <activity android:name="com.kakacat.minitool.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
