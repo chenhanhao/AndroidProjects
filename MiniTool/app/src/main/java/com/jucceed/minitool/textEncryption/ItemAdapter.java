@@ -1,6 +1,6 @@
 package com.jucceed.minitool.textEncryption;
 
-import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +13,13 @@ import com.jucceed.minitool.R;
 
 import java.util.List;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder>{
 
     private List<String> stringList;
     private LayoutInflater inflater;
+    private View.OnFocusChangeListener onFocusChangeListener;
+
+
     public ItemAdapter(List<String> stringList) {
         this.stringList = stringList;
     }
@@ -32,12 +35,24 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ItemAdapter.ViewHolder holder, int position) {
         holder.tvEncryptionMethod.setText(stringList.get(position));
+        holder.itemView.setClickable(true);
+        if(onFocusChangeListener != null){
+            Log.d("hhh","onFocusChangeListener");
+            holder.itemView.setOnFocusChangeListener(onFocusChangeListener);
+        }
     }
 
     @Override
     public int getItemCount() {
         return stringList.size();
     }
+
+
+
+    public void setFocusChangeListener(View.OnFocusChangeListener onFocusChangeListener){
+        this.onFocusChangeListener = onFocusChangeListener;
+    }
+
 
     class ViewHolder extends RecyclerView.ViewHolder{
         private TextView tvEncryptionMethod;
@@ -47,4 +62,5 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             tvEncryptionMethod = itemView.findViewById(R.id.tv_encryption_method);
         }
     }
+
 }

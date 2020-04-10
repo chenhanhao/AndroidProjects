@@ -5,7 +5,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
+    android:textSize="32px"
     android:padding="5dp"
     android:background="@drawable/round_background_light_blue3"
-    android:textColor="@color/white">
+    android:textColor="@color/white"
+    android:focusableInTouchMode="true">
 </TextView>

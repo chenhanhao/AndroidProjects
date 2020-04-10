@@ -27,13 +27,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jucceed.minitool.R;
-import com.jucceed.minitool.util.StringUtils;
+import com.jucceed.minitool.util.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class AppDetailActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private Context context;
 
     private ActionBar actionBar;
 
@@ -75,6 +77,8 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
+
+        context = AppDetailActivity.this;
 
         tvAppName = findViewById(R.id.tv_app_name);
         tvPackageName = findViewById(R.id.tv_package_name);
@@ -118,7 +122,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         tvLastUpdateTime.setText(lastUpdateTime);
         tvTargetApi.setText(packageInfo.applicationInfo.targetSdkVersion + "");
         tvMinApi.setText(packageInfo.applicationInfo.minSdkVersion + "");
-        tvMd5Signature.setText(StringUtils.getSignMd5Str(packageInfo).toUpperCase());
+        tvMd5Signature.setText(Utils.getSignMd5Str(packageInfo).toUpperCase());
         if(permissions != null){
             tvHeader3.setText("权限声明" + "(" + permissions.length + "个)");
             StringBuilder sb = new StringBuilder();
@@ -213,8 +217,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
 
     private void copyMd5() {
         CharSequence content = tvMd5Signature.getText().toString();
-        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        cm.setPrimaryClip(ClipData.newPlainText("md5",content));
+        Utils.copyToClipboard(context,"md5",content);
         Toast.makeText(this, "复制成功", Toast.LENGTH_SHORT).show();
     }
 
