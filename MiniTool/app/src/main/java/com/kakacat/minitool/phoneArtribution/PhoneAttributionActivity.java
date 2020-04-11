@@ -1,8 +1,5 @@
 package com.kakacat.minitool.phoneArtribution;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,10 +9,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.handleJson.Utility;
-import com.kakacat.minitool.util.http.HttpCallbackListener;
-import com.kakacat.minitool.util.http.HttpUtil;
+import com.kakacat.minitool.util.HttpCallbackListener;
+import com.kakacat.minitool.util.HttpUtil;
+import com.kakacat.minitool.util.JsonUtil;
 
 public class PhoneAttributionActivity extends AppCompatActivity {
 
@@ -65,7 +65,7 @@ public class PhoneAttributionActivity extends AppCompatActivity {
             HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
                 @Override
                 public void onSuccess(String s) {
-                    Data data = Utility.handleAttrDataResponse(s);
+                    Data data = JsonUtil.handleAttrDataResponse(s);
                     if(data != null){
                         runOnUiThread(()->{
                             tvProvince.setText(data.getProvince());

@@ -3,7 +3,6 @@ package com.kakacat.minitool.wifipasswordview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -14,9 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.SystemUtil;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -71,34 +70,25 @@ public class WifiPwdViewActivity extends AppCompatActivity {
     private void initData(){
         context = WifiPwdViewActivity.this;
         wifiList = new ArrayList();
-        if(getSuperUserRight()){
- //           Log.d("hhh","获取root权限成功");
+        if(getWifiConfig()){
             try{
                 String path = getExternalCacheDir().getAbsolutePath() + "/WifiConfigStore.xml";
                 File wifiConfigFile = new File(path);
                 BufferedReader br = new BufferedReader(new FileReader(wifiConfigFile));
-
-                String s;
-
                 List<String> nameList = new ArrayList();
                 List<String> pwdList = new ArrayList();
+                String s;
+
                 while((s = br.readLine()) != null){
-   //                 Log.d("hhh",s);
                     if(s.contains("<string name=\"SSID\">")){
                         int beginIndex = s.indexOf(';') + 1;
                         int endIndex = s.lastIndexOf('&');
                         nameList.add(s.substring(beginIndex,endIndex));
-   //                     Log.d("hhh",s.substring(beginIndex,endIndex));
                     }else if(s.contains("\"PreSharedKey\"")){
                         int beginIndex = s.indexOf(';') + 1;
                         int endIndex = s.lastIndexOf('&');
-                        if(beginIndex == -1 || endIndex == -1){
-                            pwdList.add("没密码啊");
-                        }else{
-                            pwdList.add(s.substring(beginIndex,endIndex));
-                        }
-
-    //                    Log.d("hhh",s.substring(beginIndex,endIndex));
+                        if(beginIndex == -1 || endIndex == -1) pwdList.add("没密码啊");
+                        else pwdList.add(s.substring(beginIndex,endIndex));
                     }
                 }
                 for(int i = 0; i < nameList.size(); i++){
@@ -113,29 +103,22 @@ public class WifiPwdViewActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        else{
-            Toast.makeText(context,"获取root权限失败",Toast.LENGTH_SHORT).show();
-        }
+        else
+            Toast.makeText(context,"获取wifi配置信息失败",Toast.LENGTH_SHORT).show();
     }
 
-    private boolean getSuperUserRight(){
+    private boolean getWifiConfig(){
         try{
             String fileName = "/data/misc/wifi/WifiConfigStore.xml";
             String cacheDir = getExternalCacheDir().getAbsolutePath();
-            DataOutputStream os;
-            Process process;
-
-            process = Runtime.getRuntime().exec("su"); //切换到root帐号
-            os = new DataOutputStream(process.getOutputStream());
-            os.writeBytes("chmod 777 " + fileName + "\n");
-            os.writeBytes("cp " + fileName + " " + cacheDir + "\n");
-            os.writeBytes("exit\n");
-            os.flush();
-            process.waitFor();
-
+            String[] commands = new String[]{
+                    "chmod 777 " + fileName + "\n",
+                    "cp " + fileName + " " + cacheDir + "\n",
+                    "exit\n"
+            };
+            SystemUtil.executeLinuxCommand(commands,true,true);
             return true;
         }catch (Exception e){
-            Log.d("hhh","获取root权限失败");
             e.printStackTrace();
             return false;
         }

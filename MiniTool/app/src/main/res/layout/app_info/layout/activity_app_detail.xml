@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:background="@drawable/round_background_light_blue"
+                    android:background="@drawable/round_background_color_primary"
                     android:padding="10dp"
                     android:text="基本信息"
                     android:textColor="@color/white"
@@ -218,7 +218,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/white"
-                    android:background="@drawable/round_background_light_blue2"
+                    android:background="@drawable/round_background_color_primary2"
                     android:text="保存图标" />
 
                 <Button
@@ -230,7 +230,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/white"
-                    android:background="@drawable/round_background_light_blue2"
+                    android:background="@drawable/round_background_color_primary2"
                     android:text="打开市场" />
 
                 <Button
@@ -242,7 +242,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/white"
-                    android:background="@drawable/round_background_light_blue2"
+                    android:background="@drawable/round_background_color_primary2"
                     android:text="分享APK" />
 
                 <Button
@@ -254,7 +254,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/white"
-                    android:background="@drawable/round_background_light_blue2"
+                    android:background="@drawable/round_background_color_primary2"
                     android:text="打开详情" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -272,7 +272,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:background="@drawable/round_background_light_blue"
+                    android:background="@drawable/round_background_color_primary"
                     android:padding="10dp"
                     android:text="应用签名"
                     android:textColor="@color/white"
@@ -307,7 +307,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="20dp"
                     android:textColor="@color/white"
-                    android:background="@drawable/round_background_light_blue2"
+                    android:background="@drawable/round_background_color_primary2"
                     android:text="复制" />
 
             </RelativeLayout>
@@ -329,7 +329,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:background="@drawable/round_background_light_blue"
+                    android:background="@drawable/round_background_color_primary"
                     android:padding="10dp"
                     android:text="权限声明"
                     android:textColor="@color/white"

@@ -8,6 +8,7 @@
     <string name="title_wifi_pwd_view">WIFI密码查看</string>
     <string name="title_app_info">应用信息</string>
     <string name="title_text_encryption">文本加密</string>
+    <string name="title_modify_dpi">DPI修改</string>
 
     <string name="name_us">US</string>
     <string name="name_eu">EU</string>

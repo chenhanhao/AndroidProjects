@@ -1,4 +1,4 @@
-package com.kakacat.minitool.util.http;
+package com.kakacat.minitool.util;
 
 import java.io.IOException;
 

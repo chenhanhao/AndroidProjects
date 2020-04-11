@@ -1,13 +1,8 @@
 package com.kakacat.minitool.util;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.Signature;
 import android.util.Base64;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +11,7 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Utils {
+public class EncryptionUtil {
 
     /**
      * MD5加密
@@ -55,14 +50,11 @@ public class Utils {
     }
 
 
-    public static void copyToClipboard(Context context,String label,CharSequence content){
-        ClipboardManager cm = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        cm.setPrimaryClip(ClipData.newPlainText(label,content));
-    }
+
 
     public static String encryptHmacSHA1(byte[] encryptText) {
         try{
-            String encryptKey = Utils.encryptBASE64(encryptText);
+            String encryptKey = EncryptionUtil.encryptBASE64(encryptText);
             byte[] data = encryptKey.getBytes();
             //根据给定的字节数组构造一个密钥,第二参数指定一个密钥算法的名称
             SecretKey secretKey = new SecretKeySpec(data, "HmacSHA1");
@@ -94,18 +86,6 @@ public class Utils {
                     sb.append(':');
         }
         return sb.toString();
-    }
-
-
-    public static void showKeyboard(Context context, View v){
-        InputMethodManager manager = ((InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE));
-        if (manager != null) manager.showSoftInput(v, 0);
-    }
-
-    public static void closeKeyboard(Context context,View view){
-        InputMethodManager manager = ((InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE));
-        if (manager != null)
-            manager.hideSoftInputFromWindow(view.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 

@@ -4,8 +4,11 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -13,16 +16,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.DatePicker;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.handleJson.Utility;
-import com.kakacat.minitool.util.http.HttpCallbackListener;
-import com.kakacat.minitool.util.http.HttpUtil;
+import com.kakacat.minitool.util.HttpCallbackListener;
+import com.kakacat.minitool.util.HttpUtil;
+import com.kakacat.minitool.util.JsonUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -132,7 +130,7 @@ public class TodayInHistoryActivity extends AppCompatActivity {
             public void onSuccess(String s) {
  //               Log.d("hhh","get data successful");
                 if(!first) articleList.clear();
-                Utility.handleHistoryResponse(s,articleList);
+                JsonUtil.handleHistoryResponse(s,articleList);
                 Message message = new Message();
                 message.what = 666;      //666为刷新数据
                 handler.sendMessage(message);

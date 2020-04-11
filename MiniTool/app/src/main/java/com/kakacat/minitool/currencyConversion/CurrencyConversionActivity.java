@@ -1,13 +1,5 @@
 package com.kakacat.minitool.currencyConversion;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,24 +11,30 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
-
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.http.HttpCallbackListener;
-import com.kakacat.minitool.util.http.HttpUtil;
-import com.kakacat.minitool.util.handleJson.Utility;
+import com.kakacat.minitool.util.HttpCallbackListener;
+import com.kakacat.minitool.util.HttpUtil;
+import com.kakacat.minitool.util.JsonUtil;
+import com.kakacat.minitool.util.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CurrencyConversionActivity extends AppCompatActivity {
+public class CurrencyConversionActivity extends AppCompatActivity{
 
     public Context context;
     public static String TAG = "CurrencyConversionActivity";
@@ -59,6 +57,8 @@ public class CurrencyConversionActivity extends AppCompatActivity {
     private TextView tv_money_unit1;
     private TextView tv_money_unit2;
 
+    private PopupWindow popupWindow;
+
     private boolean isFocused1;
     private boolean isFocused2;
 
@@ -78,7 +78,7 @@ public class CurrencyConversionActivity extends AppCompatActivity {
         super.onResume();
         if(currentCountry1 == null) currentCountry1 = new Country();
         if(currentCountry2 == null) currentCountry2 = new Country();
-        Utility.readHistoryFromLocal(context,currentCountry1,currentCountry2);
+        JsonUtil.readHistoryFromLocal(context,currentCountry1,currentCountry2);
         countryFlag1.setImageResource(currentCountry1.getIconId());
         countryFlag2.setImageResource(currentCountry2.getIconId());
         tv_country_name1.setText(currentCountry1.getNameId());
@@ -90,7 +90,7 @@ public class CurrencyConversionActivity extends AppCompatActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        Utility.writeHistoryToLocal(context,currentCountry1,currentCountry2);
+        JsonUtil.writeHistoryToLocal(context,currentCountry1,currentCountry2);
     }
 
 
@@ -190,8 +190,6 @@ public class CurrencyConversionActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
@@ -215,7 +213,7 @@ public class CurrencyConversionActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String s) {
      //           Log.d("hhh","onSuccess");
-                if(Utility.handleRateResponse(context,s)){
+                if(JsonUtil.handleRateResponse(context,s)){
    //                 Log.d("hhh","解析json成功");
                     for(int i = 0; i < 22; i++){
                         countryList.get(i).setRate(Rate.getRate(i + 1));
@@ -252,32 +250,9 @@ public class CurrencyConversionActivity extends AppCompatActivity {
         if(rootView == null) rootView = inflater.inflate(R.layout.activity_currency_conversion,null);
 
         View view = inflater.inflate(R.layout.dialog_select_country,null);
-        PopupWindow popupWindow = new PopupWindow(view,ViewGroup.LayoutParams.WRAP_CONTENT, 1000);
-//        popupWindow.setElevation(3);
-        popupWindow.setOutsideTouchable(true);      //  设置触摸外面就取消弹窗
-        popupWindow.setTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
-
-        /*
-         * 这一行必须最后,不然前面的style不起作用
-         */
+        if(popupWindow == null) popupWindow = new PopupWindow(view,ViewGroup.LayoutParams.WRAP_CONTENT, 1000);
+        UiUtil.initPopupWindow(CurrencyConversionActivity.this,popupWindow);
         popupWindow.showAtLocation(rootView,Gravity.BOTTOM, 0,0);
-
-
-        /**
-         * 弹出popupWindow时设置暗背景
-         */
-        final WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.7f;//代表透明程度，范围为0 - 1.0f
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        getWindow().setAttributes(lp);
-
-        popupWindow.setOnDismissListener(()->{
-            lp.alpha = 1.0f;
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-            getWindow().setAttributes(lp);
-        });
 
         recyclerView = view.findViewById(R.id.rv_country);
         CountryAdapter countryAdapter = new CountryAdapter(countryList);
@@ -299,13 +274,11 @@ public class CurrencyConversionActivity extends AppCompatActivity {
             }
             popupWindow.dismiss();
         });
-
-
     }
 
     private void initData(){
         context = CurrencyConversionActivity.this;
-        Utility.readRateFromLocal(context);
+        JsonUtil.readRateFromLocal(context);
 
         countryList = new ArrayList();
         countryList.add(new Country(R.drawable.ic_us,R.string.name_us,R.string.unit_us, Rate.us));
@@ -343,4 +316,5 @@ public class CurrencyConversionActivity extends AppCompatActivity {
         }
         editText.setText(s);
     }
+
 }

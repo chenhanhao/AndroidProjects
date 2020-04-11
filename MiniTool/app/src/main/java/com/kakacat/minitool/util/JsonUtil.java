@@ -1,4 +1,4 @@
-package com.kakacat.minitool.util.handleJson;
+package com.kakacat.minitool.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class Utility {
+public class JsonUtil {
     public static boolean handleRateResponse(Context context,String response){
         try{
     //        Log.d("hhh","获得数据");
@@ -99,7 +99,6 @@ public class Utility {
         }
         return null;
     }
-
 
 
     public static void writeRateToLocal(Context context){

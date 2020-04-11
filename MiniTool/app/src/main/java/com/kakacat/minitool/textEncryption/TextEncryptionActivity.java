@@ -1,11 +1,5 @@
 package com.kakacat.minitool.textEncryption;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,9 +10,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.Utils;
+import com.kakacat.minitool.util.EncryptionUtil;
+import com.kakacat.minitool.util.SystemUtil;
+import com.kakacat.minitool.util.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +101,7 @@ public class TextEncryptionActivity extends AppCompatActivity implements View.On
             else tv.setTextSize(12);
         });
         editText.setOnFocusChangeListener((v, hasFocus) -> {
-            if(!hasFocus) Utils.closeKeyboard(context,v);
+            if(!hasFocus) UiUtil.closeKeyboard(context,v);
         });
     }
 
@@ -151,8 +153,7 @@ public class TextEncryptionActivity extends AppCompatActivity implements View.On
                 break;
             }
             case R.id.bt_copy:{
-                Utils.copyToClipboard(context,"codeContent",tvOutput.getText());
-   //             Toast.makeText(context,"复制成功",Toast.LENGTH_SHORT).show();
+                SystemUtil.copyToClipboard(context,"codeContent",tvOutput.getText());
                 Snackbar.make(tvOutput,"复制成功",Snackbar.LENGTH_SHORT).show();
                 break;
             }
@@ -165,11 +166,11 @@ public class TextEncryptionActivity extends AppCompatActivity implements View.On
         CharSequence encryptionMethod = tvSubTitle.getText();
 
         if(encryptionMethod.equals("MD5"))
-            result = Utils.encryptionMD5(content.getBytes(),false);
+            result = EncryptionUtil.encryptionMD5(content.getBytes(),false);
         else if(encryptionMethod.equals("BASE64"))
-            result = Utils.encryptBASE64(content.getBytes());
+            result = EncryptionUtil.encryptBASE64(content.getBytes());
         else if(encryptionMethod.equals("HmacSHA1"))
-            result = Utils.encryptHmacSHA1(content.getBytes());
+            result = EncryptionUtil.encryptHmacSHA1(content.getBytes());
 
         return result;
     }

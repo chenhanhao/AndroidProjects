@@ -1,8 +1,5 @@
 package com.kakacat.minitool.inquireIp;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,10 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.handleJson.Utility;
-import com.kakacat.minitool.util.http.HttpCallbackListener;
-import com.kakacat.minitool.util.http.HttpUtil;
+import com.kakacat.minitool.util.HttpCallbackListener;
+import com.kakacat.minitool.util.HttpUtil;
+import com.kakacat.minitool.util.JsonUtil;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -70,7 +70,7 @@ public class InquireIpActivity extends AppCompatActivity {
             HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
                 @Override
                 public void onSuccess(String s) {
-                    Data data = Utility.handleIpDataResponse(s);
+                    Data data = JsonUtil.handleIpDataResponse(s);
                     if(data == null){
            //             Log.d("hhh","json解析失败");
                         Toast.makeText(context,"json解析失败",Toast.LENGTH_SHORT).show();

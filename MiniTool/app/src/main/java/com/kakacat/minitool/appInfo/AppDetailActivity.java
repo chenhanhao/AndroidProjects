@@ -1,10 +1,5 @@
 package com.kakacat.minitool.appInfo;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -24,8 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.Utils;
+import com.kakacat.minitool.util.EncryptionUtil;
+import com.kakacat.minitool.util.SystemUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -120,7 +121,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         tvLastUpdateTime.setText(lastUpdateTime);
         tvTargetApi.setText(packageInfo.applicationInfo.targetSdkVersion + "");
         tvMinApi.setText(packageInfo.applicationInfo.minSdkVersion + "");
-        tvMd5Signature.setText(Utils.getSignMd5Str(packageInfo).toUpperCase());
+        tvMd5Signature.setText(EncryptionUtil.getSignMd5Str(packageInfo).toUpperCase());
         if(permissions != null){
             tvHeader3.setText("权限声明" + "(" + permissions.length + "个)");
             StringBuilder sb = new StringBuilder();
@@ -215,7 +216,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
 
     private void copyMd5() {
         CharSequence content = tvMd5Signature.getText().toString();
-        Utils.copyToClipboard(context,"md5",content);
+        SystemUtil.copyToClipboard(context,"md5",content);
         Toast.makeText(this, "复制成功", Toast.LENGTH_SHORT).show();
     }
 
