@@ -174,6 +174,7 @@ public class JsonUtil {
 
     public static void readHistoryFromLocal(Context context, Country country1,Country country2){
         SharedPreferences sharedPreferences = context.getSharedPreferences("history",Context.MODE_PRIVATE);
+
         country1.setIconId(sharedPreferences.getInt("icon1", R.drawable.ic_us));
         country1.setNameId(sharedPreferences.getInt("name1",R.string.name_us));
         country1.setUnitId(sharedPreferences.getInt("unit1",R.string.unit_us));

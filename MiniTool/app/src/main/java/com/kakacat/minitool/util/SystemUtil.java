@@ -9,7 +9,7 @@ import java.io.DataOutputStream;
 public class SystemUtil {
 
 
-    public static void modifyDpi(int val){
+    public static void modifyDpi(String val){
         String[] commands = new String[]{
                 "wm density " + val + "\n"
         };

@@ -1,28 +1,37 @@
 package com.kakacat.minitool.main;
 
 public class Item {
-    private int title;
-    private int icon;
+    private int titleId;
+    private int iconId;
+    private int noteId;
 
-    public Item(int title, int icon) {
-        this.title = title;
-        this.icon = icon;
+    public Item(int titleId, int iconId, int noteId) {
+        this.titleId = titleId;
+        this.iconId = iconId;
+        this.noteId = noteId;
     }
 
-    public int getTitle() {
-        return title;
+    public int getTitleId() {
+        return titleId;
     }
 
-    public void setTitle(int title) {
-        this.title = title;
+    public void setTitleId(int titleId) {
+        this.titleId = titleId;
     }
 
-    public int getIcon() {
-        return icon;
+    public int getIconId() {
+        return iconId;
     }
 
-    public void setIcon(int icon) {
-        this.icon = icon;
+    public void setIconId(int iconId) {
+        this.iconId = iconId;
     }
 
+    public int getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(int noteId) {
+        this.noteId = noteId;
+    }
 }

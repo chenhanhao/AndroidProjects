@@ -77,14 +77,14 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         inflater = LayoutInflater.from(context);
 
         itemList = new ArrayList();
-        itemList.add(new Item(R.string.title_currency_conversion,R.drawable.currency));
-        itemList.add(new Item(R.string.title_inquire_ip,R.drawable.ic_internet));
-        itemList.add(new Item(R.string.title_phone_attribution,R.drawable.ic_phone));
-        itemList.add(new Item(R.string.title_today_in_history,R.drawable.ic_today_in_history));
-        itemList.add(new Item(R.string.title_wifi_pwd_view,R.drawable.ic_wifi));
-        itemList.add(new Item(R.string.title_app_info,R.drawable.ic_app_info));
-        itemList.add(new Item(R.string.title_text_encryption,R.drawable.ic_lock));
-        itemList.add(new Item(R.string.title_modify_dpi,R.drawable.ic_dpi));
+        itemList.add(new Item(R.string.title_currency_conversion,R.drawable.currency,R.string.note_currency_conversion));
+        itemList.add(new Item(R.string.title_inquire_ip,R.drawable.ic_internet,R.string.note_inquire_ip));
+        itemList.add(new Item(R.string.title_phone_attribution,R.drawable.ic_phone,R.string.note_phone_attribution));
+        itemList.add(new Item(R.string.title_today_in_history,R.drawable.ic_today_in_history,R.string.note_today_in_history));
+        itemList.add(new Item(R.string.title_wifi_pwd_view,R.drawable.ic_wifi,R.string.note_wifi_pwd_view));
+        itemList.add(new Item(R.string.title_app_info,R.drawable.ic_app_info,R.string.note_app_info));
+        itemList.add(new Item(R.string.title_text_encryption,R.drawable.ic_lock,R.string.note_text_encryption));
+        itemList.add(new Item(R.string.title_modify_dpi,R.drawable.ic_dpi,R.string.note_modify_dpi));
     }
 
     private void initWidget(){
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         itemAdapter = new ItemAdapter(itemList);
         itemAdapter.setOnItemClickListener(this);
         recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.setAdapter(itemAdapter);
         recyclerView.addItemDecoration(new ItemDecoration(30,30));
     }
@@ -202,10 +202,9 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
                 break;
             }
             case R.id.bt_modify_dpi:{
-                int val = Integer.valueOf(editText.getText().toString());
-                SystemUtil.modifyDpi(val);
+                SystemUtil.modifyDpi(editText.getText().toString());
+                break;
             }
-
         }
     }
 
