@@ -70,7 +70,7 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
 
     private List<Country> countryList;
 
-    private boolean initedPopupWindow;
+    private boolean initPopupWindow;
 
     private int flag;
 
@@ -173,7 +173,7 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
 
     private void showSelectDialog(){
         initPopupWindow();
-        popupWindow.showAtLocation(swipeRefreshLayout,Gravity.BOTTOM, 0,0);
+        popupWindow.showAtLocation(swipeRefreshLayout,Gravity.BOTTOM, 0,50);
     }
 
     private void initData(){
@@ -206,10 +206,10 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
     }
 
     private void initPopupWindow(){
-        if(!initedPopupWindow){
+        if(!initPopupWindow){
             inflater = LayoutInflater.from(this);
             popupWindowViw = inflater.inflate(R.layout.dialog_select_country,null);
-            popupWindow = new PopupWindow(popupWindowViw, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            popupWindow = new PopupWindow(popupWindowViw, ViewGroup.LayoutParams.WRAP_CONTENT, 1000);
             UiUtil.initPopupWindow(CurrencyConversionActivity.this,popupWindow);
 
             CountryAdapter countryAdapter = new CountryAdapter(countryList);
@@ -231,7 +231,7 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
             recyclerView = popupWindowViw.findViewById(R.id.rv_country);
             recyclerView.setAdapter(countryAdapter);
             recyclerView.setLayoutManager(new GridLayoutManager(this,3));
-            initedPopupWindow = true;
+            initPopupWindow = true;
         }
     }
 
