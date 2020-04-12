@@ -2,7 +2,9 @@ package com.kakacat.minitool.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,7 +15,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -21,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.appInfo.AppInfoActivity;
 import com.kakacat.minitool.currencyConversion.CurrencyConversionActivity;
@@ -45,22 +50,30 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
 
     private ActionBar actionBar;
 
+    private SeekBar seekBarBattery;
+
     private Button btClear;
     private Button btModifyDpi;
+    private Button btResetBattery;
+    private Button btFakeBattery;
 
-    private EditText editText;
+    private EditText etDpi;
+    private EditText etBattery;
 
-    private View popupWindowView;
+    private View popupWindowViewModifyDpi;
+    private View popupWindowViewFakeBattery;
 
     private RecyclerView recyclerView;
 
     private ItemAdapter itemAdapter;
 
-    private PopupWindow popupWindow;
+    private PopupWindow popupWindowModifyDpi;
+    private PopupWindow popupWindowFakeBattery;
 
     private List<Item> itemList;
 
-    private boolean isInitedPopupwindow;
+    private boolean initModifyDpiPopupWindow;
+    private boolean initFakeBatteryPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         itemList.add(new Item(R.string.title_app_info,R.drawable.ic_app_info,R.string.note_app_info));
         itemList.add(new Item(R.string.title_text_encryption,R.drawable.ic_lock,R.string.note_text_encryption));
         itemList.add(new Item(R.string.title_modify_dpi,R.drawable.ic_dpi,R.string.note_modify_dpi));
+        itemList.add(new Item(R.string.title_battery_info,R.drawable.ic_battery,R.string.note_battery_info));
     }
 
     private void initWidget(){
@@ -125,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v, int position) {
         Intent intent = null;
@@ -158,8 +173,14 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
                 break;
             }
             case 7:{
-                initPopWindow();
-                popupWindow.showAtLocation(drawerLayout, Gravity.BOTTOM,0,0);
+                initModifyDpiPopupWindow();
+                popupWindowModifyDpi.showAtLocation(drawerLayout, Gravity.CENTER,0,0);
+                setShadow();
+                break;
+            }
+            case 8:{
+                initFakeBatteryPopupWindow();
+                popupWindowFakeBattery.showAtLocation(drawerLayout,Gravity.CENTER,0,0);
                 setShadow();
                 break;
             }
@@ -168,20 +189,58 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         if(intent != null) startActivity(intent);
     }
 
-    private void initPopWindow(){
-        if(!isInitedPopupwindow){
-            popupWindowView = inflater.inflate(R.layout.popupwindow_modify_dpi,null);
-            popupWindow = new PopupWindow(popupWindowView,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            UiUtil.initPopupWindow(MainActivity.this,popupWindow);
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void initFakeBatteryPopupWindow() {
+        if(!initFakeBatteryPopupWindow){
+            popupWindowViewFakeBattery = inflater.inflate(R.layout.popupwindow_fake_battery,null);
+            popupWindowFakeBattery = new PopupWindow(popupWindowViewFakeBattery, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            UiUtil.initPopupWindow(MainActivity.this,popupWindowFakeBattery);
 
-            btClear = popupWindowView.findViewById(R.id.bt_clear);
-            btModifyDpi = popupWindowView.findViewById(R.id.bt_modify_dpi);
+            etBattery = popupWindowViewFakeBattery.findViewById(R.id.et_current_battery);
+
+            btFakeBattery = popupWindowViewFakeBattery.findViewById(R.id.bt_fake_battery);
+            btResetBattery = popupWindowViewFakeBattery.findViewById(R.id.bt_reset_battery);
+            btResetBattery.setOnClickListener(this);
+            btFakeBattery.setOnClickListener(this);
+
+            seekBarBattery = popupWindowViewFakeBattery.findViewById(R.id.seek_bar_battery);
+            seekBarBattery.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    etBattery.setText(progress + "");
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+            initFakeBatteryPopupWindow = true;
+        }
+        int batteryLevel = SystemUtil.getElectricity(context);
+        etBattery.setText(batteryLevel + "");
+        seekBarBattery.setProgress(batteryLevel);
+    }
+
+    private void initModifyDpiPopupWindow(){
+        if(!initModifyDpiPopupWindow){
+            popupWindowViewModifyDpi = inflater.inflate(R.layout.popupwindow_modify_dpi,null);
+            popupWindowModifyDpi = new PopupWindow(popupWindowViewModifyDpi,ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            UiUtil.initPopupWindow(MainActivity.this, popupWindowModifyDpi);
+
+            btClear = popupWindowViewModifyDpi.findViewById(R.id.bt_clear);
+            btModifyDpi = popupWindowViewModifyDpi.findViewById(R.id.bt_modify_dpi);
             btClear.setOnClickListener(this);
             btModifyDpi.setOnClickListener(this);
 
-            editText = popupWindowView.findViewById(R.id.edit_text);
+            etDpi = popupWindowViewModifyDpi.findViewById(R.id.edit_text);
 
-            isInitedPopupwindow = true;
+            initModifyDpiPopupWindow = true;
         }
     }
 
@@ -194,17 +253,37 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_clear:{
-                popupWindow.dismiss();
+                popupWindowModifyDpi.dismiss();
                 break;
             }
             case R.id.bt_modify_dpi:{
-                SystemUtil.modifyDpi(editText.getText().toString());
+                String val = etDpi.getText().toString();
+                if(TextUtils.isEmpty(val)) Snackbar.make(drawerLayout,"输入错误",Snackbar.LENGTH_SHORT).show();
+                else SystemUtil.modifyDpi(val);
                 break;
             }
+            case R.id.bt_reset_battery:{
+                SystemUtil.resetBattery();
+                int val = SystemUtil.getElectricity(context);
+                SystemUtil.setBatteryLevel(val + "");
+                seekBarBattery.setProgress(val);
+                break;
+            }
+            case R.id.bt_fake_battery:{
+                int val = Integer.valueOf(etBattery.getText().toString());
+                if(val < 0 || val > 100) Snackbar.make(drawerLayout,"你正常点好吗???",Snackbar.LENGTH_SHORT).show();
+                else {
+                    SystemUtil.setBatteryLevel(val + "");
+                    seekBarBattery.setProgress(val);
+                }
+                break;
+            }
+
         }
     }
 

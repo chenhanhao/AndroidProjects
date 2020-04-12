@@ -12,20 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.kakacat.minitool.textEncryption.TextEncryptionActivity" />
-        <activity android:name="com.kakacat.minitool.appInfo.AppDetailActivity" />
-        <activity android:name="com.kakacat.minitool.appInfo.AppInfoActivity" />
-        <activity android:name="com.kakacat.minitool.wifipasswordview.WifiPwdViewActivity" />
+        <activity android:name=".batteryInfo.BatteryInfoActivity"></activity>
+        <activity android:name=".textEncryption.TextEncryptionActivity" />
+        <activity android:name=".appInfo.AppDetailActivity" />
+        <activity android:name=".appInfo.AppInfoActivity" />
+        <activity android:name=".wifipasswordview.WifiPwdViewActivity" />
         <activity
-            android:name="com.kakacat.minitool.todayInHistory.TodayInHistoryActivity"
+            android:name=".todayInHistory.TodayInHistoryActivity"
             android:label="@string/title_today_in_history"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.kakacat.minitool.phoneArtribution.PhoneAttributionActivity" />
-        <activity android:name="com.kakacat.minitool.inquireIp.InquireIpActivity" />
+        <activity android:name=".phoneArtribution.PhoneAttributionActivity" />
+        <activity android:name=".inquireIp.InquireIpActivity" />
         <activity
-            android:name="com.kakacat.minitool.currencyConversion.CurrencyConversionActivity"
+            android:name=".currencyConversion.CurrencyConversionActivity"
             android:label="@string/title_currency_conversion" />
-        <activity android:name="com.kakacat.minitool.main.MainActivity">
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

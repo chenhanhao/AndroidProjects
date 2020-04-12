@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_marginBottom="10dp"
     android:paddingRight="20dp"
-    android:background="@drawable/round_background_grey">
+    android:background="@drawable/item_selector">
 
     <ImageView
         android:id="@+id/iv_app_icon"

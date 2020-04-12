@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.HttpCallbackListener;
 import com.kakacat.minitool.util.HttpUtil;
@@ -71,9 +72,7 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
 
     private boolean initedPopupWindow;
 
-    private int refreshFlag;
     private int flag;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +103,7 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
                             double value = Double.parseDouble(s.toString());
                             showResult(value,editText2);
                         }catch (Exception e){
+                            e.printStackTrace();
                         }
                     }else{
                         editText2.setText("");
@@ -280,13 +280,13 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
         String address = "http://web.juhe.cn:8080/finance/exchange/rmbquot?key=" + key;
 
         swipeRefreshLayout.setRefreshing(true);
-        refreshFlag = 0;
         HttpUtil.sendOkHttpRequest(address,new HttpCallbackListener() {
             @Override
             public void onSuccess(String s) {
                 if(JsonUtil.handleRateResponse(context,s))
                     for(int i = 0; i < 22; i++) countryList.get(i).setRate(Rate.getRate(i + 1));
                 swipeRefreshLayout.setRefreshing(false);
+                Snackbar.make(swipeRefreshLayout,"更新汇率成功",Snackbar.LENGTH_SHORT).show();
             }
             @Override
             public void onError() {
