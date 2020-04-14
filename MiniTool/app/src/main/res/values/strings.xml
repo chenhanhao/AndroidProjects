@@ -10,6 +10,7 @@
     <string name="title_text_encryption">文本加密</string>
     <string name="title_modify_dpi">DPI修改</string>
     <string name="title_battery_info">伪装电量</string>
+    <string name="title_clean_file">清理文件</string>
 
     <string name="note_currency_conversion">各国货币汇率转换</string>
     <string name="note_inquire_ip">查询设备IP地址信息</string>
@@ -20,6 +21,7 @@
     <string name="note_text_encryption">提供文本加密</string>
     <string name="note_modify_dpi">修改屏幕DPI(慎用)</string>
     <string name="note_battery_info">自定义电量水平</string>
+    <string name="note_clean_info">清理大文件 空文件 文件夹等</string>
 
     <string name="name_us">US</string>
     <string name="name_eu">EU</string>

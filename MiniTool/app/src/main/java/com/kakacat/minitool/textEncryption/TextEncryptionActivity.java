@@ -20,7 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.EncryptionUtil;
 import com.kakacat.minitool.util.SystemUtil;
-import com.kakacat.minitool.util.UiUtil;
+import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;

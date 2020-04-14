@@ -28,13 +28,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.appInfo.AppInfoActivity;
+import com.kakacat.minitool.cleanFile.CleanFileActivity;
 import com.kakacat.minitool.currencyConversion.CurrencyConversionActivity;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.phoneArtribution.PhoneAttributionActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
 import com.kakacat.minitool.todayInHistory.TodayInHistoryActivity;
 import com.kakacat.minitool.util.SystemUtil;
-import com.kakacat.minitool.util.UiUtil;
+import com.kakacat.minitool.util.ui.UiUtil;
 import com.kakacat.minitool.wifipasswordview.WifiPwdViewActivity;
 
 import java.util.ArrayList;
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         itemList.add(new Item(R.string.title_text_encryption,R.drawable.ic_lock,R.string.note_text_encryption));
         itemList.add(new Item(R.string.title_modify_dpi,R.drawable.ic_dpi,R.string.note_modify_dpi));
         itemList.add(new Item(R.string.title_battery_info,R.drawable.ic_battery,R.string.note_battery_info));
+        itemList.add(new Item(R.string.title_clean_file,R.drawable.ic_clean_file,R.string.note_clean_info));
     }
 
     private void initWidget(){
@@ -175,13 +177,15 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
             case 7:{
                 initModifyDpiPopupWindow();
                 popupWindowModifyDpi.showAtLocation(drawerLayout, Gravity.CENTER,0,0);
-                setShadow();
                 break;
             }
             case 8:{
                 initFakeBatteryPopupWindow();
                 popupWindowFakeBattery.showAtLocation(drawerLayout,Gravity.CENTER,0,0);
-                setShadow();
+                break;
+            }
+            case 9:{
+                intent = new Intent(context, CleanFileActivity.class);
                 break;
             }
         }
@@ -225,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         int batteryLevel = SystemUtil.getElectricity(context);
         etBattery.setText(batteryLevel + "");
         seekBarBattery.setProgress(batteryLevel);
+        setShadow();
     }
 
     private void initModifyDpiPopupWindow(){
@@ -242,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
 
             initModifyDpiPopupWindow = true;
         }
+        setShadow();
     }
 
 
@@ -270,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
             case R.id.bt_reset_battery:{
                 SystemUtil.resetBattery();
                 int val = SystemUtil.getElectricity(context);
-                SystemUtil.setBatteryLevel(val + "");
                 seekBarBattery.setProgress(val);
                 break;
             }

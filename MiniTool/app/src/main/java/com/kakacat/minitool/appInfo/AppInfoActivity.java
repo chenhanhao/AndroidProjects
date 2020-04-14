@@ -1,12 +1,5 @@
 package com.kakacat.minitool.appInfo;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -15,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
 
@@ -159,15 +158,13 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         // 传入的flag不同,得到的list不一样,例如传入PackageManager.GET_ACTIVITIES可得到activity相关信息,具体可查看源码
         packageInfoList = pm.getInstalledPackages(PackageManager.GET_SIGNATURES|PackageManager.GET_PERMISSIONS);
         getData1();
+
         adapter = new ItemAdapter(packageInfoList,pm);
-        adapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                Intent intent = new Intent(AppInfoActivity.this,AppDetailActivity.class);
-                intent.putExtra("packageInfo",packageInfoList.get(position));
-                intent.putExtra("pm",packageInfoList.get(position));
-                startActivity(intent);
-            }
+        adapter.setOnItemClickListener((v, position) -> {
+            Intent intent = new Intent(AppInfoActivity.this,AppDetailActivity.class);
+            intent.putExtra("packageInfo",packageInfoList.get(position));
+            intent.putExtra("pm",packageInfoList.get(position));
+            startActivity(intent);
         });
         recyclerView = contentView2.findViewById(R.id.rv_app_detail);
         recyclerView.setAdapter(adapter);
@@ -326,9 +323,4 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_app_info,menu);
-        return true;
-    }
 }

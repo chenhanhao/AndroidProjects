@@ -1,4 +1,4 @@
-package com.kakacat.minitool.util;
+package com.kakacat.minitool.util.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,4 +33,5 @@ public class UiUtil {
             activity.getWindow().setAttributes(lp);
         });
     }
+
 }
