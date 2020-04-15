@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -27,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.ui.StringUtil;
+import com.kakacat.minitool.util.StringUtil;
 import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.io.File;
@@ -49,10 +50,8 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
     private FloatingActionButton fab;
 
     private View popupWindowViewWarn1;
-    private View popupWindowViewWarn2;
 
     private PopupWindow popupWindowWarn1;
-    private PopupWindow popupWindowWarn2;
 
     private ItemAdapter bigFileAdapter;
     private ItemAdapter emptyFileAdapter;
@@ -362,4 +361,19 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
     public void onTabReselected(TabLayout.Tab tab) {
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        switch (menuItem.getItemId()){
+            case android.R.id.home:{
+                finish();
+                break;
+            }
+            default:
+                break;
+        }
+        return true;
+    }
+
+
 }

@@ -45,6 +45,7 @@ public class MyFragment extends Fragment {
                 fileItem.setChecked(true);
             }
         });
+
         rv.setAdapter(itemAdapter);
         rv.setLayoutManager(new LinearLayoutManager(context));
         return view;

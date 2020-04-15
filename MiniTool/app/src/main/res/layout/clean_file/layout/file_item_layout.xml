@@ -24,6 +24,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical"
             app:cv_titleSize="18sp"
             app:cv_titleColor="@color/white"
             app:cv_strokeColorValue="@color/lightBlue"
@@ -68,9 +69,9 @@
             android:layout_below="@+id/tv_file_path"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:background="@null"
             android:text="文件详情"
-            android:textSize="15sp"/>
+            android:textSize="12sp"/>
 
     </RelativeLayout>
 
