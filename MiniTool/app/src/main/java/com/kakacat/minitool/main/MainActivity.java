@@ -42,8 +42,10 @@ import com.kakacat.minitool.R;
 import com.kakacat.minitool.appInfo.AppInfoActivity;
 import com.kakacat.minitool.cleanFile.CleanFileActivity;
 import com.kakacat.minitool.currencyConversion.CurrencyConversionActivity;
+import com.kakacat.minitool.garbageClassification.GarbageClassificationActivity;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.phoneArtribution.PhoneAttributionActivity;
+import com.kakacat.minitool.showSoundFrequency.ShowSoundFrequencyActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
 import com.kakacat.minitool.todayInHistory.TodayInHistoryActivity;
 import com.kakacat.minitool.util.SystemUtil;
@@ -136,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         itemList.add(new Item(R.string.title_battery_info,R.drawable.ic_battery,R.string.note_battery_info));
         itemList.add(new Item(R.string.title_clean_file,R.drawable.ic_clean_file,R.string.note_clean_info));
         itemList.add(new Item(R.string.title_audio_capture,R.drawable.ic_audio_capture,R.string.note_audio_capture));
+        itemList.add(new Item(R.string.title_show_sound_frequency,R.drawable.ic_microphone,R.string.note_show_sound_frequency));
+        itemList.add(new Item(R.string.title_garbage_classification,R.drawable.ic_garbage,R.string.note_garbage_classification));
     }
 
     private void initWidget(){
@@ -225,6 +229,14 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
             }
             case 10:{
                 audioCapture();
+                break;
+            }
+            case 11:{
+                intent = new Intent(context, ShowSoundFrequencyActivity.class);
+                break;
+            }
+            case 12:{
+                intent = new Intent(context, GarbageClassificationActivity.class);
                 break;
             }
         }
@@ -344,38 +356,27 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         return "提取失败...";
     }
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initFakeBatteryPopupWindow() {
         if(!initFakeBatteryPopupWindow){
             popupWindowViewFakeBattery = inflater.inflate(R.layout.popupwindow_fake_battery,null);
             popupWindowFakeBattery = new PopupWindow(popupWindowViewFakeBattery, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             UiUtil.initPopupWindow(MainActivity.this,popupWindowFakeBattery);
-
             etBattery = popupWindowViewFakeBattery.findViewById(R.id.et_current_battery);
-
             btFakeBattery = popupWindowViewFakeBattery.findViewById(R.id.bt_fake_battery);
             btResetBattery = popupWindowViewFakeBattery.findViewById(R.id.bt_reset_battery);
             btResetBattery.setOnClickListener(this);
             btFakeBattery.setOnClickListener(this);
-
             seekBarBattery = popupWindowViewFakeBattery.findViewById(R.id.seek_bar_battery);
             seekBarBattery.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     etBattery.setText(progress + "");
                 }
-
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
+                public void onStartTrackingTouch(SeekBar seekBar) {}
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
+                public void onStopTrackingTouch(SeekBar seekBar) {}
             });
             initFakeBatteryPopupWindow = true;
         }
@@ -390,14 +391,11 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
             popupWindowViewModifyDpi = inflater.inflate(R.layout.popupwindow_modify_dpi,null);
             popupWindowModifyDpi = new PopupWindow(popupWindowViewModifyDpi,ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             UiUtil.initPopupWindow(MainActivity.this, popupWindowModifyDpi);
-
             btClear = popupWindowViewModifyDpi.findViewById(R.id.bt_clear);
             btModifyDpi = popupWindowViewModifyDpi.findViewById(R.id.bt_modify_dpi);
             btClear.setOnClickListener(this);
             btModifyDpi.setOnClickListener(this);
-
             etDpi = popupWindowViewModifyDpi.findViewById(R.id.edit_text);
-
             initModifyDpiPopupWindow = true;
         }
         setShadow();
@@ -441,9 +439,6 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
                 }
                 break;
             }
-
         }
     }
-
-
 }

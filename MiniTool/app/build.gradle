@@ -18,6 +18,8 @@ android {
                             'src/main/res/layout/app_info',
                             'src/main/res/layout/text_encryption',
                             'src/main/res/layout/clean_file',
+                            'src/main/res/layout/show_sound_frequency',
+                            'src/main/res/layout/garbage_classification',
                             'src/main/res'
                     ]
         }
