@@ -25,7 +25,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if(inflater == null) inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.wifi_item_layout,parent,false);
         return new ViewHolder(view);
     }

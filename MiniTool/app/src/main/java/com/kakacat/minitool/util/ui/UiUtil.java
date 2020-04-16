@@ -7,6 +7,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupWindow;
 
+import com.google.android.material.snackbar.Snackbar;
+
 public class UiUtil {
 
 
@@ -32,6 +34,10 @@ public class UiUtil {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             activity.getWindow().setAttributes(lp);
         });
+    }
+
+    public static void showHint(View view,CharSequence hint){
+        Snackbar.make(view,hint,Snackbar.LENGTH_SHORT).show();
     }
 
 }

@@ -15,11 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.SystemUtil;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class WifiPwdViewActivity extends AppCompatActivity {
 
@@ -71,40 +72,21 @@ public class WifiPwdViewActivity extends AppCompatActivity {
         context = WifiPwdViewActivity.this;
         wifiList = new ArrayList();
         if(getWifiConfig()){
-            try{
-                String path = getExternalCacheDir().getAbsolutePath() + "/WifiConfigStore.xml";
-                File wifiConfigFile = new File(path);
-                BufferedReader br = new BufferedReader(new FileReader(wifiConfigFile));
-                List<String> nameList = new ArrayList();
-                List<String> pwdList = new ArrayList();
-                String s;
-
-                while((s = br.readLine()) != null){
-                    if(s.contains("<string name=\"SSID\">")){
-                        int beginIndex = s.indexOf(';') + 1;
-                        int endIndex = s.lastIndexOf('&');
-                        nameList.add(s.substring(beginIndex,endIndex));
-                    }else if(s.contains("\"PreSharedKey\"")){
-                        int beginIndex = s.indexOf(';') + 1;
-                        int endIndex = s.lastIndexOf('&');
-                        if(beginIndex == -1 || endIndex == -1) pwdList.add("没密码啊");
-                        else pwdList.add(s.substring(beginIndex,endIndex));
-                    }
-                }
-                for(int i = 0; i < nameList.size(); i++){
-                    Wifi wifi = new Wifi();
-                    wifi.setWifiImage(nameList.get(i).substring(0,1));
-                    wifi.setWifiName(nameList.get(i));
-                    wifi.setWifiPwd(pwdList.get(i));
-                    wifiList.add(wifi);
-                }
-                br.close();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+            String filePath = getExternalCacheDir().getAbsolutePath() + "/WifiConfigStore.xml";
+            parseDataToList(filePath);
         }
         else
             Toast.makeText(context,"获取wifi配置信息失败",Toast.LENGTH_SHORT).show();
+    }
+
+    private void parseDataToList(String filePath) {
+        try{
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser parser = factory.newSAXParser();
+            parser.parse(new File(filePath),new WiFiConfigSAXHandle(wifiList));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private boolean getWifiConfig(){

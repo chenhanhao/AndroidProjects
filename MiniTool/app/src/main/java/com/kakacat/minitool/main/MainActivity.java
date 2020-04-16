@@ -10,6 +10,9 @@ import android.media.MediaFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,6 +27,7 @@ import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
 
     private View popupWindowViewModifyDpi;
     private View popupWindowViewFakeBattery;
+    private View popupWindowViewLoading;
 
     private RecyclerView recyclerView;
 
@@ -81,11 +86,30 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
 
     private PopupWindow popupWindowModifyDpi;
     private PopupWindow popupWindowFakeBattery;
+    private PopupWindow popupWindowLoading;
 
     private List<Item> itemList;
 
     private boolean initModifyDpiPopupWindow;
     private boolean initFakeBatteryPopupWindow;
+    private boolean initLoadingPopupWindow;
+
+    private int SEPARATE_FINISH;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == SEPARATE_FINISH){
+                popupWindowLoading.dismiss();
+                String hint = (String) msg.obj;
+                UiUtil.showHint(drawerLayout,hint);
+            }
+        }
+    };
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         initData();
         initWidget();
     }
-
 
     private void initData() {
         context = MainActivity.this;
@@ -209,46 +232,68 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         if(intent != null) startActivity(intent);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void audioCapture() {
+        String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if(ActivityCompat.checkSelfPermission(this,permission) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }else{
+            startSelectVideo();
+        }
+    }
 
-        askPermission();
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 1){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                startSelectVideo();
+            }
+        }
+    }
 
+    private void startSelectVideo(){
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_PICK);
         intent.setType("video/*");
         startActivityForResult(intent,1);
     }
 
-    private void askPermission() {
-        String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        for(String permission : permissions){
-            if(ActivityCompat.checkSelfPermission(this,permission) != PackageManager.PERMISSION_GRANTED){
-       //         requestPermissions();
-                //明天再写...
-            }
-        }
-
-
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == RESULT_OK && data != null){
-            Uri uri = data.getData();        //路径
-            String[] projections = {MediaStore.Video.Media.DATA};  //  列名
-            Cursor cursor = getContentResolver().query(uri,projections, null, null, null);
-            cursor.moveToFirst();
-            String filePath = cursor.getString(0);
-            cursor.close();
-            separate(filePath);
+            initLoadingPopupWindow();
+            popupWindowLoading.showAtLocation(drawerLayout,Gravity.CENTER,0,0);
+            new Thread(()->{
+                Uri uri = data.getData();        //路径
+                String[] projections = {MediaStore.Video.Media.DATA};  //  列名
+                Cursor cursor = getContentResolver().query(uri,projections, null, null, null);
+                cursor.moveToFirst();
+                String filePath = cursor.getString(0);
+                cursor.close();
+                String hint = separate(filePath);
+                Message msg = new Message();
+                msg.obj = hint;
+                msg.what = SEPARATE_FINISH;
+                handler.sendMessage(msg);
+            }).start();
         }
     }
 
 
-    private void separate(String filePath){
+    private void initLoadingPopupWindow(){
+        if(!initLoadingPopupWindow){
+            popupWindowViewLoading = View.inflate(this,R.layout.popupwindow_loading,null);
+            popupWindowLoading = new PopupWindow(popupWindowViewLoading, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            UiUtil.initPopupWindow(this,popupWindowLoading);
+            initLoadingPopupWindow = true;
+        }
+        setShadow();
+    }
+
+    private String separate(String filePath){
         try{
             MediaExtractor mediaExtractor = new MediaExtractor();
             mediaExtractor.setDataSource(filePath);      //设置视频路径
@@ -265,7 +310,14 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
                 }
             }
 
-            File audioFile = new File(getExternalCacheDir(),System.currentTimeMillis() + ".acc");
+            File audioFile = new File(Environment.getExternalStorageDirectory() + "/MiniTool/" + filePath.substring(filePath.lastIndexOf('/') + 1,filePath.length() - 1) + "3");
+            if(audioFile.exists()){
+                audioFile.delete();
+            }else{
+                File parentFile = audioFile.getParentFile();
+                parentFile.mkdirs();
+                audioFile.createNewFile();
+            }
             FileOutputStream fos = new FileOutputStream(audioFile);
             int maxAudioBufferCount = audioFormat.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE);
             ByteBuffer audioByteBuffer = ByteBuffer.allocate(maxAudioBufferCount);
@@ -275,7 +327,6 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
             while((len = mediaExtractor.readSampleData(audioByteBuffer,0)) != -1){
                 byte[] bytes = new byte[len];
                 audioByteBuffer.get(bytes);
-
                 byte[] adtsData = new byte[len + 7];
                 SystemUtil.addADTStoPacket(adtsData, len + 7);
                 System.arraycopy(bytes,0,adtsData,7,len);
@@ -286,9 +337,11 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
             fos.flush();
             fos.close();
             mediaExtractor.release();
+            return "提取完成,保存在目录" + audioFile.getAbsolutePath();
         }catch (Exception e){
             e.printStackTrace();
         }
+        return "提取失败...";
     }
 
 
