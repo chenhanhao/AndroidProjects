@@ -1,4 +1,4 @@
-package com.kakacat.minitool.main;
+package com.kakacat.minitool.util.ui;
 
 import android.graphics.Rect;
 import android.view.View;
@@ -20,14 +20,11 @@ public class ItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
-        //竖直方向的
         if (layoutManager.getOrientation() == LinearLayoutManager.VERTICAL) {
-
             outRect.top = vertical;
             outRect.left = horizontal;
             outRect.right = horizontal;
         } else {
-            //最后一项需要right
             if (parent.getChildAdapterPosition(view) == layoutManager.getItemCount() - 1) {
                 outRect.right = horizontal;
             }

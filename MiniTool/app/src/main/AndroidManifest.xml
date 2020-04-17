@@ -30,7 +30,7 @@
         <activity android:name=".inquireIp.InquireIpActivity" />
         <activity
             android:name=".currencyConversion.CurrencyConversionActivity"
-            android:label="@string/title_currency_conversion" />
+            android:label="@string/title_currency_conversion"/>
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

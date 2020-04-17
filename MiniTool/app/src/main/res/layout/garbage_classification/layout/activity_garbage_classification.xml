@@ -33,7 +33,7 @@
                     android:layout_height="50dp"
                     android:padding="10dp"
                     android:hint=" 请输入垃圾名称"
-                    android:background="@drawable/edit_text_background"/>
+                    android:background="@drawable/edit_text_background_with_black_border"/>
                 <Button
                     android:id="@+id/bt_search"
                     android:layout_width="30dp"

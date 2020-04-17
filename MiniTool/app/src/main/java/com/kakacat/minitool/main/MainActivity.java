@@ -46,6 +46,7 @@ import com.kakacat.minitool.showSoundFrequency.ShowSoundFrequencyActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
 import com.kakacat.minitool.todayInHistory.TodayInHistoryActivity;
 import com.kakacat.minitool.util.SystemUtil;
+import com.kakacat.minitool.util.ui.ItemDecoration;
 import com.kakacat.minitool.util.ui.UiUtil;
 import com.kakacat.minitool.wifipasswordview.WifiPwdViewActivity;
 

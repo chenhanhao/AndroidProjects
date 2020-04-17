@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_currency"
@@ -21,6 +21,7 @@
                 android:textColor="#ffffff"
                 android:text="@string/title_currency_conversion"/>
         </androidx.appcompat.widget.Toolbar>
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +31,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="30dp"
-
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
                 android:gravity="center"
@@ -54,9 +54,10 @@
                     android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/edit_text_background"
+                    android:background="@drawable/edit_text_background_with_black_border"
                     android:gravity="center|right"
                     android:hint="0"
+   
                     android:inputType="numberDecimal"/>
                 <TextView
                     android:id="@+id/tv_money_unit1"
@@ -103,7 +104,7 @@
                     android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="15dp"
-                    android:background="@drawable/edit_text_background"
+                    android:background="@drawable/edit_text_background_with_black_border"
                     android:gravity="center|right"
                     android:hint="0"
                     android:inputType="numberDecimal"/>
@@ -117,6 +118,16 @@
                     android:gravity="center" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_key"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
+
+
+
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

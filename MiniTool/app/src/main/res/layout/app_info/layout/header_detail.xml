@@ -8,17 +8,21 @@
     android:layout_marginRight="20dp"
     android:layout_marginBottom="10dp"
     android:padding="10dp"
-    android:background="@drawable/round_background_grey">
+    android:background="@drawable/round_background_white">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:textColor="#000000"
+        android:textStyle="bold"
         android:text="应用"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000000"
         android:text="目标API"
+        android:textStyle="bold"
         android:layout_alignParentRight="true"
         android:layout_marginRight="15dp"/>
 </RelativeLayout>

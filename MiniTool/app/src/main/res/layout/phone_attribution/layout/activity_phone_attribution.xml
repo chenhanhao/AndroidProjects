@@ -35,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/edit_text_background"
+                    android:background="@drawable/edit_text_background_with_black_border"
                     android:hint="请输入11位号码"
                     android:numeric="decimal"
                     android:padding="10dp"></EditText>

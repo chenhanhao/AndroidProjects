@@ -27,7 +27,7 @@
     <string name="note_clean_info">清理大文件 空文件 文件夹等</string>
     <string name="note_audio_capture">从视频提取音频</string>
     <string name="note_show_sound_frequency">显示实时声音频率</string>
-    <string name="note_garbage_classification">这到底是什么垃圾啊?</string>
+    <string name="note_garbage_classification">你是什么垃圾啊?</string>
 
     <string name="name_us">US</string>
     <string name="name_eu">EU</string>

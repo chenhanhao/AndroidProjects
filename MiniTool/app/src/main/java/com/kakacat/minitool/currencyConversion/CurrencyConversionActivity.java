@@ -1,15 +1,14 @@
 package com.kakacat.minitool.currencyConversion;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -20,11 +19,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.HttpCallbackListener;
 import com.kakacat.minitool.util.HttpUtil;
 import com.kakacat.minitool.util.JsonUtil;
+import com.kakacat.minitool.util.ui.ItemDecoration;
 import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.util.ArrayList;
@@ -34,18 +33,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CurrencyConversionActivity extends AppCompatActivity implements View.OnFocusChangeListener{
 
-    public Context context;
-
-    private LayoutInflater inflater;
-
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private View popupWindowViw;
 
     private CircleImageView cv1;
     private CircleImageView cv2;
 
-    private RecyclerView recyclerView;
+    private RecyclerView rvCountry;
+    private RecyclerView rvKey;
 
     private ActionBar actionBar;
 
@@ -69,8 +63,9 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
     private Country currentCountry2;
 
     private List<Country> countryList;
+    private List<Character> keyList;
 
-    private boolean initPopupWindow;
+    private KeyBoardAdapter keyBoardAdapter;
 
     private int flag;
 
@@ -139,8 +134,6 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
     }
 
     private void initWidget(){
-        context = CurrencyConversionActivity.this;
-
         setSupportActionBar(findViewById(R.id.toolbar_currency));
         actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -151,30 +144,59 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
 
         cv1 = findViewById(R.id.ib_icon_country1);
         cv2 = findViewById(R.id.ib_icon_country2);
-
         editText1 = findViewById(R.id.et_input_money1);
         editText2 = findViewById(R.id.et_input_money2);
-
         tv_country_name1 = findViewById(R.id.tv_country_name1);
         tv_country_name2 = findViewById(R.id.tv_country_name2);
         tv_money_unit1 = findViewById(R.id.tv_money_unit1);
         tv_money_unit2 = findViewById(R.id.tv_money_unit2);
 
+        rvKey = findViewById(R.id.rv_key);
+        keyList = new ArrayList<>();
+        fillKeyList();
+        keyBoardAdapter = new KeyBoardAdapter(keyList);
+        keyBoardAdapter.setOnClickListener((v, position) -> {
+            if(isFocused1){
+                String s = editText1.getText().toString();
+                if(position == 11){
+                    if(!TextUtils.isEmpty(s))
+                        editText1.setText(s.substring(0,s.length() - 1));
+                }else{
+                    Button bt = v.findViewById(R.id.bt_key);
+                    CharSequence ch = bt.getText();
+                    editText1.setText(s + ch);
+                }
+            }else if(isFocused2){
+                String s = editText2.getText().toString();
+                if(position == 11){
+                    if(!TextUtils.isEmpty(s))
+                        editText2.setText(s.substring(0,s.length() - 1));
+                }else{
+                    Button bt = v.findViewById(R.id.bt_key);
+                    CharSequence ch = bt.getText();
+                    editText2.setText(s + ch);
+                }
+            }
+        });
+        rvKey.setAdapter(keyBoardAdapter);
+        rvKey.setLayoutManager(new GridLayoutManager(this,3));
+        ItemDecoration itemDecoration = new ItemDecoration(20,20);
+        rvKey.addItemDecoration(itemDecoration);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
     }
 
 
     private void showSelectDialog(){
         initPopupWindow();
-        popupWindow.showAtLocation(swipeRefreshLayout,Gravity.BOTTOM, 0,50);
+        popupWindow.showAtLocation(swipeRefreshLayout,Gravity.CENTER, 0,100);
     }
 
     private void initData(){
-        JsonUtil.readRateFromLocal(context);
+        JsonUtil.readRateFromLocal(this);
         currentCountry1 = new Country(R.drawable.ic_us,R.string.name_us,R.string.unit_us,Rate.us);
         currentCountry2 = new Country(R.drawable.ic_cn,R.string.name_cn,R.string.unit_cn,Rate.cn);
         countryList = new ArrayList();
-        fillList();
+        fillCountryList();
     }
 
     public void showResult(double val,EditText editText){
@@ -188,37 +210,34 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
     }
 
     private void initPopupWindow(){
-        if(!initPopupWindow){
-            inflater = LayoutInflater.from(this);
-            popupWindowViw = inflater.inflate(R.layout.dialog_select_country,null);
-            popupWindow = new PopupWindow(popupWindowViw, ViewGroup.LayoutParams.WRAP_CONTENT, 1000);
-            UiUtil.initPopupWindow(CurrencyConversionActivity.this,popupWindow);
+        View view = View.inflate(this,R.layout.dialog_select_country,null);
+        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, 1000);
+        UiUtil.initPopupWindow(CurrencyConversionActivity.this,popupWindow);
 
-            CountryAdapter countryAdapter = new CountryAdapter(countryList);
-            countryAdapter.setOnItemClickListener((v, position) -> {
-                Country country = countryList.get(position);
-                if(flag == 1){
-                    cv1.setImageResource(country.getIconId());
-                    tv_country_name1.setText(country.getNameId());
-                    tv_money_unit1.setText(country.getUnitId());
-                    currentCountry1 = country;
-                }else if(flag == 2){
-                    cv2.setImageResource(country.getIconId());
-                    tv_country_name2.setText(country.getNameId());
-                    tv_money_unit2.setText(country.getUnitId());
-                    currentCountry2 = country;
-                }
-                popupWindow.dismiss();
-            });
-            recyclerView = popupWindowViw.findViewById(R.id.rv_country);
-            recyclerView.setAdapter(countryAdapter);
-            recyclerView.setLayoutManager(new GridLayoutManager(this,3));
-            initPopupWindow = true;
-        }
+        CountryAdapter countryAdapter = new CountryAdapter(countryList);
+        countryAdapter.setOnItemClickListener((v, position) -> {
+            Country country = countryList.get(position);
+            if(flag == 1){
+                cv1.setImageResource(country.getIconId());
+                tv_country_name1.setText(country.getNameId());
+                tv_money_unit1.setText(country.getUnitId());
+                currentCountry1 = country;
+            }else if(flag == 2){
+                cv2.setImageResource(country.getIconId());
+                tv_country_name2.setText(country.getNameId());
+                tv_money_unit2.setText(country.getUnitId());
+                currentCountry2 = country;
+            }
+            popupWindow.dismiss();
+        });
+        rvCountry = view.findViewById(R.id.rv_country);
+        rvCountry.setAdapter(countryAdapter);
+        rvCountry.setLayoutManager(new GridLayoutManager(this,3));
+
     }
 
 
-    private void fillList(){
+    private void fillCountryList(){
         countryList.add(new Country(R.drawable.ic_us,R.string.name_us,R.string.unit_us, Rate.us));
         countryList.add(new Country(R.drawable.ic_eu,R.string.name_eu,R.string.unit_eu, Rate.eu));
         countryList.add(new Country(R.drawable.ic_hk,R.string.name_hk,R.string.unit_hk, Rate.hk));
@@ -244,6 +263,15 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
         countryList.add(new Country(R.drawable.ic_cn,R.string.name_cn,R.string.unit_cn, Rate.cn));
     }
 
+
+    private void fillKeyList(){
+        for(int i = 1; i <= 9; i++)
+            keyList.add((char) (i + '0'));
+        keyList.add('.');
+        keyList.add('0');
+        keyList.add('x');
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
@@ -265,10 +293,10 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
         HttpUtil.sendOkHttpRequest(address,new HttpCallbackListener() {
             @Override
             public void onSuccess(String s) {
-                if(JsonUtil.handleRateResponse(context,s))
+                if(JsonUtil.handleRateResponse(CurrencyConversionActivity.this,s))
                     for(int i = 0; i < 22; i++) countryList.get(i).setRate(Rate.getRate(i + 1));
                 swipeRefreshLayout.setRefreshing(false);
-                Snackbar.make(swipeRefreshLayout,"更新汇率成功",Snackbar.LENGTH_SHORT).show();
+                UiUtil.showHint(swipeRefreshLayout,"更新汇率成功");
             }
             @Override
             public void onError() {

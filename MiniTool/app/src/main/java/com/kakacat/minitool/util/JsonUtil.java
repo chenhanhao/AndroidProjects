@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class JsonUtil {
-    public static boolean handleRateResponse(Context context,String response){
+    public static boolean handleRateResponse(Context context, String response){
         try{
     //        Log.d("hhh","获得数据");
             if(!TextUtils.isEmpty(response)){

@@ -1,45 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/round_background_grey"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_marginTop="20dp"
-    android:padding="20dp">
-    <com.github.pavlospt.CircleView
-        android:id="@+id/circle_view"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:cv_titleSize="20dp"
-        app:cv_titleColor="@color/white"
-        app:cv_strokeColorValue="@color/lightBlue"
-        app:cv_fillColor="@color/lightBlue"
-        app:cv_fillRadius="0.9"
-        app:cv_strokeWidthSize="10"/>
+    android:clickable="true"
+    android:elevation="5dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@color/white">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|right"
-        android:layout_marginLeft="20dp"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_wifi_name"
+        android:padding="20dp">
+        <com.github.pavlospt.CircleView
+            android:id="@+id/circle_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cv_titleSize="20dp"
+            app:cv_titleColor="@color/white"
+            app:cv_strokeColorValue="@color/lightBlue"
+            app:cv_fillColor="@color/lightBlue"
+            app:cv_fillRadius="0.9"
+            app:cv_strokeWidthSize="10"/>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="我是wifi名称"/>
-        <TextView
-            android:id="@+id/tv_wifi_pwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="我是wifi密码"/>
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_wifi_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="我是wifi名称"/>
+            <TextView
+                android:id="@+id/tv_wifi_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="我是wifi密码"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>
+
+
 
 
 
