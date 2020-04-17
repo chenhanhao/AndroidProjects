@@ -6,9 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.kakacat.minitool.R;
-import com.kakacat.minitool.currencyConversion.Country;
 import com.kakacat.minitool.currencyConversion.Rate;
+import com.kakacat.minitool.garbageClassification.Garbage;
 import com.kakacat.minitool.inquireIp.Data;
 import com.kakacat.minitool.todayInHistory.Article;
 
@@ -155,38 +154,6 @@ public class JsonUtil {
         Rate.za = sharedPreferences.getFloat("za", (float) Rate.za);
     }
 
-    public static void writeHistoryToLocal(Context context,Country country1,Country country2){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("history",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putInt("icon1",country1.getIconId());
-        editor.putInt("name1",country1.getNameId());
-        editor.putInt("unit1",country1.getUnitId());
-        editor.putFloat("rate1", (float) country1.getRate());
-
-        editor.putInt("icon2",country2.getIconId());
-        editor.putInt("name2",country2.getNameId());
-        editor.putInt("unit2",country2.getUnitId());
-        editor.putFloat("rate2", (float) country2.getRate());
-        editor.commit();
-    }
-
-
-    public static void readHistoryFromLocal(Context context, Country country1,Country country2){
-        SharedPreferences sharedPreferences = context.getSharedPreferences("history",Context.MODE_PRIVATE);
-
-        country1.setIconId(sharedPreferences.getInt("icon1", R.drawable.ic_us));
-        country1.setNameId(sharedPreferences.getInt("name1",R.string.name_us));
-        country1.setUnitId(sharedPreferences.getInt("unit1",R.string.unit_us));
-        country1.setRate(sharedPreferences.getFloat("rate1", (float) Rate.us));
-
-        country2.setIconId(sharedPreferences.getInt("icon2", R.drawable.ic_cn));
-        country2.setNameId(sharedPreferences.getInt("name2",R.string.name_cn));
-        country2.setUnitId(sharedPreferences.getInt("unit2",R.string.unit_cn));
-        country2.setRate(sharedPreferences.getFloat("rate2", (float) Rate.cn));
-    }
-
-
     public static void handleHistoryResponse(String s, List<Article> articleList){
         if(!TextUtils.isEmpty(s)){
             try{
@@ -200,16 +167,27 @@ public class JsonUtil {
                     Article article = gson.fromJson(str,Article.class);
                     articleList.add(article);
                 }
-
             }catch (JSONException e){
                 e.printStackTrace();
             }
-
-
-
-
         }
-
-
     }
+
+    public static void handleGarbageResponse(String s, List<Garbage> garbageList){
+        if(!TextUtils.isEmpty(s)){
+            try{
+                JSONObject jsonObject = new JSONObject(s);
+                JSONArray garbageObjects = jsonObject.getJSONArray("newslist");
+                Gson gson = new Gson();
+
+                for(int i = 0; i < garbageObjects.length(); i++){
+                    String str = garbageObjects.getJSONObject(i).toString();
+                    garbageList.add(gson.fromJson(str,Garbage.class));
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

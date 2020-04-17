@@ -1,6 +1,5 @@
 package com.kakacat.minitool.garbageClassification;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +40,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.tvName.setText(garbage.getName());
         holder.tvType.setText(TypeMap.getTypeName(type));
         holder.ivIcon.setBackgroundResource(TypeMap.getIcon(type));
+        if(listener != null){
+            holder.itemView.setOnClickListener((v-> listener.onClick(holder.itemView,position)));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return garbageList.size();
     }
 
 

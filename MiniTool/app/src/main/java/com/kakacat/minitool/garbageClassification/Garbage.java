@@ -12,12 +12,13 @@ public class Garbage {
 
     private String name;
     private int type;
+    private int aipre;
     private String explain;
     private String contain;
     private String tip;
 
 
-    public Garbage() {}
+
 
     public String getName() {
         return name;
@@ -33,6 +34,14 @@ public class Garbage {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getAipre() {
+        return aipre;
+    }
+
+    public void setAipre(int aipre) {
+        this.aipre = aipre;
     }
 
     public String getExplain() {

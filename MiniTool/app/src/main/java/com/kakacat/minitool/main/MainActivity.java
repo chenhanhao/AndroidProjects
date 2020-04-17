@@ -1,7 +1,6 @@
 package com.kakacat.minitool.main;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -17,11 +16,9 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -60,10 +57,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ItemAdapter.OnItemClickListener,View.OnClickListener{
 
-    private Context context;
-
-    private LayoutInflater inflater;
-
     private DrawerLayout drawerLayout;
 
     private ActionBar actionBar;
@@ -78,23 +71,14 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
     private EditText etDpi;
     private EditText etBattery;
 
-    private View popupWindowViewModifyDpi;
-    private View popupWindowViewFakeBattery;
-    private View popupWindowViewLoading;
+    private PopupWindow popupWindowLoading;
+    private PopupWindow popupWindowModifyDpi;
 
     private RecyclerView recyclerView;
 
     private ItemAdapter itemAdapter;
 
-    private PopupWindow popupWindowModifyDpi;
-    private PopupWindow popupWindowFakeBattery;
-    private PopupWindow popupWindowLoading;
-
     private List<Item> itemList;
-
-    private boolean initModifyDpiPopupWindow;
-    private boolean initFakeBatteryPopupWindow;
-    private boolean initLoadingPopupWindow;
 
     private int SEPARATE_FINISH;
 
@@ -111,8 +95,6 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
     };
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,11 +105,8 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
     }
 
     private void initData() {
-        context = MainActivity.this;
-        inflater = LayoutInflater.from(context);
-
         itemList = new ArrayList();
-        itemList.add(new Item(R.string.title_currency_conversion,R.drawable.currency,R.string.note_currency_conversion));
+        itemList.add(new Item(R.string.title_currency_conversion,R.drawable.ic_money,R.string.note_currency_conversion));
         itemList.add(new Item(R.string.title_inquire_ip,R.drawable.ic_internet,R.string.note_inquire_ip));
         itemList.add(new Item(R.string.title_phone_attribution,R.drawable.ic_phone,R.string.note_phone_attribution));
         itemList.add(new Item(R.string.title_today_in_history,R.drawable.ic_today_in_history,R.string.note_today_in_history));
@@ -186,45 +165,43 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         Intent intent = null;
         switch (position){
             case 0 :{
-                intent = new Intent(context, CurrencyConversionActivity.class);
+                intent = new Intent(this, CurrencyConversionActivity.class);
                 break;
             }
             case 1:{
-                intent = new Intent(context, InquireIpActivity.class);
+                intent = new Intent(this, InquireIpActivity.class);
                 break;
             }
             case 2:{
-                intent = new Intent(context, PhoneAttributionActivity.class);
+                intent = new Intent(this, PhoneAttributionActivity.class);
                 break;
             }
             case 3:{
-                intent = new Intent(context, TodayInHistoryActivity.class);
+                intent = new Intent(this, TodayInHistoryActivity.class);
                 break;
             }
             case 4:{
-                intent = new Intent(context, WifiPwdViewActivity.class);
+                intent = new Intent(this, WifiPwdViewActivity.class);
                 break;
             }
             case 5:{
-                intent = new Intent(context, AppInfoActivity.class);
+                intent = new Intent(this, AppInfoActivity.class);
                 break;
             }
             case 6:{
-                intent = new Intent(context, TextEncryptionActivity.class);
+                intent = new Intent(this, TextEncryptionActivity.class);
                 break;
             }
             case 7:{
-                initModifyDpiPopupWindow();
-                popupWindowModifyDpi.showAtLocation(drawerLayout, Gravity.CENTER,0,0);
+                showModifyDpiPopupWindow();
                 break;
             }
             case 8:{
-                initFakeBatteryPopupWindow();
-                popupWindowFakeBattery.showAtLocation(drawerLayout,Gravity.CENTER,0,0);
+                showFakeBatteryPopupWindow();
                 break;
             }
             case 9:{
-                intent = new Intent(context, CleanFileActivity.class);
+                intent = new Intent(this, CleanFileActivity.class);
                 break;
             }
             case 10:{
@@ -232,11 +209,11 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
                 break;
             }
             case 11:{
-                intent = new Intent(context, ShowSoundFrequencyActivity.class);
+                intent = new Intent(this, ShowSoundFrequencyActivity.class);
                 break;
             }
             case 12:{
-                intent = new Intent(context, GarbageClassificationActivity.class);
+                intent = new Intent(this, GarbageClassificationActivity.class);
                 break;
             }
         }
@@ -277,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == RESULT_OK && data != null){
             initLoadingPopupWindow();
-            popupWindowLoading.showAtLocation(drawerLayout,Gravity.CENTER,0,0);
+
             new Thread(()->{
                 Uri uri = data.getData();        //路径
                 String[] projections = {MediaStore.Video.Media.DATA};  //  列名
@@ -296,13 +273,10 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
 
 
     private void initLoadingPopupWindow(){
-        if(!initLoadingPopupWindow){
-            popupWindowViewLoading = View.inflate(this,R.layout.popupwindow_loading,null);
-            popupWindowLoading = new PopupWindow(popupWindowViewLoading, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            UiUtil.initPopupWindow(this,popupWindowLoading);
-            initLoadingPopupWindow = true;
-        }
-        setShadow();
+        View view = View.inflate(this,R.layout.popupwindow_loading,null);
+        popupWindowLoading = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        UiUtil.initPopupWindow(this,popupWindowLoading);
+        popupWindowLoading.showAtLocation(drawerLayout,Gravity.CENTER,0,0);
     }
 
     private String separate(String filePath){
@@ -357,56 +331,42 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void initFakeBatteryPopupWindow() {
-        if(!initFakeBatteryPopupWindow){
-            popupWindowViewFakeBattery = inflater.inflate(R.layout.popupwindow_fake_battery,null);
-            popupWindowFakeBattery = new PopupWindow(popupWindowViewFakeBattery, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            UiUtil.initPopupWindow(MainActivity.this,popupWindowFakeBattery);
-            etBattery = popupWindowViewFakeBattery.findViewById(R.id.et_current_battery);
-            btFakeBattery = popupWindowViewFakeBattery.findViewById(R.id.bt_fake_battery);
-            btResetBattery = popupWindowViewFakeBattery.findViewById(R.id.bt_reset_battery);
-            btResetBattery.setOnClickListener(this);
-            btFakeBattery.setOnClickListener(this);
-            seekBarBattery = popupWindowViewFakeBattery.findViewById(R.id.seek_bar_battery);
-            seekBarBattery.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    etBattery.setText(progress + "");
-                }
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
-            initFakeBatteryPopupWindow = true;
-        }
-        int batteryLevel = SystemUtil.getElectricity(context);
+    private void showFakeBatteryPopupWindow() {
+        View view = View.inflate(this,R.layout.popupwindow_fake_battery,null);
+        PopupWindow popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        UiUtil.initPopupWindow(this,popupWindow);
+        etBattery = view.findViewById(R.id.et_current_battery);
+        btFakeBattery = view.findViewById(R.id.bt_fake_battery);
+        btResetBattery = view.findViewById(R.id.bt_reset_battery);
+        btResetBattery.setOnClickListener(this);
+        btFakeBattery.setOnClickListener(this);
+        seekBarBattery = view.findViewById(R.id.seek_bar_battery);
+        seekBarBattery.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                etBattery.setText(progress + "");
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        int batteryLevel = SystemUtil.getElectricity(this);
         etBattery.setText(batteryLevel + "");
         seekBarBattery.setProgress(batteryLevel);
-        setShadow();
+        popupWindow.showAtLocation(drawerLayout,Gravity.CENTER,0,0);
     }
 
-    private void initModifyDpiPopupWindow(){
-        if(!initModifyDpiPopupWindow){
-            popupWindowViewModifyDpi = inflater.inflate(R.layout.popupwindow_modify_dpi,null);
-            popupWindowModifyDpi = new PopupWindow(popupWindowViewModifyDpi,ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            UiUtil.initPopupWindow(MainActivity.this, popupWindowModifyDpi);
-            btClear = popupWindowViewModifyDpi.findViewById(R.id.bt_clear);
-            btModifyDpi = popupWindowViewModifyDpi.findViewById(R.id.bt_modify_dpi);
-            btClear.setOnClickListener(this);
-            btModifyDpi.setOnClickListener(this);
-            etDpi = popupWindowViewModifyDpi.findViewById(R.id.edit_text);
-            initModifyDpiPopupWindow = true;
-        }
-        setShadow();
-    }
-
-
-    private void setShadow(){
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.6f;//代表透明程度，范围为0 - 1.0f
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        getWindow().setAttributes(lp);
+    private void showModifyDpiPopupWindow(){
+        View view = View.inflate(this,R.layout.popupwindow_modify_dpi,null);
+        popupWindowModifyDpi = new PopupWindow(view,ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        UiUtil.initPopupWindow(this, popupWindowModifyDpi);
+        btClear = view.findViewById(R.id.bt_clear);
+        btModifyDpi = view.findViewById(R.id.bt_modify_dpi);
+        btClear.setOnClickListener(this);
+        btModifyDpi.setOnClickListener(this);
+        etDpi = view.findViewById(R.id.edit_text);
+        popupWindowModifyDpi.showAtLocation(drawerLayout, Gravity.CENTER,0,0);
     }
 
 
@@ -426,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
             }
             case R.id.bt_reset_battery:{
                 SystemUtil.resetBattery();
-                int val = SystemUtil.getElectricity(context);
+                int val = SystemUtil.getElectricity(this);
                 seekBarBattery.setProgress(val);
                 break;
             }

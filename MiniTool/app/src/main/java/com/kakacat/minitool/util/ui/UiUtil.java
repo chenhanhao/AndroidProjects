@@ -28,8 +28,13 @@ public class UiUtil {
         popupWindow.setTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
+
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.alpha = 0.6f;//代表透明程度，范围为0 - 1.0f
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        activity.getWindow().setAttributes(lp);
+
         popupWindow.setOnDismissListener(()->{
-            WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
             lp.alpha = 1.0f;
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             activity.getWindow().setAttributes(lp);
@@ -39,5 +44,6 @@ public class UiUtil {
     public static void showHint(View view,CharSequence hint){
         Snackbar.make(view,hint,Snackbar.LENGTH_SHORT).show();
     }
+
 
 }

@@ -84,13 +84,6 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
         initListener();
     }
 
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        JsonUtil.writeHistoryToLocal(context,currentCountry1,currentCountry2);
-    }
-
-
     private void initListener(){
         textWatcher1 = new TextWatcher() {
             @Override
@@ -178,22 +171,11 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
 
     private void initData(){
         JsonUtil.readRateFromLocal(context);
-
-        if(currentCountry1 == null) currentCountry1 = new Country();
-        if(currentCountry2 == null) currentCountry2 = new Country();
-        JsonUtil.readHistoryFromLocal(context,currentCountry1,currentCountry2);
-        cv1.setImageResource(currentCountry1.getIconId());
-        cv2.setImageResource(currentCountry2.getIconId());
-        tv_country_name1.setText(currentCountry1.getNameId());
-        tv_country_name2.setText(currentCountry2.getNameId());
-        tv_money_unit1.setText(currentCountry1.getUnitId());
-        tv_money_unit2.setText(currentCountry2.getUnitId());
-
+        currentCountry1 = new Country(R.drawable.ic_us,R.string.name_us,R.string.unit_us,Rate.us);
+        currentCountry2 = new Country(R.drawable.ic_cn,R.string.name_cn,R.string.unit_cn,Rate.cn);
         countryList = new ArrayList();
         fillList();
     }
-
-
 
     public void showResult(double val,EditText editText){
         String s = "";
