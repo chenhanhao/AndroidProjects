@@ -178,9 +178,12 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
                 }
             }
         });
+
         rvKey.setAdapter(keyBoardAdapter);
-        rvKey.setLayoutManager(new GridLayoutManager(this,3));
-        ItemDecoration itemDecoration = new ItemDecoration(20,20);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
+
+        rvKey.setLayoutManager(gridLayoutManager);
+        ItemDecoration itemDecoration = new ItemDecoration(1,1);
         rvKey.addItemDecoration(itemDecoration);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
     }
