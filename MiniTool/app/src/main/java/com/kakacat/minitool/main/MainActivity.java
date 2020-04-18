@@ -42,7 +42,7 @@ import com.kakacat.minitool.currencyConversion.CurrencyConversionActivity;
 import com.kakacat.minitool.garbageClassification.GarbageClassificationActivity;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.phoneArtribution.PhoneAttributionActivity;
-import com.kakacat.minitool.showSoundFrequency.ShowSoundFrequencyActivity;
+import com.kakacat.minitool.DongCiDaCi.DongCiDaCiActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
 import com.kakacat.minitool.todayInHistory.TodayInHistoryActivity;
 import com.kakacat.minitool.util.SystemUtil;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         itemList.add(new Item(R.string.title_battery_info,R.drawable.ic_battery,R.string.note_battery_info));
         itemList.add(new Item(R.string.title_clean_file,R.drawable.ic_clean_file,R.string.note_clean_info));
         itemList.add(new Item(R.string.title_audio_capture,R.drawable.ic_audio_capture,R.string.note_audio_capture));
-        itemList.add(new Item(R.string.title_show_sound_frequency,R.drawable.ic_microphone,R.string.note_show_sound_frequency));
+        itemList.add(new Item(R.string.title_dong_ci_da_ci,R.drawable.ic_microphone,R.string.note_dong_ci_da_ci));
         itemList.add(new Item(R.string.title_garbage_classification,R.drawable.ic_garbage,R.string.note_garbage_classification));
     }
 
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
                 break;
             }
             case 11:{
-                intent = new Intent(this, ShowSoundFrequencyActivity.class);
+                intent = new Intent(this, DongCiDaCiActivity.class);
                 break;
             }
             case 12:{

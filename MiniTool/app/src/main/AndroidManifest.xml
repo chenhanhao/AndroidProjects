@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".garbageClassification.GarbageClassificationActivity"></activity>
-        <activity android:name=".showSoundFrequency.ShowSoundFrequencyActivity" />
+        <activity android:name=".DongCiDaCi.DongCiDaCiActivity" />
         <activity android:name=".cleanFile.CleanFileActivity" />
         <activity android:name=".textEncryption.TextEncryptionActivity" />
         <activity android:name=".appInfo.AppDetailActivity" />
