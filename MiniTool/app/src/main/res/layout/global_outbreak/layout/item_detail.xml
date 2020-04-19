@@ -4,18 +4,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
     android:clickable="true"
+    app:cardCornerRadius="10dp"
     android:foreground="?attr/selectableItemBackground"
     app:cardElevation="3dp">
 
-    <Button
-        android:id="@+id/bt_country"
-        android:padding="5dp"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000000"
-        android:background="@null"
-        android:clickable="false"
-        android:text="意大利"/>
+        android:orientation="vertical"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/tv_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:background="@null"
+            android:text="意大利"/>
+        <TextView
+            android:id="@+id/tv_short_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="8sp"
+            android:background="@null"
+            android:text="ITA"/>
+    </LinearLayout>
+
+
 
 </androidx.cardview.widget.CardView>

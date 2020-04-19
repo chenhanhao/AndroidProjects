@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.kakacat.minitool.R;
 
@@ -24,10 +24,12 @@ public class MyFragment extends Fragment {
     private TextView tvConfirmedCount;
     private TextView tvSuspectedCount;
     private TextView tvDeadCount;
+    private boolean isCreateView;
 
     public MyFragment(List<EpidemicData> epidemicDataList) {
         this.epidemicDataList = epidemicDataList;
     }
+
 
     @Nullable
     @Override
@@ -35,9 +37,8 @@ public class MyFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_layout2,container,false);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         myAdapter = new MyAdapter(epidemicDataList);
-
         recyclerView.setAdapter(myAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL));
         tvCurrentConfirmedCount = rootView.findViewById(R.id.tv_current_confirmed_count);
         tvConfirmedCount = rootView.findViewById(R.id.tv_confirmed_count);
         tvSuspectedCount = rootView.findViewById(R.id.tv_suspected_count);
@@ -48,7 +49,18 @@ public class MyFragment extends Fragment {
         tvSuspectedCount.setText(getSuspectedCount());
         tvDeadCount.setText(getDeadCount());
 
+        isCreateView = true;
         return rootView;
+    }
+
+    public void refresh(){
+        if(isCreateView){
+            myAdapter.notifyDataSetChanged();
+            tvCurrentConfirmedCount.setText(getCurrentConfirmedCount());
+            tvConfirmedCount.setText(getConfirmedCount());
+            tvSuspectedCount.setText(getSuspectedCount());
+            tvDeadCount.setText(getDeadCount());
+        }
     }
 
 

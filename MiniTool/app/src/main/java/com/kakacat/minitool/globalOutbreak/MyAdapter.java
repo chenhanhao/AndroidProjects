@@ -3,7 +3,7 @@ package com.kakacat.minitool.globalOutbreak;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +35,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EpidemicData epidemicData = epidemicDataList.get(position);
-        holder.button.setText(epidemicData.getProvinceName());
+        holder.tvName.setText(epidemicData.getProvinceName());
+        holder.tvShortCode.setText(epidemicData.getCountryShortCode());
         if(listener != null){
             holder.itemView.setOnClickListener((v)-> listener.onClick(holder.itemView,position));
         }
@@ -47,10 +48,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        private Button button;
+        private TextView tvName;
+        private TextView tvShortCode;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            button = itemView.findViewById(R.id.bt_country);
+            tvName = itemView.findViewById(R.id.tv_country);
+            tvShortCode = itemView.findViewById(R.id.tv_short_code);
         }
     }
 

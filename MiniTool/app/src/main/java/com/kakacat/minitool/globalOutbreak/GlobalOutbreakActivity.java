@@ -1,16 +1,28 @@
 package com.kakacat.minitool.globalOutbreak;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.HttpCallbackListener;
+import com.kakacat.minitool.util.HttpUtil;
+import com.kakacat.minitool.util.JsonUtil;
+import com.kakacat.minitool.util.StringUtil;
+import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +30,16 @@ import java.util.List;
 
 public class GlobalOutbreakActivity extends AppCompatActivity {
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TextView tvUpdateTime;
     private MyPageAdapter myPageAdapter;
+    private ProgressBar progressBar;
 
     private List<String> titleList;
     private List<MyFragment> myFragmentList;
+    private List<List<EpidemicData>> list;
     private List<EpidemicData> epidemicDataList1;
     private List<EpidemicData> epidemicDataList2;
     private List<EpidemicData> epidemicDataList3;
@@ -33,6 +48,21 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
     private List<EpidemicData> epidemicDataList6;
 
 
+    private Handler handler = new Handler(){
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == 1){
+                notifyData();
+                swipeRefreshLayout.setRefreshing(false);
+                UiUtil.showHint(swipeRefreshLayout,"更新数据成功");
+                tvUpdateTime.setText(StringUtil.getDate(list.get(0).get(0).getModifyTime()));
+                progressBar.setVisibility(View.INVISIBLE);
+                viewPager.setVisibility(View.VISIBLE);
+            }
+        }
+    };
 
 
     @Override
@@ -41,7 +71,7 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
         setContentView(R.layout.activity_global_outbreak);
 
         initWidget();
-
+        refresh();
 
     }
 
@@ -55,21 +85,22 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
         }    //不知道为什么返回键没法显示...下次再填
 
         fillList();
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         myPageAdapter = new MyPageAdapter(getSupportFragmentManager(),titleList,myFragmentList);
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
         tvUpdateTime = findViewById(R.id.tv_update_time);
+        progressBar = findViewById(R.id.progress_bar);
 
         viewPager.setAdapter(myPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
-
-        viewPager.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setOnRefreshListener(() -> refresh());
     }
 
     private void fillList() {
         titleList = new ArrayList<>();
         myFragmentList = new ArrayList<>();
+        list = new ArrayList<>();
         epidemicDataList1 = new ArrayList<>();
         epidemicDataList2 = new ArrayList<>();
         epidemicDataList3 = new ArrayList<>();
@@ -89,6 +120,40 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
         myFragmentList.add(new MyFragment(epidemicDataList4));
         myFragmentList.add(new MyFragment(epidemicDataList5));
         myFragmentList.add(new MyFragment(epidemicDataList6));
+        list.add(epidemicDataList1);
+        list.add(epidemicDataList2);
+        list.add(epidemicDataList3);
+        list.add(epidemicDataList4);
+        list.add(epidemicDataList5);
+        list.add(epidemicDataList6);
+    }
+
+
+    private void refresh(){
+        String key = "c3886d3637d56c2730a4a7066fb9fa47";
+        String address = "http://api.tianapi.com/txapi/ncovabroad/index?key=" + key;
+
+        HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
+            @Override
+            public void onSuccess(String s) {
+                for(List<EpidemicData> list1 : list){
+                    list1.clear();
+                }
+                JsonUtil.handleEpidemicResponse(s,list);
+                Message msg = Message.obtain();
+                msg.what = 1;
+                handler.sendMessage(msg);
+            }
+            @Override
+            public void onError() {}
+        });
+    }
+
+
+    private void notifyData(){
+        for(MyFragment myFragment : myFragmentList){
+            myFragment.refresh();
+        }
     }
 
 

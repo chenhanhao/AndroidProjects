@@ -1,5 +1,10 @@
 package com.kakacat.minitool.util;
 
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 public class StringUtil {
 
 
@@ -15,4 +20,11 @@ public class StringUtil {
         }
         return result;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static String getDate(long time){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(time);
+    }
+
 }

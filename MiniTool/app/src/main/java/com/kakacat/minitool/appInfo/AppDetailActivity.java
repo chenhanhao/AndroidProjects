@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +28,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.EncryptionUtil;
+import com.kakacat.minitool.util.StringUtil;
 import com.kakacat.minitool.util.SystemUtil;
 
 import java.io.File;
@@ -106,9 +106,9 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
     private void setData() {
         pm = getPackageManager();
         packageInfo = getIntent().getParcelableExtra("packageInfo");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String firstInstallTime = sdf.format(packageInfo.firstInstallTime);
-        String lastUpdateTime = sdf.format(packageInfo.lastUpdateTime);
+
+        String firstInstallTime = StringUtil.getDate(packageInfo.firstInstallTime);
+        String lastUpdateTime = StringUtil.getDate(packageInfo.lastUpdateTime);
         String[] permissions = packageInfo.requestedPermissions;
 
         if(actionBar != null){

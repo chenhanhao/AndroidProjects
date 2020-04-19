@@ -9,19 +9,46 @@ public class EpidemicData {
     suspectedCount	int	1439	治愈人数
     deadCount	int	1266	死亡人数
     locationId	int	965008	地理位置编号
-    countryShortCode	string	ITA	国家代码*/
+    countryShortCode	string	ITA	国家代码
+
+
+    modifyTime": 1587275438000,
+      "continents": "北美洲",
+      "provinceName": "美国",
+      "currentConfirmedCount": 629465,
+      "confirmedCount": 734969,
+      "confirmedCountRank": 1,
+      "curedCount": 66601,
+      "deadCount": 38903,
+      "deadCountRank": 1,
+      "deadRate": "5.29",
+      "deadRateRank": 28,
+      "locationId": 971002,
+      "countryShortCode": "USA"
+
+
+    */
 
     private long modifyTime;
     private String continents;
     private String provinceName;
     private int currentConfirmedCount;
     private int confirmedCount;
+
     private int suspectedCount;
     private int deadCount;
-    private int locationId;
+    private double deadCountRate;
     private String countryShortCode;
 
     public EpidemicData() {}
+
+    public double getDeadCountRate() {
+        return deadCountRate;
+    }
+
+    public void setDeadCountRate(double deadCountRate) {
+        this.deadCountRate = deadCountRate;
+    }
 
     public long getModifyTime() {
         return modifyTime;
@@ -79,13 +106,6 @@ public class EpidemicData {
         this.deadCount = deadCount;
     }
 
-    public int getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
-    }
 
     public String getCountryShortCode() {
         return countryShortCode;
