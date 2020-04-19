@@ -1,5 +1,6 @@
 package com.kakacat.minitool.appInfo;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -19,10 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.EncryptionUtil;
@@ -53,7 +56,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
 
     private Button btSaveIcon;
     private Button btOpenMarket;
-    private Button btShareApk;
+    private Button btGetApk;
     private Button btOpenDetail;
     private Button btCopyMd5;
 
@@ -94,7 +97,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
 
         btSaveIcon = findViewById(R.id.bt_save_icon);
         btOpenMarket = findViewById(R.id.bt_open_market);
-        btShareApk = findViewById(R.id.bt_share_apk);
+        btGetApk = findViewById(R.id.bt_get_apk);
         btOpenDetail = findViewById(R.id.bt_open_detail);
         btCopyMd5 = findViewById(R.id.bt_copy_md5);
     }
@@ -135,12 +138,13 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
     private void setListener() {
         btSaveIcon.setOnClickListener(this);
         btOpenMarket.setOnClickListener(this);
-        btShareApk.setOnClickListener(this);
+        btGetApk.setOnClickListener(this);
         btOpenDetail.setOnClickListener(this);
         btCopyMd5.setOnClickListener(this);
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -152,8 +156,8 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
                 openMarket();
                 break;
             }
-            case R.id.bt_share_apk : {
-                shareApk();
+            case R.id.bt_get_apk : {
+                getApk();
                 break;
             }
             case R.id.bt_open_detail : {
@@ -202,8 +206,14 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         startActivity(intent);
     }
 
-    private void shareApk() {
-
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void getApk() {
+        String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if(ActivityCompat.checkSelfPermission(this,permission) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{permission},1);
+        }else{
+            copyFile();
+        }
     }
 
     private void openDetail() {
@@ -257,4 +267,27 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         return bitmap;
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == 1){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                copyFile();
+            }else{
+                Toast.makeText(this,"获取权限失败...",Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    private void copyFile(){
+        String srcPath = packageInfo.applicationInfo.sourceDir;
+        String desPath = "/storage/emulated/0/MiniTool/";
+        String[] commands = new String[]{
+                "cp " + srcPath + " " + desPath + "\n",
+        };
+        SystemUtil.executeLinuxCommand(commands,false,false);
+        Toast.makeText(this,"提取成功 保存在" + desPath,Toast.LENGTH_SHORT).show();
+    }
 }

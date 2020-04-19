@@ -39,7 +39,9 @@ import com.kakacat.minitool.R;
 import com.kakacat.minitool.appInfo.AppInfoActivity;
 import com.kakacat.minitool.cleanFile.CleanFileActivity;
 import com.kakacat.minitool.currencyConversion.CurrencyConversionActivity;
+import com.kakacat.minitool.dictionary.DictionaryActivity;
 import com.kakacat.minitool.garbageClassification.GarbageClassificationActivity;
+import com.kakacat.minitool.globalOutbreak.GlobalOutbreakActivity;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.phoneArtribution.PhoneAttributionActivity;
 import com.kakacat.minitool.DongCiDaCi.DongCiDaCiActivity;
@@ -120,8 +122,9 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         itemList.add(new Item(R.string.title_audio_capture,R.drawable.ic_audio_capture,R.string.note_audio_capture));
         itemList.add(new Item(R.string.title_dong_ci_da_ci,R.drawable.ic_microphone,R.string.note_dong_ci_da_ci));
         itemList.add(new Item(R.string.title_garbage_classification,R.drawable.ic_garbage,R.string.note_garbage_classification));
+        itemList.add(new Item(R.string.title_global_outbreak,R.drawable.ic_global_outbreak,R.string.note_global_outbreak));
+        itemList.add(new Item(R.string.title_dictionary,R.drawable.ic_dictionary,R.string.note_dictionary));
     }
-
     private void initWidget(){
         setSupportActionBar(findViewById(R.id.toolbar_main));
         actionBar = getSupportActionBar();
@@ -215,6 +218,14 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
             }
             case 12:{
                 intent = new Intent(this, GarbageClassificationActivity.class);
+                break;
+            }
+            case 13:{
+                intent = new Intent(this, GlobalOutbreakActivity.class);
+                break;
+            }
+            case 14:{
+                intent = new Intent(this, DictionaryActivity.class);
                 break;
             }
         }

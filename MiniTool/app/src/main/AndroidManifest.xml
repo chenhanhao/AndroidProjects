@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +15,9 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".garbageClassification.GarbageClassificationActivity"></activity>
+        <activity android:name=".dictionary.DictionaryActivity"></activity>
+        <activity android:name=".globalOutbreak.GlobalOutbreakActivity" />
+        <activity android:name=".garbageClassification.GarbageClassificationActivity" />
         <activity android:name=".DongCiDaCi.DongCiDaCiActivity" />
         <activity android:name=".cleanFile.CleanFileActivity" />
         <activity android:name=".textEncryption.TextEncryptionActivity" />
@@ -30,7 +32,7 @@
         <activity android:name=".inquireIp.InquireIpActivity" />
         <activity
             android:name=".currencyConversion.CurrencyConversionActivity"
-            android:label="@string/title_currency_conversion"/>
+            android:label="@string/title_currency_conversion" />
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

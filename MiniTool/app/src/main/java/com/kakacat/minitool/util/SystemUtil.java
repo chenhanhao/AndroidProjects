@@ -22,14 +22,18 @@ public class SystemUtil {
 
     public static void executeLinuxCommand(String[] commands,boolean needRoot,boolean waitFor){
         try{
-            Process process;
-            if(needRoot) process = Runtime.getRuntime().exec("su");
-            else process = Runtime.getRuntime().exec("");
+            if(needRoot){
+                Process process = Runtime.getRuntime().exec("su");
+                DataOutputStream os = new DataOutputStream(process.getOutputStream());
+                for(String command : commands) os.writeBytes(command);
+                os.flush();
+                if(waitFor) process.waitFor();
+            } else{
+                Runtime runtime = Runtime.getRuntime();
+                for(String cmd : commands)
+                    runtime.exec(new String[]{"/bin/sh","-c",cmd});
+            }
 
-            DataOutputStream os = new DataOutputStream(process.getOutputStream());
-            for(String command : commands) os.writeBytes(command);
-            os.flush();
-            if(waitFor) process.waitFor();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -233,7 +233,7 @@
                     android:text="打开市场" />
 
                 <Button
-                    android:id="@+id/bt_share_apk"
+                    android:id="@+id/bt_get_apk"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
                     android:layout_below="@+id/bt_open_market"
@@ -242,13 +242,13 @@
                     android:layout_marginRight="20dp"
                     android:textColor="@color/white"
                     android:background="@drawable/round_background_color_primary2"
-                    android:text="分享APK" />
+                    android:text="提取安装包" />
 
                 <Button
                     android:id="@+id/bt_open_detail"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_below="@+id/bt_share_apk"
+                    android:layout_below="@+id/bt_get_apk"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"

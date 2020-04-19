@@ -7,16 +7,16 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:layout_scrollFlags="scroll|enterAlways">
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:text="@string/title_clean_file"/>
@@ -33,6 +33,8 @@
         app:tabGravity="center"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         app:layout_collapseMode="pin"
         style="@style/MyTabLayoutStyle"/>
 </com.google.android.material.appbar.AppBarLayout>

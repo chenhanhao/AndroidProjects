@@ -20,6 +20,8 @@ android {
                             'src/main/res/layout/clean_file',
                             'src/main/res/layout/show_sound_frequency',
                             'src/main/res/layout/garbage_classification',
+                            'src/main/res/layout/global_outbreak',
+                            'src/main/res/layout/dictionary',
                             'src/main/res'
                     ]
         }
@@ -67,4 +69,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.github.pavlospt:circleview:1.3'
     implementation 'com.tyorikan:voice-recording-visualizer:1.0.3@aar'
+
 }
