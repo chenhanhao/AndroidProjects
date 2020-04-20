@@ -10,4 +10,11 @@
     <color name="gray">#778588</color>
     <color name="green">#00FF00</color>
     <color name="lightBlue">#80226DDD</color>
+    <color name="light">#FFE5DC</color>
+    <color name="light2">#FBC5B6</color>
+    <color name="light3">#FF9885</color>
+    <color name="light4">#F57667</color>
+    <color name="light5">#E54545</color>
+    <color name="light6">#B70908</color>
+    <color name="light7">#8A0808</color>
 </resources>

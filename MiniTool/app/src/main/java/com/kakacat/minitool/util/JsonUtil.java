@@ -209,6 +209,7 @@ public class JsonUtil {
                     data.setDeadCount(jsonObject1.getInt("deadCount"));
                     data.setDeadCountRate(jsonObject1.getDouble("deadRate"));
                     data.setCountryShortCode(jsonObject1.getString("countryShortCode"));
+                    data.setDeadCountRank(jsonObject1.getInt("deadCountRank"));
 
                     String continent = jsonObject1.getString("continents");
                     switch (continent){

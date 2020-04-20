@@ -39,8 +39,17 @@ public class EpidemicData {
     private int deadCount;
     private double deadCountRate;
     private String countryShortCode;
+    private int deadCountRank;
 
     public EpidemicData() {}
+
+    public int getDeadCountRank() {
+        return deadCountRank;
+    }
+
+    public void setDeadCountRank(int deadCountRank) {
+        this.deadCountRank = deadCountRank;
+    }
 
     public double getDeadCountRate() {
         return deadCountRate;

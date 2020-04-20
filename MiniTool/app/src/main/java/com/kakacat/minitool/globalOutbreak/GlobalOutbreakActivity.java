@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
@@ -31,6 +32,7 @@ import java.util.List;
 public class GlobalOutbreakActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private CoordinatorLayout coordinatorLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TextView tvUpdateTime;
@@ -86,6 +88,7 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
 
         fillList();
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        coordinatorLayout = findViewById(R.id.coordinator);
         myPageAdapter = new MyPageAdapter(getSupportFragmentManager(),titleList,myFragmentList);
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
