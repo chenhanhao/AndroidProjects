@@ -12,7 +12,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap">
             <!--scroll : 跟随着一起向下滑(隐藏)
                 enterAlways : 上滑重新显示
@@ -47,12 +47,6 @@
                     android:textColor="@color/white" />
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll">
-        </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <ProgressBar
@@ -69,11 +63,27 @@
 
     <!--    app:layout_behavior="@string/appbar_scrolling_view_behavior"
         想让子控件配合coordinatolayout就加上这个属性-->
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible" />
+            android:orientation="vertical">
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabSelectedTextColor="#000000"
+                app:tabIndicatorHeight="5dp"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap">
+            </com.google.android.material.tabs.TabLayout>
+        </LinearLayout>
+
+
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

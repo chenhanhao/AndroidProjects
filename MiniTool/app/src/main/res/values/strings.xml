@@ -15,7 +15,7 @@
     <string name="title_dong_ci_da_ci">动次打次</string>
     <string name="title_garbage_classification">垃圾分类查询</string>
     <string name="title_global_outbreak">全球疫情</string>
-    <string name="title_dictionary">英汉词典</string>
+    <string name="title_translation">语言翻译</string>
 
     <string name="note_currency_conversion">各国货币汇率转换</string>
     <string name="note_inquire_ip">查询设备IP地址信息</string>
@@ -31,7 +31,7 @@
     <string name="note_dong_ci_da_ci">显示实时声音条状图</string>
     <string name="note_garbage_classification">你是什么垃圾啊?</string>
     <string name="note_global_outbreak">全球各地疫情情况汇总</string>
-    <string name="note_dictionary">提供中英互译</string>
+    <string name="note_translation">提供各种语言互译</string>
 
     <string name="name_us">US</string>
     <string name="name_eu">EU</string>

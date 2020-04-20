@@ -1,4 +1,4 @@
-package com.kakacat.minitool.DongCiDaCi;
+package com.kakacat.minitool.dongCiDaCi;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
