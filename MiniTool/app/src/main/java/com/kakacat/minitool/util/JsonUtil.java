@@ -249,4 +249,16 @@ public class JsonUtil {
 
     }
 
+    public static String handleTranslationResponse(String s){
+        if(!TextUtils.isEmpty(s)){
+            try{
+                JSONObject jsonObject = new JSONObject(s);
+                JSONObject jsonObject1 = jsonObject.getJSONArray("trans_result").getJSONObject(0);
+                return jsonObject1.getString("dst");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
 }

@@ -373,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
         View view = View.inflate(this,R.layout.popupwindow_modify_dpi,null);
         popupWindowModifyDpi = new PopupWindow(view,ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         UiUtil.initPopupWindow(this, popupWindowModifyDpi);
-        btClear = view.findViewById(R.id.bt_clear);
+        btClear = view.findViewById(R.id.iv_clear);
         btModifyDpi = view.findViewById(R.id.bt_modify_dpi);
         btClear.setOnClickListener(this);
         btModifyDpi.setOnClickListener(this);
@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements ItemAdapter.OnIte
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.bt_clear:{
+            case R.id.iv_clear:{
                 popupWindowModifyDpi.dismiss();
                 break;
             }

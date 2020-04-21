@@ -21,7 +21,7 @@ android {
                             'src/main/res/layout/show_sound_frequency',
                             'src/main/res/layout/garbage_classification',
                             'src/main/res/layout/global_outbreak',
-                            'src/main/res/layout/dictionary',
+                            'src/main/res/layout/translation',
                             'src/main/res'
                     ]
         }
