@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity{
             TabLayout.Tab tab = tabLayout.getTabAt(i);
             tab.setCustomView(myPagerAdapter.getTabView(i));
         }
-        tabLayout.setElevation(10);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
