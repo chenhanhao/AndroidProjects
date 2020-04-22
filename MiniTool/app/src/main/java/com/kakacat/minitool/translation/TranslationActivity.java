@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -222,6 +223,7 @@ public class TranslationActivity extends AppCompatActivity implements View.OnCli
                 "&appid=" + appId +
                 "&salt=" + random +
                 "&sign=" + sign;
+        Log.d("hhh",address);
         if(TextUtils.isEmpty(content)){
            UiUtil.showHint(linearLayout,"请输入内容");
            return;
@@ -246,7 +248,7 @@ public class TranslationActivity extends AppCompatActivity implements View.OnCli
 
     private String getShortCode(CharSequence s){
         if ("自动检测".equals(s)) return "auto";
-        else if ("中文".equals(s)) return "cn";
+        else if ("中文".equals(s)) return "zh";
         else if ("英语".equals(s)) return "en";
         else if ("粤语".equals(s)) return "yue";
         else if ("文言文".equals(s)) return "wyw";

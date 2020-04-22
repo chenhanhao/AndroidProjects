@@ -3,12 +3,18 @@ package com.kakacat.minitool.util;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.media.MediaExtractor;
+import android.media.MediaFormat;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.os.Environment;
 
 import androidx.annotation.RequiresApi;
 
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
 
 public class SystemUtil {
 
@@ -88,6 +94,55 @@ public class SystemUtil {
         packet[6] = (byte) 0xFC;
     }
 
+    public static String separateAudioFromVideo(String filePath){
+        try{
+            MediaExtractor mediaExtractor = new MediaExtractor();
+            mediaExtractor.setDataSource(filePath);      //设置视频路径
+            int audioIndex = 0;
+            int trackCount = mediaExtractor.getTrackCount();
+            MediaFormat audioFormat = null;
+            for(int i = 0; i < trackCount; i++){    //得到音轨
+                MediaFormat mediaFormat = mediaExtractor.getTrackFormat(i);
+                String mime = mediaFormat.getString(MediaFormat.KEY_MIME);
+                if(mime.startsWith("audio")){
+                    audioIndex = i;
+                    audioFormat = mediaFormat;
+                    break;
+                }
+            }
 
+            File audioFile = new File(Environment.getExternalStorageDirectory() + "/MiniTool/" + filePath.substring(filePath.lastIndexOf('/') + 1,filePath.length() - 1) + "3");
+            if(audioFile.exists()){
+                audioFile.delete();
+            }else{
+                File parentFile = audioFile.getParentFile();
+                parentFile.mkdirs();
+                audioFile.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(audioFile);
+            int maxAudioBufferCount = audioFormat.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE);
+            ByteBuffer audioByteBuffer = ByteBuffer.allocate(maxAudioBufferCount);
+            mediaExtractor.selectTrack(audioIndex);
+            int len;
+
+            while((len = mediaExtractor.readSampleData(audioByteBuffer,0)) != -1){
+                byte[] bytes = new byte[len];
+                audioByteBuffer.get(bytes);
+                byte[] adtsData = new byte[len + 7];
+                SystemUtil.addADTStoPacket(adtsData, len + 7);
+                System.arraycopy(bytes,0,adtsData,7,len);
+                fos.write(adtsData);
+                audioByteBuffer.clear();
+                mediaExtractor.advance();
+            }
+            fos.flush();
+            fos.close();
+            mediaExtractor.release();
+            return "提取完成,保存在目录" + audioFile.getAbsolutePath();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "提取失败...";
+    }
 
 }

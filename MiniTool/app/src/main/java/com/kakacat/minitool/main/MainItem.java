@@ -1,11 +1,11 @@
 package com.kakacat.minitool.main;
 
-public class Item {
+public class MainItem {
     private int titleId;
     private int iconId;
     private int noteId;
 
-    public Item(int titleId, int iconId, int noteId) {
+    public MainItem(int titleId, int iconId, int noteId) {
         this.titleId = titleId;
         this.iconId = iconId;
         this.noteId = noteId;

@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <include layout="@layout/toolbar_main_layout"/>
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_height="wrap_content">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </androidx.recyclerview.widget.RecyclerView>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </LinearLayout>
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap">
+            </androidx.appcompat.widget.Toolbar>
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
+                app:tabPaddingStart="0dp"
+                app:tabPaddingEnd="0dp"
+                app:tabIndicatorHeight="0dp" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
@@ -30,6 +51,5 @@
             android:layout_height="wrap_content"
             android:text="Hello World 2!" />
     </com.google.android.material.navigation.NavigationView>
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

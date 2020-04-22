@@ -13,12 +13,12 @@ import com.kakacat.minitool.R;
 
 import java.util.List;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
     private List<Wifi> wifiList;
 
-    public ItemAdapter(List<Wifi> wifiList) {
+    public MyAdapter(List<Wifi> wifiList) {
         this.wifiList = wifiList;
     }
 

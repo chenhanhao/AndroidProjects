@@ -27,7 +27,7 @@ public class WifiPwdViewActivity extends AppCompatActivity {
     private Context context;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-    private ItemAdapter itemAdapter;
+    private MyAdapter myAdapter;
     private List<Wifi> wifiList;
 
     @Override
@@ -61,9 +61,9 @@ public class WifiPwdViewActivity extends AppCompatActivity {
 
 
     private void initRecycleView(){
-        itemAdapter = new ItemAdapter(wifiList);
+        myAdapter = new MyAdapter(wifiList);
         recyclerView = findViewById(R.id.rv_wifi);
-        recyclerView.setAdapter(itemAdapter);
+        recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(context,1));
     }
 

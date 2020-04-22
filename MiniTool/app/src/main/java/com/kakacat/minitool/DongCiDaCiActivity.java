@@ -1,4 +1,4 @@
-package com.kakacat.minitool.dongCiDaCi;
+package com.kakacat.minitool;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -10,35 +10,32 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.kakacat.minitool.R;
 import com.tyorikan.voicerecordingvisualizer.RecordingSampler;
 import com.tyorikan.voicerecordingvisualizer.VisualizerView;
 
 public class DongCiDaCiActivity extends AppCompatActivity {
 
-/*    采样率一般有5个等级 : 11025,22050,24000,44100,48000
-    */
+    /*    采样率一般有5个等级 : 11025,22050,24000,44100,48000
+     */
 
     private int REQUEST_RECORD_AUDIO = 1;
+    private VisualizerView visualizerView;
+    private RecordingSampler recordingSampler;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dong_ci_da_ci);
- //       requestPermission();
-        VisualizerView visualizerView = findViewById(R.id.visualizer);
-
-        RecordingSampler recordingSampler = new RecordingSampler();
- //       recordingSampler.setVolumeListener(this);  // for custom implements
-        recordingSampler.setSamplingInterval(100); // voice sampling interval
-        recordingSampler.link(visualizerView);     // link to visualizer
-
-        recordingSampler.startRecording();
-
-
+        requestPermission();
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        recordingSampler.release();
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestPermission() {
@@ -46,7 +43,7 @@ public class DongCiDaCiActivity extends AppCompatActivity {
         if(ActivityCompat.checkSelfPermission(this,permission) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{permission},REQUEST_RECORD_AUDIO);
         }else{
-
+            start();
         }
     }
 
@@ -55,14 +52,19 @@ public class DongCiDaCiActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == REQUEST_RECORD_AUDIO){
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
+                start();
             }else{
                 finish();
             }
         }
-
     }
 
-
+    private void start(){
+        visualizerView = findViewById(R.id.visualizer);
+        recordingSampler = new RecordingSampler();
+        recordingSampler.setSamplingInterval(100); // voice sampling interval
+        recordingSampler.link(visualizerView);     // link to visualizer
+        recordingSampler.startRecording();
+    }
 
 }

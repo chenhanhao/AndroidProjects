@@ -82,9 +82,6 @@
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap">
             </com.google.android.material.tabs.TabLayout>
         </LinearLayout>
-
-
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

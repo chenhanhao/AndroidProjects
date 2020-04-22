@@ -13,9 +13,9 @@ import com.kakacat.minitool.R;
 
 import java.util.List;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private List<Item> list;
+    private List<MainItem> list;
     private LayoutInflater layoutInflater;
     private OnItemClickListener listener;
 
@@ -23,7 +23,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         this.listener = listener;
     }
 
-    public ItemAdapter(List<Item> list) {
+    public MyAdapter(List<MainItem> list) {
         this.list = list;
     }
 
@@ -32,12 +32,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.main_item_layout,parent,false);
-        return new ItemAdapter.ViewHolder(view);
+        return new MyAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        Item item = list.get(position);
+        MainItem item = list.get(position);
         holder.imageView.setImageResource(item.getIconId());
         holder.title.setText(item.getTitleId());
         holder.note.setText(item.getNoteId());

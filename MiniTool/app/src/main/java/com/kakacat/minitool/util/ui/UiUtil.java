@@ -28,17 +28,21 @@ public class UiUtil {
         popupWindow.setTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setAnimationStyle(android.R.style.Animation_Dialog);
-
-        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-        lp.alpha = 0.6f;//代表透明程度，范围为0 - 1.0f
-        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        activity.getWindow().setAttributes(lp);
-
+        setShadow(activity);
         popupWindow.setOnDismissListener(()->{
+            WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
             lp.alpha = 1.0f;
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             activity.getWindow().setAttributes(lp);
         });
+    }
+
+
+    public static void setShadow(Activity activity){
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.alpha = 0.6f;//代表透明程度，范围为0 - 1.0f
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        activity.getWindow().setAttributes(lp);
     }
 
     public static void showHint(View view,CharSequence hint){
