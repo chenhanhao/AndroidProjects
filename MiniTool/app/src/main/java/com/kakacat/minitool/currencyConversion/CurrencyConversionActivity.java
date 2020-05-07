@@ -1,5 +1,6 @@
 package com.kakacat.minitool.currencyConversion;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -24,12 +25,13 @@ import com.kakacat.minitool.util.HttpCallbackListener;
 import com.kakacat.minitool.util.HttpUtil;
 import com.kakacat.minitool.util.JsonUtil;
 import com.kakacat.minitool.util.ui.ItemDecoration;
+import com.kakacat.minitool.util.ui.CircleImageView;
 import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class CurrencyConversionActivity extends AppCompatActivity implements View.OnFocusChangeListener{
 
@@ -112,6 +114,7 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
                             double value = Double.parseDouble(s.toString());
                             showResult(value,editText1);
                         }catch (Exception e){
+                            e.printStackTrace();
                         }
                     }else{
                         editText1.setText("");
@@ -133,6 +136,7 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
         swipeRefreshLayout.setOnRefreshListener(()->refreshExchangeRate());
     }
 
+    @SuppressLint("SetTextI18n")
     private void initWidget(){
         setSupportActionBar(findViewById(R.id.toolbar_currency));
         actionBar = getSupportActionBar();

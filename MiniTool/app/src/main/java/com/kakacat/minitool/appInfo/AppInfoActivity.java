@@ -26,16 +26,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.ui.CircleImageView;
 
 import java.util.Collections;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class AppInfoActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Context context;
-    private Toolbar toolbar;
+
     private ImageView ivSort;
     private ItemAdapter adapter;
     private RecyclerView recyclerView;
@@ -83,7 +84,7 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initToolbar(){
-        toolbar = findViewById(R.id.toolbar_app_info);
+        Toolbar toolbar = findViewById(R.id.toolbar_app_info);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -237,11 +238,11 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
             rbSortByMinAPI = popupWindowView.findViewById(R.id.rb_sort_by_min_api);
             rbSortByFirstInstallTime = popupWindowView.findViewById(R.id.rb_sort_by_first_install_time);
             rbSortByLastUpdateTime = popupWindowView.findViewById(R.id.rb_sort_by_last_update_time);
-            rbSortByAppName.setOnClickListener(this);
-            rbSortByTargetAPI.setOnClickListener(this);
-            rbSortByMinAPI.setOnClickListener(this);
-            rbSortByFirstInstallTime.setOnClickListener(this);
-            rbSortByLastUpdateTime.setOnClickListener(this);
+            rbSortByAppName.setOnClickListener(this::onClick);
+            rbSortByTargetAPI.setOnClickListener(this::onClick);
+            rbSortByMinAPI.setOnClickListener(this::onClick);
+            rbSortByFirstInstallTime.setOnClickListener(this::onClick);
+            rbSortByLastUpdateTime.setOnClickListener(this::onClick);
             initPopUpWindow(popupWindowView);
             initialized = true;
         }
@@ -274,7 +275,6 @@ public class AppInfoActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
         switch (v.getId()){

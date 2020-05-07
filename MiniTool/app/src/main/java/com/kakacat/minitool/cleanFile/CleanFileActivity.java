@@ -34,6 +34,7 @@ import com.kakacat.minitool.util.ui.UiUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CleanFileActivity extends AppCompatActivity implements View.OnClickListener,TabLayout.OnTabSelectedListener{
 
@@ -75,7 +76,7 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
     private boolean isSelectAllApk;
     private boolean initPopupWindowWarn1;
 
-    private Handler handle = new Handler(){
+    Handler handle = new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
@@ -106,10 +107,10 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
         viewPager = findViewById(R.id.view_pager);
         btSelectAll = findViewById(R.id.bt_select_all);
 
-        bigFileList = new ArrayList<>();
-        emptyFileList = new ArrayList<>();
-        emptyDirList = new ArrayList<>();
-        apkList = new ArrayList<>();
+        bigFileList = new CopyOnWriteArrayList<>();
+        emptyFileList = new CopyOnWriteArrayList<>();
+        emptyDirList = new CopyOnWriteArrayList<>();
+        apkList = new CopyOnWriteArrayList<>();
         titleList = new ArrayList<>();
         fragmentList = new ArrayList<>();
 
@@ -134,11 +135,17 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
         viewPager.setAdapter(sectionsPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        new Thread(()->{
-            getFileList(Environment.getExternalStorageDirectory());
-            Message msg = new Message();
-            handle.sendMessage(msg);
-        }).start();
+        int threadNum = 3;
+        File[] files = Environment.getExternalStorageDirectory().listFiles();
+        int startIndex = files.length - 1;
+        int endIndex;
+        for(int i = 0; i < threadNum; i++){
+            if(i != threadNum - 1) endIndex = startIndex - files.length / threadNum;
+            else endIndex = 0;
+            ScannerThread scannerThread = new ScannerThread(this,files,threadNum,startIndex,endIndex,bigFileList,emptyFileList,emptyDirList,apkList);
+            scannerThread.start();
+            startIndex = endIndex;
+        }
     }
 
     private void setListener(){
@@ -177,56 +184,41 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
-    private void getFileList(File file){
-        if(file.isFile()){
-            if(file.length() == 0)
-                emptyFileList.add(new FileItem(file,false));
-            else{
-                if(file.getName().endsWith("apk")) apkList.add(new FileItem(file,false));
-                if(file.length() > 30 * 1024 * 1024) bigFileList.add(new FileItem(file,false));
-            }
-        }else if(file.isDirectory()){
-            File[] files = file.listFiles();
-            if(files == null || files.length == 0)
-                emptyDirList.add(new FileItem(file,false));
-            else
-                for(File file1 : files)
-                    getFileList(file1);
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_select_all:{
                 if(currentTabPosition == 0){
                     isSelectAllBigFile = !isSelectAllBigFile;
-                    for(FileItem fileItem : bigFileList)
-                        fileItem.setChecked(isSelectAllBigFile);
-                    if(isSelectAllBigFile) btSelectAll.setBackgroundResource(R.drawable.ic_clear);
-                    else btSelectAll.setBackgroundResource(R.drawable.ic_select_all);
+                    bigFileList.forEach(item->item.setChecked(isSelectAllBigFile));
+                    if(isSelectAllBigFile)
+                        btSelectAll.setBackgroundResource(R.drawable.ic_clear);
+                    else
+                        btSelectAll.setBackgroundResource(R.drawable.ic_select_all);
                     bigFileAdapter.notifyDataSetChanged();
                 }else if(currentTabPosition == 1){
                     isSelectAllEmptyFile = !isSelectAllEmptyFile;
-                    for(FileItem fileItem : emptyFileList)
-                        fileItem.setChecked(isSelectAllEmptyFile);
-                    if(isSelectAllEmptyFile) btSelectAll.setBackgroundResource(R.drawable.ic_clear);
-                    else btSelectAll.setBackgroundResource(R.drawable.ic_select_all);
+                    emptyFileList.forEach(item->item.setChecked(isSelectAllEmptyFile));
+                    if(isSelectAllEmptyFile)
+                        btSelectAll.setBackgroundResource(R.drawable.ic_clear);
+                    else
+                        btSelectAll.setBackgroundResource(R.drawable.ic_select_all);
                     emptyFileAdapter.notifyDataSetChanged();
                 }else if(currentTabPosition == 2){
                     isSelectAllEmptyDir= !isSelectAllEmptyDir;
-                    for(FileItem fileItem : emptyDirList)
-                        fileItem.setChecked(isSelectAllEmptyDir);
-                    if(isSelectAllEmptyDir) btSelectAll.setBackgroundResource(R.drawable.ic_clear);
-                    else btSelectAll.setBackgroundResource(R.drawable.ic_select_all);
+                    emptyDirList.forEach(item->item.setChecked(isSelectAllEmptyDir));
+                    if(isSelectAllEmptyDir)
+                        btSelectAll.setBackgroundResource(R.drawable.ic_clear);
+                    else
+                        btSelectAll.setBackgroundResource(R.drawable.ic_select_all);
                     emptyDirAdapter.notifyDataSetChanged();
                 }else if(currentTabPosition == 3){
                     isSelectAllApk = !isSelectAllApk;
-                    for(FileItem fileItem : apkList)
-                        fileItem.setChecked(isSelectAllApk);
-                    if(isSelectAllApk) btSelectAll.setBackgroundResource(R.drawable.ic_clear);
-                    else btSelectAll.setBackgroundResource(R.drawable.ic_select_all);
+                    apkList.forEach(item -> item.setChecked(isSelectAllApk));
+                    if(isSelectAllApk)
+                        btSelectAll.setBackgroundResource(R.drawable.ic_clear);
+                    else
+                        btSelectAll.setBackgroundResource(R.drawable.ic_select_all);
                     apkAdapter.notifyDataSetChanged();
                 }
                 break;
@@ -254,6 +246,9 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
     private int deleteSelectedFile() {
         int num = 0;
         deleteFileSize = 0;
+
+
+
         for(int i = bigFileList.size() - 1; i >= 0; i--) {
             FileItem fileItem = bigFileList.get(i);
             if (fileItem.getChecked()) {

@@ -15,10 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.SystemUtil;
 
+import org.xml.sax.SAXException;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -84,7 +88,11 @@ public class WifiPwdViewActivity extends AppCompatActivity {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser parser = factory.newSAXParser();
             parser.parse(new File(filePath),new WiFiConfigSAXHandle(wifiList));
-        }catch (Exception e){
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
             e.printStackTrace();
         }
     }

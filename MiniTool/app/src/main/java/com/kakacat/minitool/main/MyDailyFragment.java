@@ -3,7 +3,6 @@ package com.kakacat.minitool.main;
 import android.content.Intent;
 import android.view.View;
 
-import com.kakacat.minitool.DongCiDaCiActivity;
 import com.kakacat.minitool.appInfo.AppInfoActivity;
 import com.kakacat.minitool.cleanFile.CleanFileActivity;
 import com.kakacat.minitool.currencyConversion.CurrencyConversionActivity;
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class MyDailyFragment extends MyFragment implements MyAdapter.OnItemClickListener {
 
-    public MyDailyFragment(List<MainItem> itemList) {
+    MyDailyFragment(List<MainItem> itemList) {
         super(itemList);
         super.myAdapter.setOnItemClickListener(this);
     }
@@ -53,18 +52,14 @@ public class MyDailyFragment extends MyFragment implements MyAdapter.OnItemClick
                 break;
             }
             case 6:{
-                intent = new Intent(getContext(), DongCiDaCiActivity.class);
-                break;
-            }
-            case 7:{
                 intent = new Intent(getContext(), GarbageClassificationActivity.class);
                 break;
             }
-            case 8:{
+            case 7:{
                 intent = new Intent(getContext(), GlobalOutbreakActivity.class);
                 break;
             }
-            case 9:{
+            case 8:{
                 intent = new Intent(getContext(), TranslationActivity.class);
                 break;
             }

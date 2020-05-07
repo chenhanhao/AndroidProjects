@@ -18,7 +18,6 @@
         <activity android:name=".translation.TranslationActivity"></activity>
         <activity android:name=".globalOutbreak.GlobalOutbreakActivity" />
         <activity android:name=".garbageClassification.GarbageClassificationActivity" />
-        <activity android:name=".DongCiDaCiActivity" />
         <activity android:name=".cleanFile.CleanFileActivity" />
         <activity android:name=".textEncryption.TextEncryptionActivity" />
         <activity android:name=".appInfo.AppDetailActivity" />

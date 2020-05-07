@@ -20,7 +20,7 @@
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"/>
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.kakacat.minitool.util.ui.CircleImageView
             android:id="@+id/icon"
             android:layout_width="40dp"
             android:layout_height="40dp"

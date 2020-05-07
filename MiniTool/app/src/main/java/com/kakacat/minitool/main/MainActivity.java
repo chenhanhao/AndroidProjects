@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity{
         dailyItemList.add(new MainItem(R.string.title_wifi_pwd_view,R.drawable.ic_wifi,R.string.note_wifi_pwd_view));
         dailyItemList.add(new MainItem(R.string.title_app_info,R.drawable.ic_app_info,R.string.note_app_info));
         dailyItemList.add(new MainItem(R.string.title_clean_file,R.drawable.ic_clean_file,R.string.note_clean_info));
-        dailyItemList.add(new MainItem(R.string.title_dong_ci_da_ci,R.drawable.ic_microphone,R.string.note_dong_ci_da_ci));
         dailyItemList.add(new MainItem(R.string.title_garbage_classification,R.drawable.ic_garbage,R.string.note_garbage_classification));
         dailyItemList.add(new MainItem(R.string.title_global_outbreak,R.drawable.ic_global_outbreak,R.string.note_global_outbreak));
         dailyItemList.add(new MainItem(R.string.title_translation,R.drawable.ic_dictionary,R.string.note_translation));
@@ -110,8 +109,10 @@ public class MainActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case android.R.id.home:{
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
-                else drawerLayout.openDrawer(GravityCompat.START);
+                if(drawerLayout.isDrawerOpen(GravityCompat.START))
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                else
+                    drawerLayout.openDrawer(GravityCompat.START);
                 break;
             }
             default:

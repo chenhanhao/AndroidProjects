@@ -102,7 +102,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         btCopyMd5 = findViewById(R.id.bt_copy_md5);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+
     private void setData() {
         pm = getPackageManager();
         packageInfo = getIntent().getParcelableExtra("packageInfo");
@@ -128,7 +128,8 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         if(permissions != null){
             tvHeader3.setText("权限声明" + "(" + permissions.length + "个)");
             StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < permissions.length; i++) sb.append(i + 1 + ". " + permissions[i] + "\n");
+            for(int i = 0; i < permissions.length; i++)
+                sb.append(i + 1 + ". " + permissions[i] + "\n");
             tvPermission.setText(sb.toString());
         }
 
@@ -244,11 +245,6 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
     }
 
 
-    /**
-     * 将Drawable转换为Bitmap
-     * @param drawable
-     * @return
-     */
     private Bitmap drawableToBitmap(Drawable drawable) {
         //取drawable的宽高
         int width = drawable.getIntrinsicWidth();

@@ -98,13 +98,13 @@ public class TranslationActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setListener() {
-        ivOpenCollection.setOnClickListener(this);
-        ivClear.setOnClickListener(this);
-        tvFrom.setOnClickListener(this);
-        tvTo.setOnClickListener(this);
-        fab.setOnClickListener(this);
-        ivCopy.setOnClickListener(this);
-        ivCollect.setOnClickListener(this);
+        ivOpenCollection.setOnClickListener(this::onClick);
+        ivClear.setOnClickListener(this::onClick);
+        tvFrom.setOnClickListener(this::onClick);
+        tvTo.setOnClickListener(this::onClick);
+        fab.setOnClickListener(this::onClick);
+        ivCopy.setOnClickListener(this::onClick);
+        ivCollect.setOnClickListener(this::onClick);
     }
 
 
