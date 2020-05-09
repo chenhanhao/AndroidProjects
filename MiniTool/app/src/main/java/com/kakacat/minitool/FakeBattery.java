@@ -18,11 +18,8 @@ public class FakeBattery {
     private static FakeBattery fakeBattery;
     private Activity activity;
     private View parentView;
-    private View popupWindowView;
     private PopupWindow popupWindow;
     private EditText etBattery;
-    private Button btFakeBattery;
-    private Button btResetBattery;
     private SeekBar seekBarBattery;
 
     public static FakeBattery getInstance(Activity activity,View parentView){
@@ -37,11 +34,11 @@ public class FakeBattery {
 
 
     private void initView(){
-        popupWindowView = View.inflate(activity.getApplicationContext(),R.layout.popupwindow_fake_battery,null);
+        View popupWindowView = View.inflate(activity.getApplicationContext(), R.layout.popupwindow_fake_battery, null);
         popupWindow = new PopupWindow(popupWindowView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         etBattery = popupWindowView.findViewById(R.id.et_current_battery);
-        btFakeBattery = popupWindowView.findViewById(R.id.bt_fake_battery);
-        btResetBattery = popupWindowView.findViewById(R.id.bt_reset_battery);
+        Button btFakeBattery = popupWindowView.findViewById(R.id.bt_fake_battery);
+        Button btResetBattery = popupWindowView.findViewById(R.id.bt_reset_battery);
         seekBarBattery = popupWindowView.findViewById(R.id.seek_bar_battery);
         UiUtil.initPopupWindow(activity,popupWindow);
         seekBarBattery.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
@@ -60,7 +57,7 @@ public class FakeBattery {
             seekBarBattery.setProgress(val);
         });
         btFakeBattery.setOnClickListener(v -> {
-            int val = Integer.valueOf(etBattery.getText().toString());
+            int val = Integer.parseInt(etBattery.getText().toString());
             if(val < 0 || val > 100) Snackbar.make(parentView,"你正常点好吗???",Snackbar.LENGTH_SHORT).show();
             else {
                 SystemUtil.setBatteryLevel(val + "");

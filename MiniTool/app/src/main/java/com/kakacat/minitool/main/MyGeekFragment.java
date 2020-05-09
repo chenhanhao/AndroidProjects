@@ -2,13 +2,9 @@ package com.kakacat.minitool.main;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.kakacat.minitool.FakeBattery;
+import com.kakacat.minitool.GetAudioService;
 import com.kakacat.minitool.ModifyDpi;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
@@ -31,7 +28,6 @@ public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickL
 
     private Activity activity;
     private View rootView;
-    ServiceConnection serviceConnection;
 
     MyGeekFragment(List<MainItem> itemList) {
         super(itemList);
@@ -97,25 +93,11 @@ public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickL
         if(requestCode == REQUEST_WRITE && resultCode == RESULT_OK && data != null){
             Intent intent = new Intent(activity, GetAudioService.class);
             intent.putExtra("uri",data.getData());
-            activity.bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
+            activity.startService(intent);
         }
     }
 
     private void audioCapture() {
-        if(serviceConnection == null)
-            serviceConnection = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    GetAudioService.HandleBinder binder = (GetAudioService.HandleBinder)service;
-                    binder.audioCapture();
-                }
-
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-
-                }
-            };
-
         String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
         if(ActivityCompat.checkSelfPermission(activity,permission) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);

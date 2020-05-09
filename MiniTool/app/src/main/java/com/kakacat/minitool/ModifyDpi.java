@@ -18,10 +18,7 @@ public class ModifyDpi {
     private static ModifyDpi modifyDpi;
     private Activity activity;
     private View parentView;
-    private View popupWindowView;
     private PopupWindow popupWindow;
-    private Button btClear;
-    private Button btModifyDpi;
     private EditText etDpi;
 
     public static ModifyDpi getInstance(Activity activity,View parentView){
@@ -35,11 +32,11 @@ public class ModifyDpi {
     }
 
     private void initView(){
-        popupWindowView = View.inflate(activity,R.layout.popupwindow_modify_dpi,null);
+        View popupWindowView = View.inflate(activity, R.layout.popupwindow_modify_dpi, null);
         popupWindow= new PopupWindow(popupWindowView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         UiUtil.initPopupWindow(activity, popupWindow);
-        btClear = popupWindowView.findViewById(R.id.iv_clear);
-        btModifyDpi = popupWindowView.findViewById(R.id.bt_modify_dpi);
+        Button btClear = popupWindowView.findViewById(R.id.iv_clear);
+        Button btModifyDpi = popupWindowView.findViewById(R.id.bt_modify_dpi);
         etDpi = popupWindowView.findViewById(R.id.edit_text);
         btClear.setOnClickListener(v -> popupWindow.dismiss());
         btModifyDpi.setOnClickListener(v -> {

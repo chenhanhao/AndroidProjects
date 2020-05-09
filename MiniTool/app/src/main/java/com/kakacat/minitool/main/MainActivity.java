@@ -1,9 +1,13 @@
 package com.kakacat.minitool.main;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -12,6 +16,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.SystemUtil;
+import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity{
     private List<MyFragment> myFragmentList;
     private List<MainItem> dailyItemList;
     private List<MainItem> geekItemList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
