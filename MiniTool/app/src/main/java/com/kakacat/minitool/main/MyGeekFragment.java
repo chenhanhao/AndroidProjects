@@ -2,12 +2,13 @@ package com.kakacat.minitool.main;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import com.kakacat.minitool.FakeBattery;
 import com.kakacat.minitool.ModifyDpi;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
-import com.kakacat.minitool.util.SystemUtil;
 import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.util.List;
@@ -31,6 +31,7 @@ public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickL
 
     private Activity activity;
     private View rootView;
+    ServiceConnection serviceConnection;
 
     MyGeekFragment(List<MainItem> itemList) {
         super(itemList);
@@ -94,22 +95,27 @@ public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickL
         super.onActivityResult(requestCode, resultCode, data);
         int REQUEST_WRITE = 1;
         if(requestCode == REQUEST_WRITE && resultCode == RESULT_OK && data != null){
-            /*           showLoadingWindow();*/
-            new Thread(()->{
-                Uri uri = data.getData();        //路径
-                String[] projections = {MediaStore.Video.Media.DATA};  //  列名
-                Cursor cursor = getContext().getContentResolver().query(uri,projections, null, null, null);
-                cursor.moveToFirst();
-                String filePath = cursor.getString(0);
-                cursor.close();
-                String hint = SystemUtil.separateAudioFromVideo(filePath);
-
-                activity.runOnUiThread(()-> UiUtil.showHint(rootView,hint));
-            }).start();
+            Intent intent = new Intent(activity, GetAudioService.class);
+            intent.putExtra("uri",data.getData());
+            activity.bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
         }
     }
 
     private void audioCapture() {
+        if(serviceConnection == null)
+            serviceConnection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    GetAudioService.HandleBinder binder = (GetAudioService.HandleBinder)service;
+                    binder.audioCapture();
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+
+                }
+            };
+
         String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
         if(ActivityCompat.checkSelfPermission(activity,permission) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);

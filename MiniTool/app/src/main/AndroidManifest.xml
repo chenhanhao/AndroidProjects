@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -15,7 +16,12 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".translation.TranslationActivity"></activity>
+        <service
+            android:name=".main.GetAudioService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".translation.TranslationActivity" />
         <activity android:name=".globalOutbreak.GlobalOutbreakActivity" />
         <activity android:name=".garbageClassification.GarbageClassificationActivity" />
         <activity android:name=".cleanFile.CleanFileActivity" />

@@ -1,13 +1,16 @@
 package com.kakacat.minitool.util.ui;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
+import android.os.Vibrator;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupWindow;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.kakacat.minitool.main.GetAudioService;
 
 public class UiUtil {
 
@@ -48,6 +51,10 @@ public class UiUtil {
     public static void showHint(View view,CharSequence hint){
         Snackbar.make(view,hint,Snackbar.LENGTH_SHORT).show();
     }
+
+
+
+
 
 
 }

@@ -18,6 +18,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
+    private static final String TAG = "MainActivity";
+
     private DrawerLayout drawerLayout;
     private ActionBar actionBar;
     private ViewPager viewPager;

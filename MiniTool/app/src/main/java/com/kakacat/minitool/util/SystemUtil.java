@@ -1,5 +1,6 @@
 package com.kakacat.minitool.util;
 
+import android.app.Service;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.media.MediaFormat;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Vibrator;
 
 import androidx.annotation.RequiresApi;
 
@@ -143,6 +145,13 @@ public class SystemUtil {
             e.printStackTrace();
         }
         return "提取失败...";
+    }
+
+
+
+    public static void vibrate(Context context, long milliseconds){
+        Vibrator vibrator = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
+        vibrator.vibrate(milliseconds);
     }
 
 }

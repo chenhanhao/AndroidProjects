@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -28,6 +29,7 @@ public class CircleImageView extends androidx.appcompat.widget.AppCompatImageVie
         Bitmap circleBitmap = getCircleBitmap(bitmap);
 
         setImageBitmap(circleBitmap);
+
     }
 
 
@@ -54,6 +56,8 @@ public class CircleImageView extends androidx.appcompat.widget.AppCompatImageVie
 
         return circleBitmap;
     }
+
+
 
 
 }
