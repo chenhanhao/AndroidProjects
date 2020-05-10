@@ -1,40 +1,31 @@
 package com.kakacat.minitool.main;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.kakacat.minitool.ChangeThemeView;
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.SystemUtil;
-import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
-    private static final String TAG = "MainActivity";
-
     private DrawerLayout drawerLayout;
-    private ActionBar actionBar;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private MyPagerAdapter myPagerAdapter;
+    private NavigationView navigationView;
     private List<MyTab> myTabList;
     private List<MyFragment> myFragmentList;
-    private List<MainItem> dailyItemList;
-    private List<MainItem> geekItemList;
 
 
     @Override
@@ -49,8 +40,8 @@ public class MainActivity extends AppCompatActivity{
     private void fillList() {
         myTabList = new ArrayList<>();
         myFragmentList = new ArrayList<>();
-        dailyItemList = new ArrayList<>();
-        geekItemList = new ArrayList<>();
+        List<MainItem> dailyItemList = new ArrayList<>();
+        List<MainItem> geekItemList = new ArrayList<>();
 
         myTabList.add(new MyTab("日常",R.drawable.ic_daily));
         myTabList.add(new MyTab("极客",R.drawable.ic_geek));
@@ -76,7 +67,7 @@ public class MainActivity extends AppCompatActivity{
     }
     private void initWidget(){
         setSupportActionBar(findViewById(R.id.toolbar_main));
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_action_slide);
@@ -84,14 +75,16 @@ public class MainActivity extends AppCompatActivity{
         }
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        viewPager = findViewById(R.id.view_pager);
-        tabLayout = findViewById(R.id.tab_layout);
+        navigationView = findViewById(R.id.nav_view);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
 
-        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(),this,myTabList,myFragmentList);
+        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), this, myTabList, myFragmentList);
         viewPager.setAdapter(myPagerAdapter);
         tabLayout.setupWithViewPager(viewPager,true);
         for(int i = 0; i < tabLayout.getTabCount(); i++){
             TabLayout.Tab tab = tabLayout.getTabAt(i);
+            assert tab != null;
             tab.setCustomView(myPagerAdapter.getTabView(i));
         }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -112,6 +105,35 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.nav_theme:{
+                    ChangeThemeView changeThemeView = ChangeThemeView.getInstance(
+                            MainActivity.this,
+                            View.inflate(this,R.layout.select_theme,null),
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    changeThemeView.showAtLocation(navigationView, Gravity.CENTER,0,0);
+                    break;
+                }
+                case R.id.nav_setting:{
+
+                    break;
+                }
+                case R.id.nav_about:{
+                    break;
+                }
+                case R.id.nav_exit:{
+                    break;
+                }
+                default:
+                    break;
+            }
+            item.setChecked(false);
+            return true;
+        });
     }
 
     @Override
@@ -129,5 +151,8 @@ public class MainActivity extends AppCompatActivity{
         }
         return true;
     }
+
+
+
 
 }

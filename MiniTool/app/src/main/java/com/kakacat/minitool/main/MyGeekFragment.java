@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
-import com.kakacat.minitool.FakeBattery;
+import com.kakacat.minitool.FakeBatteryView;
 import com.kakacat.minitool.GetAudioService;
-import com.kakacat.minitool.ModifyDpi;
+import com.kakacat.minitool.ModifyDpiView;
+import com.kakacat.minitool.R;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
 import com.kakacat.minitool.util.ui.UiUtil;
@@ -27,7 +29,7 @@ import static android.app.Activity.RESULT_OK;
 public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickListener {
 
     private Activity activity;
-    private View rootView;
+    private View parentView;
 
     MyGeekFragment(List<MainItem> itemList) {
         super(itemList);
@@ -37,9 +39,9 @@ public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickL
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = super.onCreateView(inflater, container, savedInstanceState);
+        parentView = super.onCreateView(inflater, container, savedInstanceState);
         activity = getActivity();
-        return rootView;
+        return parentView;
     }
 
     @Override
@@ -51,15 +53,21 @@ public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickL
                 break;
             }
             case 1:{
-                ModifyDpi modifyDpi = ModifyDpi.getInstance(activity,rootView);
-                UiUtil.setShadow(activity);
-                modifyDpi.start();
+                ModifyDpiView modifyDpiView = ModifyDpiView.getInstance(activity,
+                        parentView,
+                        View.inflate(getContext(), R.layout.popupwindow_modify_dpi,null),
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                modifyDpiView.showAtLocation(parentView,Gravity.CENTER,0,0);
                 break;
             }
             case 2:{
-                FakeBattery fakeBattery = FakeBattery.getInstance(activity,rootView);
-                UiUtil.setShadow(activity);
-                fakeBattery.start();
+                FakeBatteryView fakeBatteryView = FakeBatteryView.getInstance(activity,
+                        parentView,
+                        View.inflate(getContext(), R.layout.popupwindow_fake_battery,null),
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                fakeBatteryView.showAtLocation(parentView, Gravity.CENTER,0,0);
                 break;
             }
             case 3:{

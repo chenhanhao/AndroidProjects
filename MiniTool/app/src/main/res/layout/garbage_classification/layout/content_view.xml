@@ -15,7 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="30dp">
             <ImageView
-                android:id="@+id/iv"
                 android:background="@drawable/ic_help"
                 android:layout_width="30dp"
                 android:layout_height="30dp"/>

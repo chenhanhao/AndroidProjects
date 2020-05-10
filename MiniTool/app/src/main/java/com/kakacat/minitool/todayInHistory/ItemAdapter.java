@@ -30,7 +30,7 @@ public class ItemAdapter extends ArrayAdapter<Article> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Article article = (Article) getItem(position);
+        Article article = getItem(position);
         View view;
         ViewHolder viewHolder;
         if(convertView == null){

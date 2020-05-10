@@ -45,13 +45,11 @@ public class TodayInHistoryActivity extends AppCompatActivity {
             super.handleMessage(msg);
             if(msg.what == 666){
                 itemAdapter.notifyDataSetChanged();
-  //              Log.d("hhh","刷新数据成功");
             }
         }
     };
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,18 +59,11 @@ public class TodayInHistoryActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     public void onResume(){
         super.onResume();
         refreshData();
     }
-
-
-
-
-
 
 
     private void initData(){
@@ -83,21 +74,13 @@ public class TodayInHistoryActivity extends AppCompatActivity {
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH) + 1;
         day = c.get(Calendar.DATE);
- //       Log.d("hhh","month " + month + " day " + day);
         address = getAddress();
-//        refreshData();
     }
 
-
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initWidget(){
         context = TodayInHistoryActivity.this;
 
         initToolbar();
-
         initListView();
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -110,14 +93,11 @@ public class TodayInHistoryActivity extends AppCompatActivity {
         DatePickerDialog dp = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int iyear, int monthOfYear, int dayOfMonth) {
-     //           long maxDate = datePicker.getMaxDate();//日历最大能设置的时间的毫秒值
                 month = monthOfYear + 1;
                 day = dayOfMonth;
                 address = getAddress();
-   //             Log.d("hhh",address);
                 first = false;
                 refreshData();
-     //           Toast.makeText(context, iyear +":"+ month+":"+ day, Toast.LENGTH_LONG).show();
             }
         }, year, month - 1, day);//2013:初始年份，2：初始月份-1 ，1：初始日期
         dp.show();
@@ -128,7 +108,6 @@ public class TodayInHistoryActivity extends AppCompatActivity {
         HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
             @Override
             public void onSuccess(String s) {
- //               Log.d("hhh","get data successful");
                 if(!first) articleList.clear();
                 JsonUtil.handleHistoryResponse(s,articleList);
                 Message message = new Message();

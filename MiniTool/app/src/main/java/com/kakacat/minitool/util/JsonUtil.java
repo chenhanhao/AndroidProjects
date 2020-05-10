@@ -164,7 +164,6 @@ public class JsonUtil {
 
                 for(int i = 0; i < result.length(); i++){
                     String str = result.getJSONObject(i).toString();
-  //                  Log.d("hhh",str);
                     Article article = gson.fromJson(str,Article.class);
                     articleList.add(article);
                 }

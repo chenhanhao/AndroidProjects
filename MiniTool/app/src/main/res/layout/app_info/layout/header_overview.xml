@@ -29,7 +29,6 @@
         android:textColor="#000000"
         android:text="应用数量" />
     <TextView
-        android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/textView9"
