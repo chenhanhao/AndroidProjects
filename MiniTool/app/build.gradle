@@ -119,6 +119,7 @@ andResGuard {
             "*.jpg",
             "*.jpeg",
             "*.gif",
+            "*.webp",
     ]
     sevenzip {
         artifact = 'com.tencent.mm:SevenZip:1.2.17'

@@ -1,6 +1,7 @@
 package com.kakacat.minitool.cleanFile;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.StringUtil;
+import com.kakacat.minitool.util.ui.MyPopupWindow;
 import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.io.File;
@@ -39,19 +41,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class CleanFileActivity extends AppCompatActivity implements View.OnClickListener,TabLayout.OnTabSelectedListener{
 
     private TabLayout tabLayout;
-
     private ProgressBar progressBar;
-
     private ViewPager viewPager;
-
     private Button btSelectAll;
-    private Button btDelete;
-    private Button btCancel;
-
     private FloatingActionButton fab;
-
-    private View popupWindowViewWarn1;
-
     private PopupWindow popupWindowWarn1;
 
     private ItemAdapter bigFileAdapter;
@@ -63,13 +56,9 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
     private List<FileItem> emptyFileList;
     private List<FileItem> emptyDirList;
     private List<FileItem> apkList;
-    private List<String> titleList;
-    private List<MyFragment> fragmentList;
 
     private long deleteFileSize;
-
     private int currentTabPosition;
-
     private boolean isSelectAllBigFile;
     private boolean isSelectAllEmptyFile;
     private boolean isSelectAllEmptyDir;
@@ -96,23 +85,29 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initWidget() {
-        initToolbar();
+        setSupportActionBar(findViewById(R.id.toolbar));
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
+        }
         progressBar = findViewById(R.id.progress_bar);
         fab = findViewById(R.id.fab_delete);
+        btSelectAll = findViewById(R.id.bt_select_all);
         initTabLayout();
     }
 
     private void initTabLayout() {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
-        btSelectAll = findViewById(R.id.bt_select_all);
 
         bigFileList = new CopyOnWriteArrayList<>();
         emptyFileList = new CopyOnWriteArrayList<>();
         emptyDirList = new CopyOnWriteArrayList<>();
         apkList = new CopyOnWriteArrayList<>();
-        titleList = new ArrayList<>();
-        fragmentList = new ArrayList<>();
+        List<String> titleList = new ArrayList<>();
+        List<MyFragment> fragmentList = new ArrayList<>();
 
         askPermissions();
 
@@ -131,7 +126,7 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
         fragmentList.add(new MyFragment(this, emptyDirAdapter,emptyDirList));
         fragmentList.add(new MyFragment(this, apkAdapter,apkList));
 
-        SectionsPageAdapter sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager(),titleList,fragmentList);
+        SectionsPageAdapter sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager(), titleList, fragmentList);
         viewPager.setAdapter(sectionsPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -152,16 +147,6 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
         tabLayout.addOnTabSelectedListener(this);
         btSelectAll.setOnClickListener(this);
         fab.setOnClickListener(this);
-    }
-
-    private void initToolbar(){
-        setSupportActionBar(findViewById(R.id.toolbar));
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_action_back);
-        }
     }
 
     private void askPermissions(){
@@ -224,20 +209,11 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
                 break;
             }
             case R.id.fab_delete:{
-                initPopupWindow();
-                popupWindowWarn1.showAtLocation(viewPager, Gravity.CENTER,0,0);
-                break;
-            }
-            case R.id.bt_delete_file:{
-                int num = deleteSelectedFile();
-                notifyAdapter();
-                popupWindowWarn1.dismiss();
-                String s = "一共清理了" + num + "个文件,释放空间" + StringUtil.byteToMegabyte(deleteFileSize);
-                Snackbar.make(viewPager, s,Snackbar.LENGTH_SHORT).show();
-                break;
-            }
-            case R.id.bt_cancel:{
-                popupWindowWarn1.dismiss();
+                DialogWindow dialogWindow = new DialogWindow(View.inflate(this, R.layout.popupwindow_warn1, null),
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                        );
+                dialogWindow.showAtLocation(viewPager, Gravity.CENTER,0,0);
                 break;
             }
         }
@@ -246,8 +222,6 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
     private int deleteSelectedFile() {
         int num = 0;
         deleteFileSize = 0;
-
-
 
         for(int i = bigFileList.size() - 1; i >= 0; i--) {
             FileItem fileItem = bigFileList.get(i);
@@ -286,29 +260,6 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
             }
         }
         return num;
-    }
-
-    private void initPopupWindow(){
-        if(!initPopupWindowWarn1){
-            popupWindowViewWarn1 = View.inflate(this,R.layout.popupwindow_warn1,null);
-            popupWindowWarn1 = new PopupWindow(popupWindowViewWarn1, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            UiUtil.initPopupWindow(this,popupWindowWarn1);
-            btDelete = popupWindowViewWarn1.findViewById(R.id.bt_delete_file);
-            btCancel = popupWindowViewWarn1.findViewById(R.id.bt_cancel);
-            btDelete.setOnClickListener(this);
-            btCancel.setOnClickListener(this);
-
-            initPopupWindowWarn1 = true;
-        }
-        setShadow();
-    }
-
-
-    private void setShadow(){
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.6f;//代表透明程度，范围为0 - 1.0f
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        getWindow().setAttributes(lp);
     }
 
     private void notifyAdapter(){
@@ -371,4 +322,38 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
     }
 
 
+    class DialogWindow extends MyPopupWindow implements View.OnClickListener{
+        private View contentView;
+
+        DialogWindow(View contentView, int width, int height) {
+            super(CleanFileActivity.this,contentView, width, height);
+            this.contentView = contentView;
+            initView();
+        }
+
+        private void initView(){
+            Button btDelete = contentView.findViewById(R.id.bt_delete_file);
+            Button btCancel = contentView.findViewById(R.id.bt_cancel);
+            btDelete.setOnClickListener(this);
+            btCancel.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.bt_delete_file:{
+                    int num = deleteSelectedFile();
+                    notifyAdapter();
+                    dismiss();
+                    String s = "一共清理了" + num + "个文件,释放空间" + StringUtil.byteToMegabyte(deleteFileSize);
+                    Snackbar.make(contentView, s,Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+                case R.id.bt_cancel:{
+                    dismiss();
+                    break;
+                }
+            }
+        }
+    }
 }

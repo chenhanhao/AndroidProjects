@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.RecycleViewClickListener;
 
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<PackageInfo> packageInfoList;
     private PackageManager pm;
-    private OnItemClickListener itemClickListener;
+    private RecycleViewClickListener clickListener;
 
 
-    public void setOnItemClickListener(OnItemClickListener itemClickListener){
-        this.itemClickListener = itemClickListener;
+    public void setOnClickListener(RecycleViewClickListener itemClickListener){
+        this.clickListener = itemClickListener;
     }
 
     public ItemAdapter(List<PackageInfo> packageInfoList, PackageManager pm) {
@@ -49,8 +50,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.tvAppVersionCode.setText(packageInfo.versionName);
         holder.tvAppAndroidVersion.setText(AppInfoActivity.androidApiMap[n]);
         holder.tvAppApiLevel.setText(n + "");
-        if(itemClickListener != null){
-            holder.itemView.setOnClickListener(v-> itemClickListener.onClick(holder.itemView,position));
+        if(clickListener != null){
+            holder.itemView.setOnClickListener(v-> clickListener.onClick(holder.itemView,position));
         }
     }
 
@@ -76,11 +77,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             tvAppAndroidVersion = itemView.findViewById(R.id.tv_app_android_version);
             tvAppApiLevel = itemView.findViewById(R.id.tv_app_api_level);
         }
-    }
-
-
-    public interface OnItemClickListener{
-        void onClick(View v,int position);
     }
 
 }

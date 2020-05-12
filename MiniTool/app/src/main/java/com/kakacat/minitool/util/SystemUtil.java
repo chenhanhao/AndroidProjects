@@ -4,8 +4,10 @@ import android.app.Service;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
+import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
@@ -152,6 +154,13 @@ public class SystemUtil {
     public static void vibrate(Context context, long milliseconds){
         Vibrator vibrator = (Vibrator) context.getSystemService(Service.VIBRATOR_SERVICE);
         vibrator.vibrate(milliseconds);
+    }
+
+
+    public static void openMarket(Context context){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=" + context.getPackageName()));
+        context.startActivity(intent);
     }
 
 }

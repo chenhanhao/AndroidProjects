@@ -9,19 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.RecycleViewClickListener;
 
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private List<String> languageList;
-    private OnClickListener listener;
+    private RecycleViewClickListener listener;
 
     public MyAdapter(List<String> languageList) {
         this.languageList = languageList;
     }
 
-    public void setOnClickListener(OnClickListener listener){
+    public void setOnClickListener(RecycleViewClickListener listener){
         this.listener = listener;
     }
 
@@ -54,10 +55,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(itemView);
             tvLanguage = (TextView)itemView;
         }
-    }
-
-    public interface OnClickListener{
-        void onClick(View v,int position);
     }
 
 }

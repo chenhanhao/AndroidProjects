@@ -11,15 +11,16 @@ import com.kakacat.minitool.globalOutbreak.GlobalOutbreakActivity;
 import com.kakacat.minitool.phoneArtribution.PhoneAttributionActivity;
 import com.kakacat.minitool.todayInHistory.TodayInHistoryActivity;
 import com.kakacat.minitool.translation.TranslationActivity;
+import com.kakacat.minitool.util.RecycleViewClickListener;
 import com.kakacat.minitool.wifipasswordview.WifiPwdViewActivity;
 
 import java.util.List;
 
-public class MyDailyFragment extends MyFragment implements MyAdapter.OnItemClickListener {
+public class MyDailyFragment extends MyFragment implements RecycleViewClickListener {
 
     MyDailyFragment(List<MainItem> itemList) {
         super(itemList);
-        super.myAdapter.setOnItemClickListener(this);
+        super.myAdapter.setOnClickListener(this);
     }
 
 

@@ -222,7 +222,7 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
         UiUtil.initPopupWindow(CurrencyConversionActivity.this,popupWindow);
 
         CountryAdapter countryAdapter = new CountryAdapter(countryList);
-        countryAdapter.setOnItemClickListener((v, position) -> {
+        countryAdapter.setOnClickListener((v, position) -> {
             Country country = countryList.get(position);
             if(flag == 1){
                 cv1.setImageResource(country.getIconId());

@@ -1,5 +1,6 @@
 package com.kakacat.minitool.main;
 
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -14,7 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.kakacat.minitool.ChangeThemeView;
 import com.kakacat.minitool.R;
 
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity{
     private NavigationView navigationView;
     private List<MyTab> myTabList;
     private List<MyFragment> myFragmentList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,11 +109,7 @@ public class MainActivity extends AppCompatActivity{
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.nav_theme:{
-                    ChangeThemeView changeThemeView = ChangeThemeView.getInstance(
-                            MainActivity.this,
-                            View.inflate(this,R.layout.select_theme,null),
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ChangeThemeView changeThemeView = ChangeThemeView.getInstance(MainActivity.this, View.inflate(this,R.layout.select_theme,null), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     changeThemeView.showAtLocation(navigationView, Gravity.CENTER,0,0);
                     break;
                 }
@@ -123,9 +118,12 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.nav_about:{
+                    AboutView aboutView = AboutView.getInstance(MainActivity.this,View.inflate(this,R.layout.about_layout,null), ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    aboutView.showAtLocation(navigationView,Gravity.CENTER,0,0);
                     break;
                 }
                 case R.id.nav_exit:{
+                    finish();
                     break;
                 }
                 default:

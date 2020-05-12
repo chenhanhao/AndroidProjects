@@ -1,9 +1,10 @@
-package com.kakacat.minitool;
+package com.kakacat.minitool.main;
 
 import android.app.Activity;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.ui.MyPopupWindow;
 
 public class ChangeThemeView extends MyPopupWindow {

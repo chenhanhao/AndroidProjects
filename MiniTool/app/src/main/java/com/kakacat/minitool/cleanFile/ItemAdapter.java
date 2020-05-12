@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.pavlospt.CircleView;
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.RecycleViewClickListener;
 import com.kakacat.minitool.util.StringUtil;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ItemAdapter extends RecyclerView.Adapter <ItemAdapter.ViewHolder>{
     private List<FileItem> fileList;
     private Context context;
     private LayoutInflater inflater;
-    private OnClickListener onClickListener;
+    private RecycleViewClickListener onClickListener;
 
     public ItemAdapter(Context context,List<FileItem> fileList) {
         this.context = context;
@@ -30,7 +31,7 @@ public class ItemAdapter extends RecyclerView.Adapter <ItemAdapter.ViewHolder>{
     }
 
 
-    public void setOnClickListener(OnClickListener onClickListener){
+    public void setOnClickListener(RecycleViewClickListener onClickListener){
         this.onClickListener = onClickListener;
     }
 
@@ -90,10 +91,5 @@ public class ItemAdapter extends RecyclerView.Adapter <ItemAdapter.ViewHolder>{
             checkBox = itemView.findViewById(R.id.cb_selected);
             btFileDetail = itemView.findViewById(R.id.bt_file_detail);
         }
-    }
-
-
-    public interface OnClickListener{
-        void onClick(View v,int position);
     }
 }

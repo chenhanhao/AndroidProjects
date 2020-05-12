@@ -9,15 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.RecycleViewClickListener;
 
 import java.util.List;
 
 public class KeyBoardAdapter extends RecyclerView.Adapter<KeyBoardAdapter.ViewHolder> {
 
     private List<Character> characterList;
-    private OnClickListener listener;
+    private RecycleViewClickListener listener;
 
-    public void setOnClickListener(OnClickListener listener){
+    public void setOnClickListener(RecycleViewClickListener listener){
         this.listener = listener;
     }
 
@@ -55,8 +56,4 @@ public class KeyBoardAdapter extends RecyclerView.Adapter<KeyBoardAdapter.ViewHo
         }
     }
 
-
-    public interface OnClickListener{
-        void onClick(View v, int position);
-    }
 }

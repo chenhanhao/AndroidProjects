@@ -154,7 +154,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
                 break;
             }
             case R.id.bt_open_market : {
-                openMarket();
+                SystemUtil.openMarket(context);
                 break;
             }
             case R.id.bt_get_apk : {
@@ -200,14 +200,6 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
-    private void openMarket() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("market://details?id=" + packageInfo.packageName));
-        startActivity(intent);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void getApk() {
         String permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
         if(ActivityCompat.checkSelfPermission(this,permission) != PackageManager.PERMISSION_GRANTED){

@@ -20,20 +20,20 @@ import com.kakacat.minitool.ModifyDpiView;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
-import com.kakacat.minitool.util.ui.UiUtil;
+import com.kakacat.minitool.util.RecycleViewClickListener;
 
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickListener {
+public class MyGeekFragment extends MyFragment implements RecycleViewClickListener {
 
     private Activity activity;
     private View parentView;
 
     MyGeekFragment(List<MainItem> itemList) {
         super(itemList);
-        super.myAdapter.setOnItemClickListener(this);
+        super.myAdapter.setOnClickListener(this);
     }
 
     @Nullable
@@ -53,20 +53,12 @@ public class MyGeekFragment extends MyFragment implements MyAdapter.OnItemClickL
                 break;
             }
             case 1:{
-                ModifyDpiView modifyDpiView = ModifyDpiView.getInstance(activity,
-                        parentView,
-                        View.inflate(getContext(), R.layout.popupwindow_modify_dpi,null),
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                ModifyDpiView modifyDpiView = ModifyDpiView.getInstance(activity, parentView, View.inflate(getContext(), R.layout.popupwindow_modify_dpi,null), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 modifyDpiView.showAtLocation(parentView,Gravity.CENTER,0,0);
                 break;
             }
             case 2:{
-                FakeBatteryView fakeBatteryView = FakeBatteryView.getInstance(activity,
-                        parentView,
-                        View.inflate(getContext(), R.layout.popupwindow_fake_battery,null),
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                FakeBatteryView fakeBatteryView = FakeBatteryView.getInstance(activity, parentView, View.inflate(getContext(), R.layout.popupwindow_fake_battery,null), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 fakeBatteryView.showAtLocation(parentView, Gravity.CENTER,0,0);
                 break;
             }

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.RecycleViewClickListener;
 
 import java.util.List;
 
@@ -17,13 +18,11 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
 
     private LayoutInflater layoutInflater;
     private List<Country> countryList;
-    private OnItemClickListener listener;
+    private RecycleViewClickListener listener;
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnClickListener(RecycleViewClickListener listener){
         this.listener = listener;
     }
-
-
 
     public CountryAdapter(List<Country> countryList) {
         this.countryList = countryList;
@@ -63,10 +62,4 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
             textView = itemView.findViewById(R.id.tv_country_name);
         }
     }
-
-
-    public interface OnItemClickListener{
-        void onClick(View v, int position);
-    }
-
 }
