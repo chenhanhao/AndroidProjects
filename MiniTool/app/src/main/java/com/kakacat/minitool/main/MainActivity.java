@@ -1,6 +1,5 @@
 package com.kakacat.minitool.main;
 
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -16,6 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.main.navigation.AboutViewItemOn;
+import com.kakacat.minitool.main.navigation.ChangeThemeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity{
         dailyItemList.add(new MainItem(R.string.title_garbage_classification,R.drawable.ic_garbage,R.string.note_garbage_classification));
         dailyItemList.add(new MainItem(R.string.title_global_outbreak,R.drawable.ic_global_outbreak,R.string.note_global_outbreak));
         dailyItemList.add(new MainItem(R.string.title_translation,R.drawable.ic_dictionary,R.string.note_translation));
+        dailyItemList.add(new MainItem(R.string.title_bing_pic,R.drawable.ic_bing,R.string.note_bing_pic));
 
         geekItemList.add(new MainItem(R.string.title_text_encryption,R.drawable.ic_lock,R.string.note_text_encryption));
         geekItemList.add(new MainItem(R.string.title_modify_dpi,R.drawable.ic_dpi,R.string.note_modify_dpi));
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.nav_about:{
-                    AboutView aboutView = AboutView.getInstance(MainActivity.this,View.inflate(this,R.layout.about_layout,null), ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    AboutViewItemOn aboutView = AboutViewItemOn.getInstance(MainActivity.this,View.inflate(this,R.layout.about_layout,null), ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                     aboutView.showAtLocation(navigationView,Gravity.CENTER,0,0);
                     break;
                 }

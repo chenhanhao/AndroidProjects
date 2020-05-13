@@ -16,9 +16,11 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".bingPic.BingPicActivity"></activity>
+
         <service
             android:name=".GetAudioService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <activity android:name=".translation.TranslationActivity" />
         <activity android:name=".globalOutbreak.GlobalOutbreakActivity" />

@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.RecycleViewClickListener;
+import com.kakacat.minitool.util.RecycleViewItemOnClickListener;
 
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private List<Garbage> garbageList;
-    private RecycleViewClickListener listener;
+    private RecycleViewItemOnClickListener listener;
 
-    public void setOnClickListener(RecycleViewClickListener listener){
+    public void setOnClickListener(RecycleViewItemOnClickListener listener){
         this.listener = listener;
     }
 

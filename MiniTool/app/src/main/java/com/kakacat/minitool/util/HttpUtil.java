@@ -11,7 +11,10 @@ public class HttpUtil {
         new Thread(()->{
             try{
                 OkHttpClient client = new OkHttpClient();
-                Request request = new Request.Builder().url(address).build();
+                Request request = new Request.Builder()
+                        .url(address)
+                        .addHeader("User-Agent","Mozilla/5.0 (Linux; U; Android 8.1.0; zh-cn; BLA-AL00 Build/HUAWEIBLA-AL00) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/8.9 Mobile Safari/537.36")
+                        .build();
                 Response response = client.newCall(request).execute();
                 if(response != null){
                     listener.onSuccess(response.body().string());

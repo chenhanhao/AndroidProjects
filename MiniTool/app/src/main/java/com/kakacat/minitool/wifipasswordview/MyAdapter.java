@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.pavlospt.CircleView;
 import com.kakacat.minitool.R;
+import com.kakacat.minitool.util.RecycleViewItemOnLongClickListener;
 
 import java.util.List;
 
@@ -17,9 +18,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
     private List<Wifi> wifiList;
+    private RecycleViewItemOnLongClickListener onLongClickListener;
 
     public MyAdapter(List<Wifi> wifiList) {
         this.wifiList = wifiList;
+    }
+
+
+    public void setOnLongClickListener(RecycleViewItemOnLongClickListener onLongClickListener){
+        this.onLongClickListener = onLongClickListener;
     }
 
     @NonNull
@@ -37,6 +44,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.tvWifiName.setText(wifi.getWifiName());
         holder.circleView.setSubtitleText("");
         holder.tvWifiPwd.setText(wifi.getWifiPwd());
+        if(onLongClickListener != null){
+            holder.itemView.setOnLongClickListener(v -> {
+                onLongClickListener.onLongClick(v,position);
+                return false;
+            });
+        }
     }
 
     @Override

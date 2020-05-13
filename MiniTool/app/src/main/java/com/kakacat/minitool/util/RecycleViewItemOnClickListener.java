@@ -2,7 +2,7 @@ package com.kakacat.minitool.util;
 
 import android.view.View;
 
-public interface RecycleViewClickListener {
+public interface RecycleViewItemOnClickListener {
 
     void onClick(View v,int position);
 

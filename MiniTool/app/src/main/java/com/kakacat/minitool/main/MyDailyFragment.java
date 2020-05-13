@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.kakacat.minitool.appInfo.AppInfoActivity;
+import com.kakacat.minitool.bingPic.BingPicActivity;
 import com.kakacat.minitool.cleanFile.CleanFileActivity;
 import com.kakacat.minitool.currencyConversion.CurrencyConversionActivity;
 import com.kakacat.minitool.garbageClassification.GarbageClassificationActivity;
@@ -11,12 +12,12 @@ import com.kakacat.minitool.globalOutbreak.GlobalOutbreakActivity;
 import com.kakacat.minitool.phoneArtribution.PhoneAttributionActivity;
 import com.kakacat.minitool.todayInHistory.TodayInHistoryActivity;
 import com.kakacat.minitool.translation.TranslationActivity;
-import com.kakacat.minitool.util.RecycleViewClickListener;
+import com.kakacat.minitool.util.RecycleViewItemOnClickListener;
 import com.kakacat.minitool.wifipasswordview.WifiPwdViewActivity;
 
 import java.util.List;
 
-public class MyDailyFragment extends MyFragment implements RecycleViewClickListener {
+public class MyDailyFragment extends MyFragment implements RecycleViewItemOnClickListener {
 
     MyDailyFragment(List<MainItem> itemList) {
         super(itemList);
@@ -62,6 +63,10 @@ public class MyDailyFragment extends MyFragment implements RecycleViewClickListe
             }
             case 8:{
                 intent = new Intent(getContext(), TranslationActivity.class);
+                break;
+            }
+            case 9:{
+                intent = new Intent(getContext(), BingPicActivity.class);
                 break;
             }
         }

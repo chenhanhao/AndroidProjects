@@ -20,13 +20,13 @@ import com.kakacat.minitool.ModifyDpiView;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.inquireIp.InquireIpActivity;
 import com.kakacat.minitool.textEncryption.TextEncryptionActivity;
-import com.kakacat.minitool.util.RecycleViewClickListener;
+import com.kakacat.minitool.util.RecycleViewItemOnClickListener;
 
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class MyGeekFragment extends MyFragment implements RecycleViewClickListener {
+public class MyGeekFragment extends MyFragment implements RecycleViewItemOnClickListener {
 
     private Activity activity;
     private View parentView;
@@ -53,12 +53,12 @@ public class MyGeekFragment extends MyFragment implements RecycleViewClickListen
                 break;
             }
             case 1:{
-                ModifyDpiView modifyDpiView = ModifyDpiView.getInstance(activity, parentView, View.inflate(getContext(), R.layout.popupwindow_modify_dpi,null), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                ModifyDpiView modifyDpiView = ModifyDpiView.getInstance(activity, parentView, View.inflate(getContext(), R.layout.modify_dpi_layout,null), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 modifyDpiView.showAtLocation(parentView,Gravity.CENTER,0,0);
                 break;
             }
             case 2:{
-                FakeBatteryView fakeBatteryView = FakeBatteryView.getInstance(activity, parentView, View.inflate(getContext(), R.layout.popupwindow_fake_battery,null), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                FakeBatteryView fakeBatteryView = FakeBatteryView.getInstance(activity, parentView, View.inflate(getContext(), R.layout.fake_battery_layout,null), ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 fakeBatteryView.showAtLocation(parentView, Gravity.CENTER,0,0);
                 break;
             }

@@ -346,7 +346,7 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
                     notifyAdapter();
                     dismiss();
                     String s = "一共清理了" + num + "个文件,释放空间" + StringUtil.byteToMegabyte(deleteFileSize);
-                    Snackbar.make(contentView, s,Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(tabLayout, s,Snackbar.LENGTH_SHORT).show();
                     break;
                 }
                 case R.id.bt_cancel:{

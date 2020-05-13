@@ -223,7 +223,6 @@ public class TranslationActivity extends AppCompatActivity implements View.OnCli
                 "&appid=" + appId +
                 "&salt=" + random +
                 "&sign=" + sign;
-        Log.d("hhh",address);
         if(TextUtils.isEmpty(content)){
            UiUtil.showHint(linearLayout,"请输入内容");
            return;
@@ -232,7 +231,7 @@ public class TranslationActivity extends AppCompatActivity implements View.OnCli
         HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
             @Override
             public void onSuccess(String s) {
-                String result = "";
+                String result;
                 result = JsonUtil.handleTranslationResponse(s);
                 Message msg = Message.obtain();
                 msg.what = 1;

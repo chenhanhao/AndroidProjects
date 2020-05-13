@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kakacat.minitool.R;
-import com.kakacat.minitool.util.RecycleViewClickListener;
+import com.kakacat.minitool.util.RecycleViewItemOnClickListener;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<PackageInfo> packageInfoList;
     private PackageManager pm;
-    private RecycleViewClickListener clickListener;
+    private RecycleViewItemOnClickListener clickListener;
 
 
-    public void setOnClickListener(RecycleViewClickListener itemClickListener){
+    public void setOnClickListener(RecycleViewItemOnClickListener itemClickListener){
         this.clickListener = itemClickListener;
     }
 

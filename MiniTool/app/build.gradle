@@ -22,6 +22,7 @@ android {
                             'src/main/res/layout/garbage_classification',
                             'src/main/res/layout/global_outbreak',
                             'src/main/res/layout/translation',
+                            'src/main/res/layout/bing_pic',
                             'src/main/res'
                     ]
         }
@@ -29,7 +30,7 @@ android {
 
     defaultConfig {
         resConfigs('zh-rCN', 'ko')
-        ndk{
+        ndk {
             abiFilters "armeabi-v7a"
         }
         applicationId "com.kakacat.minitool"

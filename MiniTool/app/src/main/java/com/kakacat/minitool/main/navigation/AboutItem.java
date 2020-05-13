@@ -1,4 +1,4 @@
-package com.kakacat.minitool.main;
+package com.kakacat.minitool.main.navigation;
 
 public class AboutItem {
 
