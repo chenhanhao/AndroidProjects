@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="@drawable/round_background_white">
+        android:background="@drawable/round_background_grey">
         <TextView
             android:id="@+id/tv_android_version"
             android:layout_width="wrap_content"

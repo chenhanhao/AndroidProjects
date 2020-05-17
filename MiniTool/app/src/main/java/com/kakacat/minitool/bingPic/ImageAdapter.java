@@ -2,6 +2,7 @@ package com.kakacat.minitool.bingPic;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.RecycleViewItemOnClickListener;
 import com.kakacat.minitool.util.RecycleViewItemOnLongClickListener;
+import com.kakacat.minitool.util.RecycleViewOnTouchListener;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     private RecycleViewItemOnClickListener onClickListener;
     private RecycleViewItemOnLongClickListener onLongClickListener;
+    private RecycleViewOnTouchListener onTouchListener;
 
     ImageAdapter(List<String> list) {
         this.list = list;
@@ -37,6 +40,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     void setOnLongClickListener(RecycleViewItemOnLongClickListener onLongClickListener){
         this.onLongClickListener = onLongClickListener;
+    }
+
+    void setOnTouchListener(RecycleViewOnTouchListener onTouchListener){
+        this.onTouchListener = onTouchListener;
     }
 
     @NonNull
@@ -55,14 +62,17 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(holder.imageView);
         if(onClickListener != null)
-            holder.imageView.setOnClickListener(v -> onClickListener.onClick(v,position));
+            holder.imageView.setOnClickListener(v -> onClickListener.onClick(holder.itemView,position));
         if(onLongClickListener != null){
-            holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    onLongClickListener.onLongClick(holder.imageView,position);
-                    return false;
-                }
+            holder.imageView.setOnLongClickListener(v -> {
+                onLongClickListener.onLongClick(holder.imageView,position);
+                return false;
+            });
+        }
+        if(onTouchListener != null){
+            holder.imageView.setOnTouchListener((v, event) -> {
+                onTouchListener.onTouch(v,event);
+                return false;
             });
         }
     }

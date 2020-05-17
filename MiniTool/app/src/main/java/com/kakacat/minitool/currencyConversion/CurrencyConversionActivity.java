@@ -28,9 +28,11 @@ import com.kakacat.minitool.util.ui.ItemDecoration;
 import com.kakacat.minitool.util.ui.CircleImageView;
 import com.kakacat.minitool.util.ui.UiUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Response;
 
 
 public class CurrencyConversionActivity extends AppCompatActivity implements View.OnFocusChangeListener{
@@ -299,7 +301,13 @@ public class CurrencyConversionActivity extends AppCompatActivity implements Vie
         swipeRefreshLayout.setRefreshing(true);
         HttpUtil.sendOkHttpRequest(address,new HttpCallbackListener() {
             @Override
-            public void onSuccess(String s) {
+            public void onSuccess(Response response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(JsonUtil.handleRateResponse(CurrencyConversionActivity.this,s))
                     for(int i = 0; i < 22; i++) countryList.get(i).setRate(Rate.getRate(i + 1));
                 swipeRefreshLayout.setRefreshing(false);

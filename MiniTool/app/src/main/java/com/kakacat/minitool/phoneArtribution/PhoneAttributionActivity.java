@@ -17,6 +17,10 @@ import com.kakacat.minitool.util.HttpCallbackListener;
 import com.kakacat.minitool.util.HttpUtil;
 import com.kakacat.minitool.util.JsonUtil;
 
+import java.io.IOException;
+
+import okhttp3.Response;
+
 public class PhoneAttributionActivity extends AppCompatActivity {
 
     private Context context;
@@ -64,7 +68,13 @@ public class PhoneAttributionActivity extends AppCompatActivity {
         }else{
             HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
                 @Override
-                public void onSuccess(String s) {
+                public void onSuccess(Response response) {
+                    String s = null;
+                    try {
+                        s = response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Data data = JsonUtil.handleAttrDataResponse(s);
                     if(data != null){
                         runOnUiThread(()->{

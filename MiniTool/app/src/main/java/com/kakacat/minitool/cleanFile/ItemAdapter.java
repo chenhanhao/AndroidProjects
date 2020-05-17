@@ -11,22 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.pavlospt.CircleView;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.RecycleViewItemOnClickListener;
 import com.kakacat.minitool.util.StringUtil;
+import com.kakacat.minitool.util.ui.CircleProgressView;
 
 import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter <ItemAdapter.ViewHolder>{
 
     private List<FileItem> fileList;
-    private Context context;
     private LayoutInflater inflater;
     private RecycleViewItemOnClickListener onClickListener;
 
-    public ItemAdapter(Context context,List<FileItem> fileList) {
-        this.context = context;
+    public ItemAdapter(List<FileItem> fileList) {
         this.fileList = fileList;
     }
 
@@ -38,7 +36,7 @@ public class ItemAdapter extends RecyclerView.Adapter <ItemAdapter.ViewHolder>{
     @NonNull
     @Override
     public ItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(inflater == null) inflater = LayoutInflater.from(context);
+        if(inflater == null) inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.file_item_layout,parent,false);
         return new ViewHolder(view);
     }
@@ -48,12 +46,10 @@ public class ItemAdapter extends RecyclerView.Adapter <ItemAdapter.ViewHolder>{
         FileItem fileItem = fileList.get(position);
         String result = StringUtil.byteToMegabyte(fileItem.getFile().length());
 
-        holder.cvFileSize.setTitleText(result.substring(0,result.length() - 1));
-        holder.cvFileSize.setSubtitleText(String.valueOf(result.charAt(result.length() - 1)));
+        holder.cvFileSize.setText(result);
         holder.tvFileName.setText(fileItem.getFile().getName());
         holder.tvFilePath.setText(fileItem.getFile().getAbsolutePath());
         holder.checkBox.setChecked(fileItem.getChecked());
-
         holder.btFileDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +73,7 @@ public class ItemAdapter extends RecyclerView.Adapter <ItemAdapter.ViewHolder>{
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        private CircleView cvFileSize;
+        private CircleProgressView cvFileSize;
         private TextView tvFileName;
         private TextView tvFilePath;
         private CheckBox checkBox;
@@ -85,7 +81,7 @@ public class ItemAdapter extends RecyclerView.Adapter <ItemAdapter.ViewHolder>{
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cvFileSize = itemView.findViewById(R.id.circle_view);
+            cvFileSize = itemView.findViewById(R.id.circle_progress_view);
             tvFileName = itemView.findViewById(R.id.tv_file_name);
             tvFilePath = itemView.findViewById(R.id.tv_file_path);
             checkBox = itemView.findViewById(R.id.cb_selected);

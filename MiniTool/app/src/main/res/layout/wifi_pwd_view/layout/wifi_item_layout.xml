@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp">
-        <com.github.pavlospt.CircleView
+<!--        <com.github.pavlospt.CircleView
             android:id="@+id/circle_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -25,7 +25,19 @@
             app:cv_strokeColorValue="@color/lightBlue"
             app:cv_fillColor="@color/lightBlue"
             app:cv_fillRadius="0.9"
-            app:cv_strokeWidthSize="10"/>
+            app:cv_strokeWidthSize="10"/>-->
+        <com.kakacat.minitool.util.ui.CircleProgressView
+            android:id="@+id/circle_progress_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:text_size="20"
+            app:text_color="@color/black"
+            app:circle_color="@color/lightBlue"
+            app:circle_width="10"
+            app:progress="100">
+        </com.kakacat.minitool.util.ui.CircleProgressView>
+
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -2,6 +2,10 @@ package com.kakacat.minitool.util.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -47,6 +51,23 @@ public class UiUtil {
 
     public static void showHint(View view,CharSequence hint){
         Snackbar.make(view,hint,Snackbar.LENGTH_SHORT).show();
+    }
+
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE
+                ? Bitmap.Config.ARGB_8888
+                : Bitmap.Config.RGB_565;
+        //创建对应的bitmap
+        Bitmap bitmap = Bitmap.createBitmap(width, height, config);
+        //创建对应的bitmap的画布
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, width, height);
+        //把drawable内容画到画布中
+        drawable.draw(canvas);
+        return bitmap;
     }
 
 

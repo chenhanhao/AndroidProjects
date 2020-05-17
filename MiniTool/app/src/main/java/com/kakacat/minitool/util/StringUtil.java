@@ -7,8 +7,6 @@ import androidx.annotation.RequiresApi;
 
 public class StringUtil {
 
-
-
     public static String byteToMegabyte(long bytes){
         String result;
         if(bytes > 1024 * 1024 * 1024){
@@ -21,7 +19,6 @@ public class StringUtil {
         return result;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static String getDate(long time){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(time);

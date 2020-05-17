@@ -8,35 +8,37 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:clickable="true"
-    android:foreground = "?attr/selectableItemBackground">
+    android:foreground = "?attr/selectableItemBackground"
+    android:focusable="true">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingLeft="20dp"
-        android:paddingRight="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp"
         android:paddingTop="20dp"
         android:paddingBottom="10dp"
         android:gravity="center">
-        <com.github.pavlospt.CircleView
-            android:id="@+id/circle_view"
+        <com.kakacat.minitool.util.ui.CircleProgressView
+            android:id="@+id/circle_progress_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_gravity="center_vertical"
-            app:cv_titleSize="18sp"
-            app:cv_titleColor="@color/white"
-            app:cv_strokeColorValue="@color/lightBlue"
-            app:cv_subtitleSize="10sp"
-            app:cv_fillColor="@color/lightBlue"/>
+            app:text_size="11"
+            app:text_color="@color/black"
+            app:circle_color="@color/lightBlue"
+            app:circle_width="7"
+            app:progress="100">
+        </com.kakacat.minitool.util.ui.CircleProgressView>
+
         <TextView
             android:id="@+id/tv_file_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/circle_view"
-            android:layout_marginRight="40dp"
-            android:text="con.dkjfdk.fdgfdg.fdg.fd.gdf.ag.fds"
+            android:layout_toEndOf="@+id/circle_progress_view"
+            android:layout_marginEnd="40dp"
             android:textSize="18sp"
             android:textStyle="bold"
             android:ellipsize="end"
@@ -45,10 +47,9 @@
             android:id="@+id/tv_file_path"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:layout_toRightOf="@+id/circle_view"
+            android:layout_marginEnd="40dp"
+            android:layout_toEndOf="@+id/circle_progress_view"
             android:layout_below="@+id/tv_file_name"
-            android:text="/gf/fd/hg/t/h/t5/5/g5/con.dkjfdk.fdgfdg.fdg.fd.gdf.ag.fds"
             android:ellipsize="end"
             android:singleLine="false"/>
         <CheckBox
@@ -59,7 +60,7 @@
             android:layout_above="@id/bt_file_detail"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:clickable="false"/>
 
         <Button
@@ -67,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_file_path"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
             android:background="@null"
             android:text="文件详情"

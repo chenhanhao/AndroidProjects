@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.pavlospt.CircleView;
 import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.RecycleViewItemOnLongClickListener;
+import com.kakacat.minitool.util.ui.CircleProgressView;
 
 import java.util.List;
 
@@ -40,9 +40,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Wifi wifi = wifiList.get(position);
-        holder.circleView.setTitleText(wifi.getWifiImage());
+        holder.circleProgressView.setText(wifi.getWifiImage());
         holder.tvWifiName.setText(wifi.getWifiName());
-        holder.circleView.setSubtitleText("");
         holder.tvWifiPwd.setText(wifi.getWifiPwd());
         if(onLongClickListener != null){
             holder.itemView.setOnLongClickListener(v -> {
@@ -58,13 +57,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        private CircleView circleView;
+        private CircleProgressView circleProgressView;
         private TextView tvWifiName;
         private TextView tvWifiPwd;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            circleView = itemView.findViewById(R.id.circle_view);
+            circleProgressView = itemView.findViewById(R.id.circle_progress_view);
             tvWifiName = itemView.findViewById(R.id.tv_wifi_name);
             tvWifiPwd = itemView.findViewById(R.id.tv_wifi_pwd);
         }

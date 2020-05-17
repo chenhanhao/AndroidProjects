@@ -1,5 +1,7 @@
 package com.kakacat.minitool.globalOutbreak;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,8 +27,12 @@ import com.kakacat.minitool.util.JsonUtil;
 import com.kakacat.minitool.util.StringUtil;
 import com.kakacat.minitool.util.ui.UiUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import okhttp3.Response;
 
 
 public class GlobalOutbreakActivity extends AppCompatActivity {
@@ -50,8 +56,8 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
     private List<EpidemicData> epidemicDataList6;
 
 
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(){
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
@@ -74,7 +80,6 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
 
         initWidget();
         refresh();
-
     }
 
     private void initWidget() {
@@ -138,10 +143,14 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
 
         HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
             @Override
-            public void onSuccess(String s) {
-                for(List<EpidemicData> list1 : list){
-                    list1.clear();
+            public void onSuccess(Response response) {
+                String s = null;
+                try {
+                    s = Objects.requireNonNull(response.body()).string();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                list.forEach(List::clear);
                 JsonUtil.handleEpidemicResponse(s,list);
                 Message msg = Message.obtain();
                 msg.what = 1;
@@ -154,22 +163,15 @@ public class GlobalOutbreakActivity extends AppCompatActivity {
 
 
     private void notifyData(){
-        for(MyFragment myFragment : myFragmentList){
+        for(MyFragment myFragment : myFragmentList)
             myFragment.refresh();
-        }
     }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:{
-                finish();
-                break;
-            }
-            default:
-                break;
-        }
+        if (menuItem.getItemId() == android.R.id.home)
+            finish();
         return true;
     }
 

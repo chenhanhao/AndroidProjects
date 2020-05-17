@@ -22,9 +22,12 @@ import com.kakacat.minitool.util.HttpCallbackListener;
 import com.kakacat.minitool.util.HttpUtil;
 import com.kakacat.minitool.util.JsonUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import okhttp3.Response;
 
 public class TodayInHistoryActivity extends AppCompatActivity {
 
@@ -107,7 +110,13 @@ public class TodayInHistoryActivity extends AppCompatActivity {
     private void refreshData(){
         HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
             @Override
-            public void onSuccess(String s) {
+            public void onSuccess(Response response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(!first) articleList.clear();
                 JsonUtil.handleHistoryResponse(s,articleList);
                 Message message = new Message();

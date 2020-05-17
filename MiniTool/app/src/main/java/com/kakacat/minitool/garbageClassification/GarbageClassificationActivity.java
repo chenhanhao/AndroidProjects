@@ -26,8 +26,11 @@ import com.kakacat.minitool.util.HttpUtil;
 import com.kakacat.minitool.util.JsonUtil;
 import com.kakacat.minitool.util.ui.UiUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Response;
 
 public class GarbageClassificationActivity extends AppCompatActivity {
 
@@ -82,7 +85,13 @@ public class GarbageClassificationActivity extends AppCompatActivity {
                     s;
             HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
                 @Override
-                public void onSuccess(String s) {
+                public void onSuccess(Response response) {
+                    String s = null;
+                    try {
+                        s = response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     garbageList.clear();
                     JsonUtil.handleGarbageResponse(s,garbageList);
                     Message msg = new Message();

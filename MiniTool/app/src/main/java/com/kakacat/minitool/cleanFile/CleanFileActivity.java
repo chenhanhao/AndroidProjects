@@ -116,10 +116,10 @@ public class CleanFileActivity extends AppCompatActivity implements View.OnClick
         titleList.add("空文件夹");
         titleList.add("安装包");
 
-        bigFileAdapter = new ItemAdapter(this,bigFileList);
-        emptyFileAdapter = new ItemAdapter(this,emptyFileList);
-        emptyDirAdapter = new ItemAdapter(this,emptyDirList);
-        apkAdapter = new ItemAdapter(this,apkList);
+        bigFileAdapter = new ItemAdapter(bigFileList);
+        emptyFileAdapter = new ItemAdapter(emptyFileList);
+        emptyDirAdapter = new ItemAdapter(emptyDirList);
+        apkAdapter = new ItemAdapter(apkList);
 
         fragmentList.add(new MyFragment(this, bigFileAdapter,bigFileList));
         fragmentList.add(new MyFragment(this, emptyFileAdapter,emptyFileList));

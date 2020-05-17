@@ -3,6 +3,7 @@ package com.kakacat.minitool.main;
 import android.content.Intent;
 import android.view.View;
 
+import com.kakacat.minitool.R;
 import com.kakacat.minitool.appInfo.AppInfoActivity;
 import com.kakacat.minitool.bingPic.BingPicActivity;
 import com.kakacat.minitool.cleanFile.CleanFileActivity;
@@ -71,6 +72,9 @@ public class MyDailyFragment extends MyFragment implements RecycleViewItemOnClic
             }
         }
 
-        if(intent != null) startActivity(intent);
+        if(intent != null) {
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.activity_open,R.anim.activity_enter_anim);
+        }
     }
 }

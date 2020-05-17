@@ -28,8 +28,7 @@
                 android:id="@+id/tv_current_confirmed_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FF0000"
-                android:text="20000"/>
+                android:textColor="#FF0000"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -49,8 +48,7 @@
                 android:id="@+id/tv_confirmed_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#990000"
-                android:text="20000"/>
+                android:textColor="#990000" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -70,8 +68,7 @@
                 android:id="@+id/tv_suspected_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:text="20000"/>
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -91,15 +88,15 @@
                 android:id="@+id/tv_dead_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:text="20000"/>
+                android:textColor="#000000" />
         </LinearLayout>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
     </androidx.recyclerview.widget.RecyclerView>

@@ -33,9 +33,12 @@ import com.kakacat.minitool.util.JsonUtil;
 import com.kakacat.minitool.util.SystemUtil;
 import com.kakacat.minitool.util.ui.UiUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Response;
 
 public class TranslationActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -230,7 +233,13 @@ public class TranslationActivity extends AppCompatActivity implements View.OnCli
 
         HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
             @Override
-            public void onSuccess(String s) {
+            public void onSuccess(Response response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 String result;
                 result = JsonUtil.handleTranslationResponse(s);
                 Message msg = Message.obtain();

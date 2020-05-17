@@ -18,6 +18,7 @@ import com.kakacat.minitool.util.HttpCallbackListener;
 import com.kakacat.minitool.util.HttpUtil;
 import com.kakacat.minitool.util.JsonUtil;
 
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -25,6 +26,8 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.Response;
 
 public class InquireIpActivity extends AppCompatActivity {
 
@@ -69,7 +72,13 @@ public class InquireIpActivity extends AppCompatActivity {
         }else{
             HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
                 @Override
-                public void onSuccess(String s) {
+                public void onSuccess(Response response) {
+                    String s = null;
+                    try {
+                        s = response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     Data data = JsonUtil.handleIpDataResponse(s);
                     if(data == null){
            //             Log.d("hhh","json解析失败");

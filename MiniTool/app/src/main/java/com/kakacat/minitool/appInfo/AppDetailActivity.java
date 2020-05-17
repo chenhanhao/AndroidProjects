@@ -30,6 +30,7 @@ import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.EncryptionUtil;
 import com.kakacat.minitool.util.StringUtil;
 import com.kakacat.minitool.util.SystemUtil;
+import com.kakacat.minitool.util.ui.UiUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -181,8 +182,7 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
             if(!file.exists()){
                 file.createNewFile();
                 FileOutputStream fos = new FileOutputStream(file);
-  //              Bitmap bitmap= ((BitmapDrawable)packageInfo.applicationInfo.loadIcon(pm)).getBitmap();
-                Bitmap bitmap = drawableToBitmap(packageInfo.applicationInfo.loadIcon(pm));
+                Bitmap bitmap = UiUtil.drawableToBitmap(packageInfo.applicationInfo.loadIcon(pm));
 
                 bitmap.compress(Bitmap.CompressFormat.PNG,100,fos);
                 fos.flush();
@@ -234,25 +234,6 @@ public class AppDetailActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
         return true;
-    }
-
-
-    private Bitmap drawableToBitmap(Drawable drawable) {
-        //取drawable的宽高
-        int width = drawable.getIntrinsicWidth();
-        int height = drawable.getIntrinsicHeight();
-        //取drawable的颜色格式
-        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE
-                ? Bitmap.Config.ARGB_8888
-                : Bitmap.Config.RGB_565;
-        //创建对应的bitmap
-        Bitmap bitmap = Bitmap.createBitmap(width, height, config);
-        //创建对应的bitmap的画布
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, width, height);
-        //把drawable内容画到画布中
-        drawable.draw(canvas);
-        return bitmap;
     }
 
 

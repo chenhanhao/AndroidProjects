@@ -92,12 +92,14 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 View view = tab.getCustomView();
+                assert view != null;
                 view.setBackgroundResource(R.color.textGrey);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 View view = tab.getCustomView();
+                assert view != null;
                 view.setBackgroundResource(R.color.white);
             }
 
@@ -106,8 +108,6 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
-
-
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.nav_theme:{
@@ -138,16 +138,12 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:{
-                if(drawerLayout.isDrawerOpen(GravityCompat.START))
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                else
-                    drawerLayout.openDrawer(GravityCompat.START);
-                break;
-            }
-            default:
-                break;
+        if (menuItem.getItemId() == android.R.id.home) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
+                drawerLayout.closeDrawer(GravityCompat.START);
+            else
+                drawerLayout.openDrawer(GravityCompat.START);
+
         }
         return true;
     }
