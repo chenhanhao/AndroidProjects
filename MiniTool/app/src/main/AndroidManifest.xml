@@ -39,7 +39,9 @@
         <activity
             android:name=".currencyConversion.CurrencyConversionActivity"
             android:label="@string/title_currency_conversion" />
-        <activity android:name=".main.MainActivity">
+        <activity
+            android:name=".main.MainActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

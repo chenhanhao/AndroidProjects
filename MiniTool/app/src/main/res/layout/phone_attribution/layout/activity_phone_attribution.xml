@@ -10,43 +10,13 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         app:cardCornerRadius="8dp"
-        app:cardElevation="8dp"
-        android:layout_margin="20dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="请输入待查询手机号码"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="left"/>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp">
-
-                <EditText
-                    android:id="@+id/et_input_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/edit_text_background_with_black_border"
-                    android:hint="请输入11位号码"
-                    android:numeric="decimal"
-                    android:padding="10dp"></EditText>
-                <Button
-                    android:id="@+id/bt_inquire_attribution"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_action_inquire"
-                    android:layout_gravity="right" />
-            </FrameLayout>
-        </LinearLayout>
+        app:cardElevation="8dp">
+        <com.kakacat.minitool.util.ui.SearchBar
+            android:id="@+id/search_bar"
+            app:hint="请输入待查询手机号码"
+            style="@style/SearchBarStyle"/>
     </androidx.cardview.widget.CardView>
 
     <TextView

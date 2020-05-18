@@ -3,7 +3,9 @@ package com.kakacat.minitool.phoneArtribution;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.kakacat.minitool.R;
 import com.kakacat.minitool.util.HttpCallbackListener;
 import com.kakacat.minitool.util.HttpUtil;
 import com.kakacat.minitool.util.JsonUtil;
+import com.kakacat.minitool.util.ui.SearchBar;
 
 import java.io.IOException;
 
@@ -24,8 +27,8 @@ import okhttp3.Response;
 public class PhoneAttributionActivity extends AppCompatActivity {
 
     private Context context;
-    private EditText editText;
-    private Button btInquire;
+    private SearchBar searchBar;
+
     private TextView tvProvince;
     private TextView tvCity;
     private TextView tvAreaCode;
@@ -42,30 +45,30 @@ public class PhoneAttributionActivity extends AppCompatActivity {
     }
 
     private void initWidget(){
+        context = this;
         initToolbar();
 
-        context = PhoneAttributionActivity.this;
-        btInquire = findViewById(R.id.bt_inquire_attribution);
+        searchBar = findViewById(R.id.search_bar);
         tvProvince = findViewById(R.id.tv_province);
         tvCity = findViewById(R.id.tv_city);
         tvAreaCode = findViewById(R.id.tv_area_code);
         tvZip = findViewById(R.id.tv_zip);
         tvCompany = findViewById(R.id.tv_company);
         tvNumber = findViewById(R.id.tv_number);
-        btInquire.setOnClickListener(v -> {
+
+        searchBar.imageView.setOnClickListener(v -> {
             requestAttrData();
         });
     }
 
 
     private void requestAttrData(){
-        String phoneNumber = getPhoneNumber();
-        String key = "a61898e25da1484f93ccf01e2ebe6ff7";
-        String address = "http://apis.juhe.cn/mobile/get?phone= " + phoneNumber + "&key=" + key;
-        if(phoneNumber == null){
- //           Log.d("hhh","请输入11位有效手机号码");
+        CharSequence phoneNumber = getPhoneNumber();
+        if(phoneNumber == null)
             Toast.makeText(context,"请输入11位有效手机号码",Toast.LENGTH_SHORT).show();
-        }else{
+        else{
+            String key = "a61898e25da1484f93ccf01e2ebe6ff7";
+            String address = "http://apis.juhe.cn/mobile/get?phone= " + phoneNumber + "&key=" + key;
             HttpUtil.sendOkHttpRequest(address, new HttpCallbackListener() {
                 @Override
                 public void onSuccess(Response response) {
@@ -98,12 +101,10 @@ public class PhoneAttributionActivity extends AppCompatActivity {
     }
 
 
-    private String getPhoneNumber(){
-        editText = findViewById(R.id.et_input_phone);
-        String phoneNumber = editText.getText().toString();
-
-        if(!TextUtils.isEmpty(phoneNumber) && phoneNumber.length() == 11) return phoneNumber;
-
+    private CharSequence getPhoneNumber(){
+        CharSequence phoneNumber = searchBar.editText.getText();
+        if(!TextUtils.isEmpty(phoneNumber) && phoneNumber.length() == 11)
+            return phoneNumber;
         return null;
     }
 
@@ -119,14 +120,8 @@ public class PhoneAttributionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
-        switch (menuItem.getItemId()){
-            case android.R.id.home:{
-                finish();
-                break;
-            }
-            default:
-                break;
-        }
+        if (menuItem.getItemId() == android.R.id.home)
+            finish();
         return true;
     }
 }

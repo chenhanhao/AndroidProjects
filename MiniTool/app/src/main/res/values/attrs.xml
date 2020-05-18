@@ -13,4 +13,18 @@
         <attr name="text" format="string"/>
     </declare-styleable>
 
+
+    <declare-styleable name="SearchBar">
+        <attr name="border_width" format="reference|dimension"></attr>
+        <attr name="border_color" format="reference|color"></attr>
+        <attr name="border_selected_color" format="reference|color"></attr>
+        <attr name="border_radius_x" format="reference|dimension"></attr>
+        <attr name="border_radius_y" format="reference|dimension"></attr>
+        <attr name="image_src" format="reference"></attr>
+        <attr name="image_width" format="reference|dimension"></attr>
+        <attr name="image_height" format="reference|dimension"></attr>
+        <attr name="hint" format="reference|string"></attr>
+    </declare-styleable>
+
+
 </resources>
